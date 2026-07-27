@@ -94,29 +94,40 @@ export function Header() {
       <div
         id="mobile-menu"
         className={cn(
-          'lg:hidden',
-          mobileOpen ? 'pointer-events-auto' : 'pointer-events-none'
+          'fixed inset-x-0 top-16 bottom-0 z-40 lg:hidden',
+          mobileOpen ? 'visible' : 'invisible'
         )}
       >
         <div
           className={cn(
-            'fixed inset-0 top-16 z-40 bg-[hsl(var(--background))]/95 backdrop-blur-xl transition-opacity duration-300',
+            'absolute inset-0 bg-[hsl(var(--background))]/95 backdrop-blur-xl transition-opacity duration-300',
             mobileOpen ? 'opacity-100' : 'opacity-0'
           )}
           onClick={() => setMobileOpen(false)}
         />
         <nav
           className={cn(
-            'fixed inset-x-0 top-16 z-50 max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-white/10 bg-[hsl(var(--background))] px-5 pb-8 pt-4 transition-transform duration-300',
-            mobileOpen ? 'translate-y-0' : '-translate-y-4'
+            'absolute inset-x-0 top-0 max-h-full overflow-y-auto border-b border-white/10 bg-[hsl(var(--background))] px-5 pb-8 pt-4 transition-transform duration-300',
+            mobileOpen ? 'translate-y-0' : '-translate-y-full'
           )}
           aria-label="Mobile"
         >
+          <div className="mb-2 flex justify-end">
+            <button
+              type="button"
+              onClick={() => setMobileOpen(false)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))]"
+              aria-label={dict.actions.closeMenu}
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
           <div className="flex flex-col gap-1">
             {dict.nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setMobileOpen(false)}
                 className={cn(
                   'rounded-lg px-4 py-3 text-base font-medium transition-colors',
                   isActive(item.href)
@@ -130,7 +141,7 @@ export function Header() {
           </div>
           <div className="mt-5 flex items-center justify-between gap-4">
             <LanguageSwitcher />
-            <Link href="/consult" className="btn-neon flex-1">
+            <Link href="/consult" className="btn-neon flex-1" onClick={() => setMobileOpen(false)}>
               {dict.actions.bookConsultation}
             </Link>
           </div>
