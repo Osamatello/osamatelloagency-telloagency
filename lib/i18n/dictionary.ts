@@ -56,6 +56,21 @@ export interface FaqItem {
   a: string;
 }
 
+export interface LegalSection {
+  heading: string;
+  body: string;
+}
+
+export interface LegalDoc {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  intro: string;
+  sections: LegalSection[];
+  updatedLabel: string;
+  updated: string;
+}
+
 export interface Dictionary {
   meta: { localeName: string; htmlLang: string };
   brand: { name: string; tagline: string };
@@ -85,8 +100,6 @@ export interface Dictionary {
     followTitle: string;
     legal: NavItem[];
     rights: string;
-    builtAs: string;
-    placeholder: string;
   };
   home: {
     hero: {
@@ -118,7 +131,6 @@ export interface Dictionary {
       name: string;
       role: string;
       message: string;
-      imageLabel: string;
       highlights: string[];
     };
     faqPreview: { eyebrow: string; title: string; subtitle: string; items: FaqItem[] };
@@ -246,6 +258,11 @@ export interface Dictionary {
     };
   };
   featuredLabel: string;
+  legal: {
+    privacy: LegalDoc;
+    terms: LegalDoc;
+    cookie: LegalDoc;
+  };
   components: {
     breadcrumbsHome: string;
     popularBadge: string;

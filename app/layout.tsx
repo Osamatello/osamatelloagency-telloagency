@@ -18,7 +18,7 @@ const cairo = Cairo({
   display: 'swap',
 });
 
-const siteUrl = 'https://telloagency.example';
+const siteUrl = 'https://telloagency.ai';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       name: 'Osama Tello',
       jobTitle: 'Founder and AI Automation Builder',
     },
-    email: 'hello@telloagency.example',
+    email: 'hello@telloagency.ai',
   };
 
   return (

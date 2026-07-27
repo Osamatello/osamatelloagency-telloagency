@@ -1,13 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { Logo } from './Logo';
 
 export function Footer() {
   const { dict } = useI18n();
   const year = new Date().getFullYear();
+
+  const socials = [
+    { Icon: Twitter, label: 'Twitter / X', href: 'https://twitter.com/telloagency' },
+    { Icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/telloagency' },
+  ];
 
   return (
     <footer className="relative border-t border-white/10 bg-[hsl(0_0%_3%)]">
@@ -20,19 +25,17 @@ export function Footer() {
               {dict.footer.description}
             </p>
             <div className="mt-5 flex items-center gap-3">
-              {[
-                { Icon: Twitter, label: 'Twitter' },
-                { Icon: Linkedin, label: 'LinkedIn' },
-                { Icon: Github, label: 'GitHub' },
-              ].map(({ Icon, label }) => (
-                <span
+              {socials.map(({ Icon, label, href }) => (
+                <a
                   key={label}
-                  aria-label={`${label} — ${dict.footer.placeholder}`}
-                  title={`${label} — ${dict.footer.placeholder}`}
-                  className="inline-flex h-9 w-9 cursor-default items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white/40"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white/70 transition-all hover:border-[hsl(var(--neon))/0.5] hover:text-[hsl(var(--neon))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))]"
                 >
                   <Icon className="h-4 w-4" />
-                </span>
+                </a>
               ))}
             </div>
           </div>
@@ -83,26 +86,26 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               <li className="flex items-center gap-2.5 text-sm text-white/60">
                 <Mail className="h-4 w-4 text-[hsl(var(--neon))]" />
-                <span>hello@telloagency.example</span>
+                <a href="mailto:hello@telloagency.ai" className="transition-colors hover:text-white">hello@telloagency.ai</a>
               </li>
               <li className="flex items-center gap-2.5 text-sm text-white/60">
                 <Phone className="h-4 w-4 text-[hsl(var(--neon))]" />
-                <span>+1 (000) 000-0000</span>
+                <a href="tel:+971589912345" className="transition-colors hover:text-white">+971 58 991 2345</a>
               </li>
               <li className="flex items-center gap-2.5 text-sm text-white/60">
                 <MapPin className="h-4 w-4 text-[hsl(var(--neon))]" />
-                <span>{dict.footer.placeholder}</span>
+                <span>Dubai, United Arab Emirates — serving clinics worldwide</span>
               </li>
             </ul>
             <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
               {dict.footer.legal.map((item) => (
-                <span
+                <Link
                   key={item.label}
-                  className="text-xs text-white/40"
-                  title={dict.footer.placeholder}
+                  href={item.href}
+                  className="text-xs text-white/50 transition-colors hover:text-white/80"
                 >
                   {item.label}
-                </span>
+                </Link>
               ))}
             </div>
           </div>
@@ -112,7 +115,6 @@ export function Footer() {
           <p className="text-xs text-white/50">
             © {year} {dict.brand.name}. {dict.footer.rights}
           </p>
-          <p className="text-xs text-white/40">{dict.footer.builtAs}</p>
         </div>
       </div>
     </footer>

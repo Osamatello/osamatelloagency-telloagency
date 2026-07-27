@@ -13,16 +13,19 @@ export function FounderCard({
 }) {
   return (
     <div className={cn('grid items-center gap-8 lg:grid-cols-5', className)}>
-      {/* Image placeholder — clearly labeled for replacement */}
+      {/* Founder portrait */}
       <div className="lg:col-span-2">
-        <div className="relative mx-auto aspect-[4/5] max-w-sm overflow-hidden rounded-2xl border border-dashed border-white/20 bg-[hsl(var(--card))]">
-          <div className="absolute inset-0 bg-dots opacity-40" aria-hidden="true" />
+        <div className="relative mx-auto aspect-[4/5] max-w-sm overflow-hidden rounded-2xl border border-white/15 bg-[hsl(var(--card))]">
+          <div className="absolute inset-0 bg-dots opacity-30" aria-hidden="true" />
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
-            <span className="inline-flex h-16 w-16 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/40">
+            <span className="inline-flex h-16 w-16 items-center justify-center rounded-full border border-[hsl(var(--neon))/0.3] bg-[hsl(var(--neon))/0.1] text-[hsl(var(--neon))]">
               <User className="h-8 w-8" />
             </span>
-            <p className="text-xs font-medium leading-relaxed text-white/45">
-              {founder.imageLabel}
+            <p className="text-sm font-semibold leading-relaxed text-white/60">
+              {founder.name}
+            </p>
+            <p className="text-xs leading-relaxed text-white/40">
+              {founder.role}
             </p>
           </div>
         </div>
