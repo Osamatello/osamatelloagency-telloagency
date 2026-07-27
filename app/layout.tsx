@@ -5,6 +5,7 @@ import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
 import { MobileStickyCTA } from '@/components/site/MobileStickyCTA';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <MobileStickyCTA />
           <div className="h-16 lg:hidden" aria-hidden="true" />
         </LanguageProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
