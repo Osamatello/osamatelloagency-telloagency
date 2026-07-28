@@ -42,7 +42,7 @@ export function ClinicSimulator() {
       aiMsg2: 'Perfect! You are scheduled for tomorrow at 2:00 PM. A calendar invite has been sent. See you then! Check details below.',
       typing: 'AI is typing...',
       calendarTitle: 'Clinic Schedule',
-      calendarDay: 'Tomorrow\'s Slots',
+      calendarDay: "Tomorrow's Slots",
       slot1: '10:00 AM - Dr. John (General Checkup)',
       slot2: '11:30 AM - Dr. Emily (Dental Filling)',
       slot3Available: '2:00 PM - Available Slot',
