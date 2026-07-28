@@ -64,7 +64,7 @@ const ar: Dictionary = {
       eyebrow: 'أدوات موثوقة',
       title: 'مبنية على أدوات نعرفها ونثق بها',
       subtitle: 'نربط المنصات التي تشغّل الأتمتة الحديثة والذكاء الاصطناعي وعلاقات العملاء.',
-      items: ['n8n', 'OpenAI', 'Vapi', 'ElevenLabs', 'Google', 'HubSpot'],
+      items: ['OpenAI', 'Claude', 'n8n', 'Google', 'Vapi', 'ElevenLabs', 'Deepgram', 'Perplexity', 'Make', 'Zapier'],
     },
     servicesOverview: {
       eyebrow: 'ماذا نقدم',
@@ -78,7 +78,7 @@ const ar: Dictionary = {
           tagline: 'أتمتة سير العمل والأدوات الداخلية',
           description:
             'نبني مساعدين بالذكاء الاصطناعي وأتمتة إدارة العلاقات وأنظمة المواعيد ولوحات تحكم مخصصة تتولى العمل المتكرر لعيادتك.',
-          href: '/services',
+          href: '/services/ai-automation',
           features: ['أتمتة سير العمل', 'مساعدون بالذكاء الاصطناعي', 'أتمتة إدارة العلاقات', 'لوحات تحكم مخصصة'],
         },
         {
@@ -87,7 +87,7 @@ const ar: Dictionary = {
           tagline: 'مواقع حديثة وسريعة تركز على التحويل',
           description:
             'نصمم ونبني مواقع العيادات وصفحات الهبوط التي تجذب العملاء وتبدو رائعة على كل جهاز.',
-          href: '/services',
+          href: '/services/website-development',
           features: ['مواقع الأعمال والعيادات', 'صفحات هبوط', 'تصميم متجاوب', 'نماذج جذب العملاء'],
         },
         {
@@ -96,7 +96,7 @@ const ar: Dictionary = {
           tagline: 'ابحث وأثرِ العملاء المؤهلين',
           description:
             'نبحث صناع القرار ونكتشف البريد ونُثرِي العملاء ونجهّز التواصل التلقائي ليبقى خط المعاملات ممتلئًا.',
-          href: '/services',
+          href: '/services/lead-generation',
           features: ['بحث العملاء', 'اكتشاف صناع القرار', 'اكتشاف البريد', 'تسليم لإدارة العلاقات'],
         },
       ],

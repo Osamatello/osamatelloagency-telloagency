@@ -64,29 +64,46 @@
   * {
     @apply border-border;
   }
+
   html {
     font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display), var(--font-inter), system-ui, -apple-system, sans-serif;
   }
+
   [dir='rtl'] {
     font-family: var(--font-cairo), 'Segoe UI', system-ui, sans-serif;
   }
-  [dir='rtl'] h1, [dir='rtl'] h2, [dir='rtl'] h3, [dir='rtl'] h4, [dir='rtl'] h5, [dir='rtl'] h6 {
+
+  [dir='rtl'] h1,
+  [dir='rtl'] h2,
+  [dir='rtl'] h3,
+  [dir='rtl'] h4,
+  [dir='rtl'] h5,
+  [dir='rtl'] h6 {
     font-family: var(--font-cairo), system-ui, sans-serif;
   }
+
   body {
     @apply bg-background text-foreground;
     background-color: hsl(var(--background));
   }
+
   ::selection {
     background-color: hsl(var(--neon) / 0.3);
     color: hsl(0 0% 100%);
   }
+
   :focus-visible {
     outline: 2px solid hsl(var(--neon));
     outline-offset: 2px;
@@ -98,9 +115,11 @@
   .container-tello {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
   }
+
   .text-neon {
     color: hsl(var(--neon));
   }
+
   .text-gradient {
     background-image: linear-gradient(to right, #fff, #fff, hsl(var(--neon)));
     -webkit-background-clip: text;
@@ -108,33 +127,43 @@
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
+
   .text-gradient-neon {
     @apply bg-gradient-to-r from-[hsl(var(--neon))] to-[hsl(173_58%_55%)] bg-clip-text text-transparent;
   }
+
   .text-glow {
     text-shadow: 0 0 22px hsl(var(--neon) / 0.45);
   }
+
   .glow-sm {
     box-shadow: 0 0 18px hsl(var(--neon) / 0.35);
   }
+
   .glow-md {
     box-shadow: 0 0 32px hsl(var(--neon) / 0.3);
   }
+
   .card-tello {
     @apply rounded-xl border border-[rgb(255_255_255/0.1)] bg-[hsl(var(--card))] transition-all duration-300;
   }
+
   .card-tello-hover {
     @apply hover:border-[hsl(var(--neon))/0.45] hover:bg-[hsl(var(--card))]/80;
   }
+
   .btn-neon {
     @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--neon))] px-5 py-3 text-sm font-semibold text-[hsl(150_80%_6%)] transition-all duration-300 hover:bg-[hsl(var(--neon))]/90 hover:shadow-[0_0_28px_hsl(var(--neon)/0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))] focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60;
   }
+
   .btn-ghost-tello {
     @apply inline-flex items-center justify-center gap-2 rounded-lg border border-[rgb(255_255_255/0.15)] bg-[rgb(255_255_255/0.05)] px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:border-[hsl(var(--neon))/0.6] hover:bg-[rgb(255_255_255/0.1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))] focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
+
   .eyebrow {
     @apply inline-flex items-center gap-2 rounded-full border border-[hsl(var(--neon))/0.3] bg-[hsl(var(--neon))/0.08] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[hsl(var(--neon))];
   }
+
   .link-underline {
     @apply relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[hsl(var(--neon))] after:transition-all after:duration-300 hover:after:w-full;
   }
@@ -147,6 +176,7 @@
       linear-gradient(to bottom, hsl(0 0% 100% / 0.04) 1px, transparent 1px);
     background-size: 56px 56px;
   }
+
   .bg-grid-animated {
     background-image:
       linear-gradient(to right, hsl(0 0% 100% / 0.04) 1px, transparent 1px),
@@ -154,59 +184,90 @@
     background-size: 56px 56px;
     animation: grid-shift 30s linear infinite;
   }
+
   .bg-dots {
     background-image: radial-gradient(hsl(0 0% 100% / 0.07) 1px, transparent 1px);
     background-size: 22px 22px;
   }
+
   .mask-fade-b {
     -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
   }
+
   .mask-fade-edges {
     -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
     mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   }
+
   .animate-fade-up {
     animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+
   .animate-fade-in {
     animation: fade-in 0.8s ease-out both;
   }
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
+
   .animate-pulse-glow {
     animation: pulse-glow 3.5s ease-in-out infinite;
-  }
-  .border-glow-neon {
-    box-shadow: inset 0 0 12px hsl(var(--neon) / 0.1), 0 0 20px hsl(var(--neon) / 0.05);
-    border-color: hsl(var(--neon) / 0.2);
   }
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(22px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
+
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
 }
+
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 18px hsl(var(--neon) / 0.25); }
-  50% { box-shadow: 0 0 38px hsl(var(--neon) / 0.5); }
-}
-@keyframes grid-shift {
-  from { background-position: 0 0; }
-  to { background-position: 56px 56px; }
+
+  0%,
+  100% {
+    box-shadow: 0 0 18px hsl(var(--neon) / 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 38px hsl(var(--neon) / 0.5);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

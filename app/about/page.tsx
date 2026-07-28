@@ -5,8 +5,9 @@ import { PageHero } from '@/components/site/PageHero';
 import { Breadcrumbs } from '@/components/site/Breadcrumbs';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { FeatureCard } from '@/components/site/FeatureCard';
-import { FounderCard } from '@/components/site/FounderCard';
+import { FounderPortrait } from '@/components/site/FounderPortrait';
 import { CTASection } from '@/components/site/CTASection';
+import { Check } from 'lucide-react';
 
 export default function AboutPage() {
   const { dict } = useI18n();
@@ -86,7 +87,24 @@ export default function AboutPage() {
             {about.founder.intro}
           </p>
           <div className="mt-12">
-            <FounderCard founder={about.founder} />
+            <div className="grid items-center gap-12 lg:grid-cols-2">
+              <div>
+                <h3 className="text-2xl font-bold text-white">{about.founder.name}</h3>
+                <p className="mt-1 text-sm font-semibold text-[hsl(var(--neon))]">{about.founder.role}</p>
+                <blockquote className="mt-5 border-s-2 border-[hsl(var(--neon))/0.5] ps-4 text-base leading-relaxed text-white/75">
+                  {about.founder.message}
+                </blockquote>
+                <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
+                  {about.founder.highlights.map((h) => (
+                    <li key={h} className="flex items-start gap-2.5 text-sm text-white/70">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[hsl(var(--neon))]" />
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <FounderPortrait founder={about.founder} />
+            </div>
           </div>
         </div>
       </section>

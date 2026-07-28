@@ -65,7 +65,7 @@ const en: Dictionary = {
       title: 'Built on tools we know and trust',
       subtitle:
         'We connect the platforms that power modern automation, AI, and customer relationships.',
-      items: ['n8n', 'OpenAI', 'Vapi', 'ElevenLabs', 'Google', 'HubSpot'],
+      items: ['OpenAI', 'Claude', 'n8n', 'Google', 'Vapi', 'ElevenLabs', 'Deepgram', 'Perplexity', 'Make', 'Zapier'],
     },
     servicesOverview: {
       eyebrow: 'What We Do',
@@ -79,7 +79,7 @@ const en: Dictionary = {
           tagline: 'Workflow automation and internal tools',
           description:
             'We build AI assistants, CRM automation, appointment workflows, and custom dashboards that handle repetitive work for your clinic.',
-          href: '/services',
+          href: '/services/ai-automation',
           features: ['Workflow automation', 'AI assistants', 'CRM automation', 'Custom dashboards'],
         },
         {
@@ -88,7 +88,7 @@ const en: Dictionary = {
           tagline: 'Modern, fast, conversion-focused sites',
           description:
             'We design and build clinic websites and landing pages that capture leads and look great on every device.',
-          href: '/services',
+          href: '/services/website-development',
           features: ['Business & clinic websites', 'Landing pages', 'Responsive design', 'Lead capture forms'],
         },
         {
@@ -97,7 +97,7 @@ const en: Dictionary = {
           tagline: 'Find and enrich qualified leads',
           description:
             'We research decision-makers, discover emails, enrich leads, and prepare automated outreach so your pipeline stays full.',
-          href: '/services',
+          href: '/services/lead-generation',
           features: ['Lead research', 'Decision-maker discovery', 'Email discovery', 'CRM delivery'],
         },
       ],

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { MagneticText } from '@/components/site/MagneticText';
 
 interface CTASectionProps {
   eyebrow: string;
@@ -39,13 +40,17 @@ export function CTASection({
               {subtitle}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href={primaryHref} className="btn-neon w-full sm:w-auto">
-                {primaryCta}
-              </Link>
-              {secondaryCta ? (
-                <Link href={secondaryHref} className="btn-ghost-tello w-full sm:w-auto">
-                  {secondaryCta}
+              <MagneticText as="span" strength={0.2} className="w-full sm:w-auto">
+                <Link href={primaryHref} className="btn-neon w-full sm:w-auto">
+                  {primaryCta}
                 </Link>
+              </MagneticText>
+              {secondaryCta ? (
+                <MagneticText as="span" strength={0.2} className="w-full sm:w-auto">
+                  <Link href={secondaryHref} className="btn-ghost-tello w-full sm:w-auto">
+                    {secondaryCta}
+                  </Link>
+                </MagneticText>
               ) : null}
             </div>
           </div>
