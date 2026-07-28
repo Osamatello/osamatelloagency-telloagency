@@ -1,4 +1,6 @@
 import './globals.css';
+
+import GlobalSparklesBackground from '@/components/site/GlobalSparklesBackground';
 import type { Metadata } from 'next';
 import { Inter, Cairo } from 'next/font/google';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
@@ -47,7 +49,14 @@ export const metadata: Metadata = {
     title: 'TELLO — AI Automation for Modern Clinics',
     description:
       'TELLO builds AI automation systems, business software, websites, and lead generation workflows for modern clinics.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'TELLO — AI Automation for Modern Clinics' }],
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'TELLO — AI Automation for Modern Clinics',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -56,11 +65,20 @@ export const metadata: Metadata = {
       'TELLO builds AI automation systems, business software, websites, and lead generation workflows for modern clinics.',
     images: ['/og.png'],
   },
-  robots: { index: true, follow: true },
-  icons: { icon: '/favicon.ico' },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -79,18 +97,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <body className={`${inter.variable} ${cairo.variable} font-sans`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
-        <LanguageProvider>
-          <Header />
-          <main className="min-h-screen pt-16 lg:pt-[72px]">{children}</main>
-          <Footer />
-          <MobileStickyCTA />
-          <div className="h-16 lg:hidden" aria-hidden="true" />
-        </LanguageProvider>
-        <SpeedInsights />
+        <GlobalSparklesBackground />
+
+        <div className="relative z-10">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(organizationSchema),
+            }}
+          />
+
+          <LanguageProvider>
+            <Header />
+
+            <main className="min-h-screen pt-16 lg:pt-[72px]">
+              {children}
+            </main>
+
+            <Footer />
+            <MobileStickyCTA />
+
+            <div className="h-16 lg:hidden" aria-hidden="true" />
+          </LanguageProvider>
+
+          <SpeedInsights />
+        </div>
       </body>
     </html>
   );
