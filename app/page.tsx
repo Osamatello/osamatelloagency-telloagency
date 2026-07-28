@@ -10,7 +10,9 @@ import { WorkflowSteps } from '@/components/site/WorkflowSteps';
 import { FounderCard } from '@/components/site/FounderCard';
 import { FAQAccordion } from '@/components/site/FAQAccordion';
 import { CTASection } from '@/components/site/CTASection';
-import { ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Sparkles as SparklesIcon } from 'lucide-react';
+import { SparklesField } from '@/components/site/SparklesField';
+import { MagneticText } from '@/components/site/MagneticText';
 
 export default function HomePage() {
   const { dict, dir } = useI18n();
@@ -29,36 +31,43 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-grid mask-fade-b opacity-50" aria-hidden="true" />
         <div className="absolute inset-x-0 top-0 h-[600px] bg-tello-radial" aria-hidden="true" />
-        <div className="absolute left-1/2 top-24 h-72 w-72 -translate-x-1/2 rounded-full bg-[hsl(var(--neon))/0.15] blur-[120px]" aria-hidden="true" />
+        <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-[hsl(var(--neon))/0.2] blur-[140px]" aria-hidden="true" />
+        <SparklesField className="absolute left-1/2 top-1/2 h-[420px] w-[760px] max-w-[92vw] -translate-x-1/2 -translate-y-[42%]" density={1200} />
 
         <div className="container-tello relative">
           <div className="mx-auto max-w-4xl py-20 text-center sm:py-28 lg:py-32">
             <span className="eyebrow animate-fade-up">
-              <Sparkles className="h-3.5 w-3.5" />
+              <SparklesIcon className="h-3.5 w-3.5" />
               {home.hero.eyebrow}
             </span>
             <h1 className="mt-6 animate-fade-up text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl" style={{ animationDelay: '60ms' }}>
-              {home.hero.title}{' '}
+              <span className="text-gradient-neon text-glow">Automate</span> Your Clinic. Find More Patients.{' '}
               <span className="text-gradient-neon text-glow">{home.hero.titleAccent}</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl animate-fade-up text-lg leading-relaxed text-white/65" style={{ animationDelay: '120ms' }}>
               {home.hero.subtitle}
             </p>
             <div className="mt-9 flex animate-fade-up flex-col items-center justify-center gap-3 sm:flex-row" style={{ animationDelay: '180ms' }}>
-              <Link href="/consult" className="btn-neon w-full sm:w-auto">
-                {home.hero.primaryCta}
-                <Arrow className="h-4 w-4" />
-              </Link>
-              <Link href="/services" className="btn-ghost-tello w-full sm:w-auto">
-                {home.hero.secondaryCta}
-              </Link>
+              <MagneticText as="span" strength={0.2} className="w-full sm:w-auto">
+                <Link href="/consult" className="btn-neon w-full sm:w-auto">
+                  {home.hero.primaryCta}
+                  <Arrow className="h-4 w-4" />
+                </Link>
+              </MagneticText>
+              <MagneticText as="span" strength={0.2} className="w-full sm:w-auto">
+                <Link href="/services" className="btn-ghost-tello w-full sm:w-auto">
+                  {home.hero.secondaryCta}
+                </Link>
+              </MagneticText>
             </div>
 
             {/* Stats */}
             <div className="mx-auto mt-16 grid max-w-2xl animate-fade-in grid-cols-3 gap-4" style={{ animationDelay: '300ms' }}>
               {stats.map((s) => (
                 <div key={s.label} className="text-center">
-                  <div className="text-2xl font-bold text-[hsl(var(--neon))] sm:text-3xl">{s.value}</div>
+                  <MagneticText as="div" strength={0.25} className="text-2xl font-bold text-[hsl(var(--neon))] sm:text-3xl">
+                    {s.value}
+                  </MagneticText>
                   <div className="mt-1 text-xs text-white/55 sm:text-sm">{s.label}</div>
                 </div>
               ))}

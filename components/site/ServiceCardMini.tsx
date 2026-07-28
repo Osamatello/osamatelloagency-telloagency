@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { getIcon, ArrowRight, ArrowLeft } from '@/lib/icons';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { Check } from 'lucide-react';
+import { MagneticText } from '@/components/site/MagneticText';
 import type { ServiceCardData } from '@/lib/i18n/dictionary';
 
 export function ServiceCardMini({
@@ -35,7 +36,11 @@ export function ServiceCardMini({
       <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-[hsl(var(--neon))/0.3] bg-[hsl(var(--neon))/0.1] text-[hsl(var(--neon))] transition-all duration-300 group-hover:border-[hsl(var(--neon))] group-hover:shadow-[0_0_22px_hsl(var(--neon)/0.45)]">
         <Icon className="h-6 w-6" />
       </div>
-      <h3 className="mt-5 text-xl font-bold text-white">{service.title}</h3>
+      <h3 className="mt-5 text-xl font-bold text-white">
+        <MagneticText as="span" strength={0.08}>
+          {service.title}
+        </MagneticText>
+      </h3>
       <p className="mt-1 text-sm font-medium text-[hsl(var(--neon))]">{service.tagline}</p>
       <p className="mt-3 text-sm leading-relaxed text-white/60">{service.description}</p>
       <ul className="mt-5 space-y-2.5">
