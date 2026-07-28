@@ -75,9 +75,10 @@ export function ClinicSimulator() {
     <div className="relative mx-auto w-full max-w-[540px] lg:max-w-none">
       {/* Decorative ambient glowing grids behind */}
       <div className="absolute -inset-4 rounded-3xl bg-[hsl(var(--neon))/0.05] blur-2xl" aria-hidden="true" />
-      
-      {/* 1. Desktop Calendar Grid Mockup (Base Layer) */}
-      <div className="card-tello overflow-hidden border-white/5 bg-slate-950/60 p-5 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:border-[hsl(var(--neon))/0.2]">
+
+      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-5">
+      {/* 1. Desktop Calendar Grid Mockup */}
+      <div className="card-tello w-full overflow-hidden border-white/5 bg-slate-950/60 p-5 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:border-[hsl(var(--neon))/0.2] lg:flex-1">
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2.5">
             <div className="rounded-lg bg-[hsl(var(--neon))/0.1] p-2 text-[hsl(var(--neon))]">
@@ -132,11 +133,10 @@ export function ClinicSimulator() {
         )}
       </div>
 
-      {/* 2. Chat phone UI (Floating Overlap Layer) */}
+      {/* 2. Chat phone UI */}
       <div 
         className={cn(
-          "absolute top-12 max-w-[280px] xs:max-w-[320px] w-full card-tello border-white/10 bg-black/90 shadow-3xl hover:border-[hsl(var(--neon))/0.3] overflow-hidden transition-all duration-300",
-          isRtl ? "left-4 xs:left-8" : "right-4 xs:right-8"
+          "w-full max-w-[320px] mx-auto lg:max-w-[280px] lg:mx-0 lg:mt-6 card-tello border-white/10 bg-black/90 shadow-3xl hover:border-[hsl(var(--neon))/0.3] overflow-hidden transition-all duration-300"
         )}
       >
         {/* Phone header screen */}
@@ -201,6 +201,7 @@ export function ClinicSimulator() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );
