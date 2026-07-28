@@ -59,12 +59,10 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                'relative px-3 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))]',
+                'rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))]',
                 isActive(item.href)
-                  ? 'text-[hsl(var(--neon))]'
-                  : 'text-white/70 hover:text-white',
-                'after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-[hsl(var(--neon))] after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100',
-                isActive(item.href) && 'after:scale-x-100'
+                  ? 'text-white'
+                  : 'text-white/70 hover:text-white'
               )}
             >
               {item.label}
