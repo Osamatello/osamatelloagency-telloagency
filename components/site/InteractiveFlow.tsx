@@ -3,7 +3,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
-import { MousePointerClick, UserPlus, Database, MessageSquareCheck, Star, ArrowRight, ArrowLeft } from 'lucide-react';
+import { MousePointerClick, UserPlus, Database, MessageSquare, Star, ArrowRight, ArrowLeft } from 'lucide-react';
 import type { StepItem } from '@/lib/i18n/dictionary';
 
 export function InteractiveFlow({
@@ -26,7 +26,7 @@ export function InteractiveFlow({
       case 2:
         return <Database className="h-5 w-5" />;
       case 3:
-        return <MessageSquareCheck className="h-5 w-5" />;
+        return <MessageSquare className="h-5 w-5" />;
       case 4:
         return <Star className="h-5 w-5" />;
       default:
