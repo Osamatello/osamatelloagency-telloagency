@@ -17,11 +17,14 @@ export function PricingCard({
   return (
     <div
       className={cn(
-        'card-tello relative flex flex-col p-7',
-        plan.popular && 'border-[hsl(var(--neon))/0.5] bg-[hsl(var(--card))] shadow-[0_0_30px_hsl(var(--neon)/0.15)]',
+        'card-tello relative flex flex-col p-7 card-tello-hover',
+        plan.popular && 'border-[hsl(var(--neon))/0.5] bg-[hsl(var(--card))] shadow-[0_0_30px_hsl(var(--neon)/0.15)] hover:border-[hsl(var(--neon))]',
         className
       )}
     >
+      {plan.popular && (
+        <span className="absolute -top-px left-7 right-7 h-px bg-gradient-to-r from-transparent via-[hsl(var(--neon))] to-transparent" />
+      )}
       {plan.popular && (
         <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-[hsl(var(--neon))] px-3 py-1 text-xs font-bold text-[hsl(150_80%_6%)]">
           <Star className="h-3 w-3 fill-current" />
