@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Sparkle {
   x: number;
@@ -22,7 +23,7 @@ interface SparklesFieldProps {
 export function SparklesField({
   className = '',
   density = 1200,
-  color = 'hsl(var(--neon))',
+  color,
 }: SparklesFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -36,6 +37,12 @@ export function SparklesField({
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    // Canvas cannot resolve CSS custom properties, so read the computed value.
+    const neonVar = getComputedStyle(document.documentElement)
+      .getPropertyValue('--neon')
+      .trim();
+    const resolvedColor = color || (neonVar ? `hsl(${neonVar})` : '#22c55e');
 
     let sparkles: Sparkle[] = [];
     let animationId = 0;
@@ -79,10 +86,10 @@ export function SparklesField({
 
         const alpha = s.baseAlpha * (0.4 + 0.6 * Math.sin(s.twinkle));
         ctx.beginPath();
-        ctx.fillStyle = color;
+        ctx.fillStyle = resolvedColor;
         ctx.globalAlpha = alpha;
         ctx.shadowBlur = 8;
-        ctx.shadowColor = color;
+        ctx.shadowColor = resolvedColor;
         ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -104,7 +111,7 @@ export function SparklesField({
   return (
     <canvas
       ref={canvasRef}
-      className={className}
+      className={cn('pointer-events-none', className)}
       aria-hidden="true"
     />
   );
