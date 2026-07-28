@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter, Cairo, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter, Cairo } from 'next/font/google';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
@@ -16,12 +16,6 @@ const inter = Inter({
 const cairo = Cairo({
   subsets: ['arabic', 'latin'],
   variable: '--font-cairo',
-  display: 'swap',
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-display',
   display: 'swap',
 });
 
@@ -84,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <body className={`${inter.variable} ${cairo.variable} ${plusJakartaSans.variable} font-sans`}>
+      <body className={`${inter.variable} ${cairo.variable} font-sans`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
