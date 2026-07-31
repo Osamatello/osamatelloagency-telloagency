@@ -75,9 +75,10 @@ export function ClinicSimulator() {
     <div className="relative mx-auto w-full max-w-[540px] lg:max-w-none">
       {/* Decorative ambient glowing grids behind */}
       <div className="absolute -inset-4 rounded-3xl bg-[hsl(var(--neon))/0.05] blur-2xl" aria-hidden="true" />
-      
-      {/* 1. Desktop Calendar Grid Mockup (Base Layer) */}
-      <div className="card-tello overflow-hidden border-white/5 bg-slate-950/60 p-5 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:border-[hsl(var(--neon))/0.2]">
+
+      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-7">
+      {/* 1. Desktop Calendar Grid Mockup */}
+      <div className="card-tello w-full overflow-hidden border-white/5 bg-slate-950/60 p-5 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:border-[hsl(var(--neon))/0.2] lg:flex-1">
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-2.5">
             <div className="rounded-lg bg-[hsl(var(--neon))/0.1] p-2 text-[hsl(var(--neon))]">
@@ -132,11 +133,10 @@ export function ClinicSimulator() {
         )}
       </div>
 
-      {/* 2. Chat phone UI (Floating Overlap Layer) */}
+      {/* 2. Chat phone UI */}
       <div 
         className={cn(
-          "absolute top-12 max-w-[280px] xs:max-w-[320px] w-full card-tello border-white/10 bg-black/90 shadow-3xl hover:border-[hsl(var(--neon))/0.3] overflow-hidden transition-all duration-300",
-          isRtl ? "left-4 xs:left-8" : "right-4 xs:right-8"
+          "w-full max-w-[320px] mx-auto lg:w-auto lg:max-w-none lg:mx-0 lg:mt-6 lg:flex-[1.8_1.8_0%] card-tello border-white/10 bg-black/90 shadow-3xl hover:border-[hsl(var(--neon))/0.3] overflow-hidden transition-all duration-300"
         )}
       >
         {/* Phone header screen */}
@@ -154,9 +154,9 @@ export function ClinicSimulator() {
         </div>
 
         {/* Chat message bubbles */}
-        <div className="p-3 space-y-3 min-h-[220px] flex flex-col justify-end">
+        <div className="p-3 space-y-3.5 min-h-[250px] flex flex-col justify-end">
           {/* Patient Message 1 */}
-          <div className="max-w-[85%] rounded-2xl px-3 py-2 text-xs leading-normal animate-fade-in bg-zinc-800 text-white self-end rounded-br-none">
+          <div className="max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-normal animate-fade-in bg-zinc-800 text-white self-end rounded-br-none">
             {t.patientMsg1}
           </div>
 
@@ -172,14 +172,14 @@ export function ClinicSimulator() {
 
           {/* AI Response 1 */}
           {step >= 2 && (
-            <div className="max-w-[85%] rounded-2xl px-3 py-2 text-xs leading-normal bg-[hsl(var(--neon))/0.1] border border-[hsl(var(--neon))/0.25] text-white self-start rounded-bl-none animate-fade-in">
+            <div className="max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-normal bg-[hsl(var(--neon))/0.1] border border-[hsl(var(--neon))/0.25] text-white self-start rounded-bl-none animate-fade-in">
               {t.aiMsg1}
             </div>
           )}
 
           {/* Patient response bubble */}
           {step >= 3 && (
-            <div className="max-w-[85%] rounded-2xl px-3 py-2 text-xs leading-normal bg-zinc-800 text-white self-end rounded-br-none animate-fade-in">
+            <div className="max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-normal bg-zinc-800 text-white self-end rounded-br-none animate-fade-in">
               {t.patientMsg2}
             </div>
           )}
@@ -196,11 +196,12 @@ export function ClinicSimulator() {
 
           {/* AI Response 2 */}
           {step >= 5 && (
-            <div className="max-w-[85%] rounded-2xl px-3 py-2 text-xs leading-normal bg-[hsl(var(--neon))/0.1] border border-[hsl(var(--neon))/0.25] text-white self-start rounded-bl-none animate-fade-in">
+            <div className="max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-normal bg-[hsl(var(--neon))/0.1] border border-[hsl(var(--neon))/0.25] text-white self-start rounded-bl-none animate-fade-in">
               {t.aiMsg2}
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );
