@@ -22,7 +22,8 @@ const cairo = Cairo({
   display: 'swap',
 });
 
-const siteUrl = 'https://telloagency.ai';
+const siteUrl =
+  'https://osamatelloagency-telloagency.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -52,10 +53,10 @@ export const metadata: Metadata = {
       'TELLO builds AI automation systems, business software, websites, and lead generation workflows for modern clinics.',
     images: [
       {
-        url: '/og.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'TELLO — AI Automation for Modern Clinics',
+        alt: 'TELLO AI Automation Agency',
       },
     ],
   },
