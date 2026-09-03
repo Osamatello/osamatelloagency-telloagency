@@ -2,17 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===========================================================================
+   DAMASAVERO — AI Automation & Business Systems
+   Design system tokens.
+
+   Brand (colour, wordmark, corporate character) comes from the DAMASAVERO
+   business-card / signature identity:
+     • warm off-white ground
+     • near-black charcoal type with a faint green undertone
+     • deep, muted FOREST GREEN accent  — not teal / cyan / mint / turquoise
+     • soft warm-grey for secondary text and hairlines
+
+   Layout, typography, motion and composition take their cues from a
+   high-craft studio reference (Cowlvane) — not its colours or content.
+
+   Migration note: the site still renders unconverted sections on the legacy
+   dark semantic tokens (kept below). Milestones 3–5 move each surface onto
+   the light `--ds-*` / `--brand` tokens; Milestone 6 removes the dark fallback.
+=========================================================================== */
+
 @layer base {
   :root {
-    /* TELLO premium dark palette — always dark */
+    /* ---- DAMASAVERO light identity ------------------------------------- */
+    --ds-paper: 44 24% 98%;          /* page ground — warm off-white */
+    --ds-paper-raised: 0 0% 100%;    /* raised surfaces */
+    --ds-paper-sunken: 42 16% 95%;   /* alternating sections */
+
+    --ds-ink: 156 14% 13%;           /* primary text — charcoal, green undertone */
+    --ds-ink-muted: 150 6% 40%;      /* secondary text */
+    --ds-ink-faint: 145 5% 54%;      /* captions / micro-labels */
+    --ds-ink-inverse: 44 24% 97%;    /* text on dark / forest surfaces */
+
+    --ds-line: 42 13% 87%;           /* hairline borders */
+    --ds-line-strong: 40 10% 78%;    /* emphasised dividers */
+
+    /* Deep forest-green accent */
+    --brand: 136 27% 25%;
+    --brand-soft: 134 20% 38%;
+    --brand-strong: 138 32% 17%;
+    --brand-foreground: 44 24% 97%;
+
+    /* ---- Legacy semantic tokens (dark) — do not build new sections here */
     --background: 0 0% 4%;
     --foreground: 0 0% 98%;
     --card: 0 0% 6%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
-    --primary: 142 77% 53%;
-    --primary-foreground: 150 80% 6%;
+    --primary: 136 27% 30%;
+    --primary-foreground: 44 24% 97%;
     --secondary: 0 0% 11%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 10%;
@@ -23,18 +61,18 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 15%;
     --input: 0 0% 16%;
-    --ring: 142 77% 53%;
-    --chart-1: 142 77% 53%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 40%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 340 75% 60%;
-    --radius: 0.75rem;
+    --ring: 136 24% 34%;
+    --chart-1: 136 27% 34%;
+    --chart-2: 150 20% 40%;
+    --chart-3: 197 20% 42%;
+    --chart-4: 43 40% 60%;
+    --chart-5: 12 40% 55%;
+    --radius: 0.5rem;
 
-    /* TELLO neon green scale */
-    --neon: 142 77% 53%;
-    --neon-soft: 142 70% 45%;
-    --neon-dim: 142 60% 35%;
+    /* Legacy alias — `--neon*` now carries the DAMASAVERO forest green. */
+    --neon: 136 24% 34%;
+    --neon-soft: 134 20% 42%;
+    --neon-dim: 138 32% 20%;
   }
 
   .dark {
@@ -44,8 +82,8 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
-    --primary: 142 77% 53%;
-    --primary-foreground: 150 80% 6%;
+    --primary: 136 27% 32%;
+    --primary-foreground: 44 24% 97%;
     --secondary: 0 0% 11%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 10%;
@@ -56,7 +94,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 15%;
     --input: 0 0% 16%;
-    --ring: 142 77% 53%;
+    --ring: 136 24% 36%;
   }
 }
 
@@ -65,7 +103,7 @@
     @apply border-border;
   }
   html {
-    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -78,71 +116,202 @@
     background-color: hsl(var(--background));
   }
   ::selection {
-    background-color: hsl(var(--neon) / 0.3);
-    color: hsl(0 0% 100%);
+    background-color: hsl(var(--brand) / 0.16);
+    color: inherit;
   }
   :focus-visible {
-    outline: 2px solid hsl(var(--neon));
+    outline: 2px solid hsl(var(--brand));
     outline-offset: 2px;
     border-radius: 2px;
   }
 }
 
+/* ===========================================================================
+   COMPONENT UTILITIES
+=========================================================================== */
+
 @layer components {
+  /* ---- Layout ---------------------------------------------------------- */
   .container-tello {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
   }
-  .text-neon {
-    color: hsl(var(--neon));
+  /* DAMASAVERO: wide gutters, generous negative space. */
+  .container-page {
+    @apply mx-auto w-full max-w-[86rem] px-6 sm:px-10 lg:px-16;
   }
-  .text-gradient {
-    background-image: linear-gradient(to right, #fff, #fff, hsl(var(--neon)));
+
+  /* ---- Editorial display type --------------------------------------------
+     Space Grotesk medium, tight negative tracking, sub-1 leading.
+     Arabic never gets negative tracking — reset for RTL. */
+  .text-display {
+    font-family: var(--font-display), var(--font-sans), ui-sans-serif, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+  }
+  [dir='rtl'] .text-display {
+    font-family: var(--font-cairo), 'Segoe UI', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.16;
+  }
+
+  /* ---- Micro-label (structural eyebrow) ------------------------------- */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-ink-faint;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply h-px w-8 shrink-0 bg-[hsl(var(--brand))];
+  }
+
+  /* ---- Pills -------------------------------------------------------------- */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[hsl(var(--brand))] px-6 py-3.5 text-sm font-medium text-[hsl(var(--brand-foreground))] transition-colors duration-200 hover:bg-[hsl(var(--brand-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-[hsl(var(--ds-line-strong))] bg-transparent px-6 py-3.5 text-sm font-medium text-[hsl(var(--ds-ink))] transition-colors duration-200 hover:border-[hsl(var(--ds-ink))] hover:bg-[hsl(var(--ds-ink)/0.04)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2;
+  }
+
+  /* ---- Legacy button aliases (glow removed) --------------------------- */
+  .btn-neon {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[hsl(var(--brand))] px-6 py-3.5 text-sm font-medium text-[hsl(var(--brand-foreground))] transition-colors duration-200 hover:bg-[hsl(var(--brand-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn-ghost-tello {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-[rgb(255_255_255/0.18)] bg-[rgb(255_255_255/0.04)] px-6 py-3.5 text-sm font-medium text-white transition-colors duration-200 hover:border-[rgb(255_255_255/0.4)] hover:bg-[rgb(255_255_255/0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  /* ---- Surfaces ------------------------------------------------------- */
+  .card-paper {
+    @apply rounded-lg border border-[hsl(var(--ds-line))] bg-[hsl(var(--ds-paper-raised))] transition-shadow duration-200;
+  }
+  .hairline {
+    @apply border-[hsl(var(--ds-line))];
+  }
+  .card-tello {
+    @apply rounded-lg border border-[rgb(255_255_255/0.1)] bg-[hsl(var(--card))] transition-colors duration-200;
+  }
+  .card-tello-hover {
+    @apply hover:border-[hsl(var(--brand))/0.45];
+  }
+
+  /* ---- Type helpers ---------------------------------------------------- */
+  .text-neon {
+    color: hsl(var(--brand));
+  }
+  .text-gradient,
+  .text-gradient-neon {
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--foreground)),
+      hsl(var(--brand-soft))
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
-  .text-gradient-neon {
-    @apply bg-gradient-to-r from-[hsl(var(--neon))] to-[hsl(173_58%_55%)] bg-clip-text text-transparent;
-  }
-  .text-glow {
-    text-shadow: 0 0 22px hsl(var(--neon) / 0.45);
-  }
-  .glow-sm {
-    box-shadow: 0 0 18px hsl(var(--neon) / 0.35);
-  }
+  .text-glow,
+  .glow-sm,
   .glow-md {
-    box-shadow: 0 0 32px hsl(var(--neon) / 0.3);
-  }
-  .card-tello {
-    @apply rounded-xl border border-[rgb(255_255_255/0.1)] bg-[hsl(var(--card))] transition-all duration-300;
-  }
-  .card-tello-hover {
-    @apply hover:border-[hsl(var(--neon))/0.45] hover:bg-[hsl(var(--card))]/80;
-  }
-  .btn-neon {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-[hsl(var(--neon))] px-5 py-3 text-sm font-semibold text-[hsl(150_80%_6%)] transition-all duration-300 hover:bg-[hsl(var(--neon))]/90 hover:shadow-[0_0_28px_hsl(var(--neon)/0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))] focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-60;
-  }
-  .btn-ghost-tello {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-[rgb(255_255_255/0.15)] bg-[rgb(255_255_255/0.05)] px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:border-[hsl(var(--neon))/0.6] hover:bg-[rgb(255_255_255/0.1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--neon))] focus-visible:ring-offset-2 focus-visible:ring-offset-background;
-  }
-  .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border border-[hsl(var(--neon))/0.3] bg-[hsl(var(--neon))/0.08] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[hsl(var(--neon))];
+    text-shadow: none;
+    box-shadow: none;
   }
   .link-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[hsl(var(--neon))] after:transition-all after:duration-300 hover:after:w-full;
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-[hsl(var(--brand))] after:transition-all after:duration-300 hover:after:w-full;
   }
 }
+
+/* ===========================================================================
+   MOTION — entrance choreography & reveals
+   Toggled by adding `.is-in`. Stagger via inline `transition-delay`.
+=========================================================================== */
+
+@layer utilities {
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  .reveal-line > * {
+    display: inline-block;
+    clip-path: inset(-0.1em -0.15em 1.1em -0.15em);
+    transform: translateY(0.5em);
+    opacity: 0;
+  }
+  .reveal-fade {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-up {
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-up.is-in {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-line > * {
+      transition: clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.5s ease;
+    }
+    .reveal-line.is-in > * {
+      clip-path: inset(-0.1em -0.15em -0.15em -0.15em);
+      transform: none;
+      opacity: 1;
+    }
+    .reveal-fade {
+      transition: opacity 0.9s ease;
+    }
+    .reveal-fade.is-in {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-up,
+    .reveal-line > *,
+    .reveal-fade {
+      opacity: 1 !important;
+      transform: none !important;
+      clip-path: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* No-JS safety: the `.is-in` toggle never fires, so show everything. */
+  @media (scripting: none) {
+    .reveal-up,
+    .reveal-line > *,
+    .reveal-fade {
+      opacity: 1 !important;
+      transform: none !important;
+      clip-path: none !important;
+    }
+  }
+}
+
+/* ===========================================================================
+   PLAIN UTILITIES (legacy, retained for unconverted sections)
+=========================================================================== */
 
 @layer utilities {
   .bg-grid {
     background-image:
-      linear-gradient(to right, hsl(0 0% 100% / 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(0 0% 100% / 0.04) 1px, transparent 1px);
+      linear-gradient(to right, hsl(var(--ds-ink) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--ds-ink) / 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
   }
+  .bg-grid-animated {
+    background-image:
+      linear-gradient(to right, hsl(var(--ds-ink) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--ds-ink) / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    animation: grid-shift 14s linear infinite;
+  }
   .bg-dots {
-    background-image: radial-gradient(hsl(0 0% 100% / 0.07) 1px, transparent 1px);
+    background-image: radial-gradient(hsl(var(--ds-ink) / 0.06) 1px, transparent 1px);
     background-size: 22px 22px;
   }
   .mask-fade-b {
@@ -162,11 +331,9 @@
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-  .animate-pulse-glow {
-    animation: pulse-glow 3.5s ease-in-out infinite;
-  }
-  .animate-aurora {
-    animation: aurora 18s ease-in-out infinite alternate;
+  .animate-fade-up-stagger > * {
+    opacity: 0;
+    animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .animate-flow-dash {
     stroke-dasharray: 6 6;
@@ -176,34 +343,130 @@
     background-size: 200% 100%;
     animation: shimmer 3s linear infinite;
   }
-  .animate-fade-up-stagger > * {
-    opacity: 0;
-    animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
   .hover-lift {
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
   }
   .hover-lift:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
+  }
+  .animate-pulse-glow,
+  .animate-aurora {
+    animation: none;
   }
   .border-glow {
     position: relative;
   }
   .border-glow::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--neon) / 0.5), transparent 40%, transparent 60%, hsl(var(--neon) / 0.3));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.35s ease;
+    content: none;
   }
-  .border-glow:hover::before {
-    opacity: 1;
+}
+
+/* ===========================================================================
+   HERO AUTOMATION ENVIRONMENT
+   Plain CSS (not a Tailwind @layer) so the dynamically-composed class names
+   (`sig-0/1/2`, `drift-a/b/c`) are never tree-shaken.
+   Operational signals as spatial typography behind the headline — charcoal /
+   forest at 5–26% opacity, never legible enough to compete with the H1.
+=========================================================================== */
+.hero-signal {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: hsl(var(--ds-ink));
+  opacity: 0.16;
+}
+[dir='rtl'] .hero-signal {
+  letter-spacing: 0.06em;
+  font-family: var(--font-cairo), 'Segoe UI', system-ui, sans-serif;
+}
+/* depth-graded pulse: far = smaller & fainter, near = larger & stronger */
+.sig-0 {
+  font-size: 0.64rem;
+  animation: signal-fire-far 11s ease-in-out infinite;
+}
+.sig-1 {
+  font-size: 0.74rem;
+  animation: signal-fire-mid 9s ease-in-out infinite;
+}
+.sig-2 {
+  font-size: 0.9rem;
+  animation: signal-fire-near 8s ease-in-out infinite;
+}
+.drift-a { animation: drift-a 46s ease-in-out infinite; }
+.drift-b { animation: drift-b 58s ease-in-out infinite; }
+.drift-c { animation: drift-c 71s ease-in-out infinite; }
+.flow-line {
+  stroke-dasharray: 2 13;
+  animation: flow-dash-slow 12s linear infinite;
+}
+.mta-manual {
+  text-decoration: line-through;
+  animation: mta-a 7s ease-in-out infinite;
+}
+.mta-auto {
+  animation: mta-b 7s ease-in-out infinite;
+}
+
+/* Calmer environment on small screens */
+@media (max-width: 767px) {
+  .hero-signal { font-size: 0.58rem; letter-spacing: 0.18em; }
+  .sig-1 { animation-name: signal-fire-far; }
+  .sig-2 { animation-name: signal-fire-mid; font-size: 0.68rem; }
+  .hero-env-flow { opacity: 0.55; }
+}
+
+/* ===========================================================================
+   INTEGRATION MARQUEE  (homepage "Integrations" section)
+   Plain CSS so the classes survive Tailwind's purge regardless.
+=========================================================================== */
+@keyframes marquee-l {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-33.333%, 0, 0); }
+}
+.marquee-l { animation: marquee-l 46s linear infinite; }
+.marquee-r { animation: marquee-l 54s linear infinite reverse; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-l,
+  .marquee-r {
+    animation: none !important;
+    transform: none !important;
+    flex-wrap: wrap;
+    width: 100%;
+    row-gap: 0.75rem;
+  }
+}
+
+/* ===========================================================================
+   AUTOMATION NETWORK  — shared layer behind every homepage section
+   (<AutomationNetwork variant="…" />). Neutral hairlines + a faint travelling
+   forest "flow" dash. Always behind content; mobile-reduced; RTL-mirrored.
+=========================================================================== */
+.auto-net {
+  z-index: 0;
+  opacity: 0.7;
+}
+.auto-net-flow path {
+  stroke-dasharray: 2 13;
+  animation: flow-dash-slow 14s linear infinite;
+}
+.auto-net--rtl svg {
+  transform: scaleX(-1);
+}
+@media (max-width: 767px) {
+  .auto-net-desk {
+    display: none;
+  }
+  .auto-net {
+    opacity: 0.5;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auto-net-flow path {
+    animation: none;
   }
 }
 
@@ -219,21 +482,58 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 18px hsl(var(--neon) / 0.25); }
-  50% { box-shadow: 0 0 38px hsl(var(--neon) / 0.5); }
-}
-@keyframes aurora {
-  0%   { transform: translate(0, 0) scale(1); opacity: 0.4; }
-  33%  { transform: translate(5%, -3%) scale(1.1); opacity: 0.55; }
-  66%  { transform: translate(-3%, 4%) scale(1.05); opacity: 0.35; }
-  100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-}
 @keyframes flow-dash {
   to { stroke-dashoffset: -12; }
 }
 @keyframes shimmer {
   to { background-position: -200% 0; }
+}
+@keyframes grid-shift {
+  from { background-position: 0 0; }
+  to { background-position: 56px 56px; }
+}
+
+/* Hero environment — slow independent drift per depth layer */
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(9%, -7%, 0); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-8%, 9%, 0); }
+}
+@keyframes drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(7%, 6%, 0); }
+  66% { transform: translate3d(-6%, -7%, 0); }
+}
+@keyframes signal-fire-far {
+  0%, 100% { opacity: 0.06; }
+  46% { opacity: 0.15; }
+  62% { opacity: 0.11; }
+}
+@keyframes signal-fire-mid {
+  0%, 100% { opacity: 0.09; }
+  44% { opacity: 0.22; }
+  60% { opacity: 0.16; }
+}
+@keyframes signal-fire-near {
+  0%, 100% { opacity: 0.12; }
+  42% { opacity: 0.3; }
+  58% { opacity: 0.21; }
+}
+@keyframes flow-dash-slow {
+  to { stroke-dashoffset: -160; }
+}
+@keyframes mta-a {
+  0%, 42% { opacity: 1; }
+  50%, 92% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes mta-b {
+  0%, 42% { opacity: 0; }
+  50%, 92% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -243,90 +543,24 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-
-/* =========================
-   Global Sparkles Background
-========================= */
-
-.global-sparkles {
-  opacity: 1;
-  isolation: isolate;
-  mix-blend-mode: screen;
-}
-
-.global-sparkles__glow {
-  position: absolute;
-  left: 50%;
-  top: -18rem;
-  width: 58rem;
-  height: 36rem;
-  transform: translateX(-50%);
-  border-radius: 9999px;
-  background: rgba(34, 227, 116, 0.08);
-  filter: blur(120px);
-}
-
-.global-sparkle {
-  position: absolute;
-  display: block;
-  border-radius: 9999px;
-  animation-name: tello-sparkle;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  will-change: opacity, transform;
-}
-
-.global-sparkle--green {
-  background: rgb(34, 227, 116);
-  box-shadow:
-    0 0 7px rgba(34, 227, 116, 0.95),
-    0 0 16px rgba(34, 227, 116, 0.5);
-}
-
-.global-sparkle--white {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow:
-    0 0 6px rgba(255, 255, 255, 0.85),
-    0 0 14px rgba(255, 255, 255, 0.35);
-
-}
-
-
-@keyframes tello-sparkle {
-  0%,
-  100% {
-    opacity: 0.12;
-    transform: scale(0.7) translateY(0);
-  }
-
-  50% {
-    opacity: 0.75;
-    transform: scale(1.35) translateY(-4px);
-  }
-}
-
-@media (max-width: 767px) {
-  .global-sparkles {
-    opacity: 0.45;
-  }
-
-  .global-sparkles__glow {
-    top: -10rem;
-    width: 30rem;
-    height: 24rem;
-    filter: blur(90px);
-  }
-
-  .global-sparkle--desktop-only {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .global-sparkle {
+  .bg-grid-animated {
     animation: none;
-    opacity: 0.25;
   }
+  /* Freeze the hero environment into a calm static state. */
+  .hero-signal,
+  .sig-0,
+  .sig-1,
+  .sig-2,
+  .drift-a,
+  .drift-b,
+  .drift-c,
+  .flow-line,
+  .mta-manual,
+  .mta-auto {
+    animation: none !important;
+    transform: none !important;
+  }
+  .hero-signal { opacity: 0.1; }
+  .mta-manual { opacity: 0; }
+  .mta-auto { opacity: 1; }
 }

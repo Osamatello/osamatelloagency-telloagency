@@ -1,8 +1,7 @@
 import './globals.css';
 
-import GlobalSparklesBackground from '@/components/site/GlobalSparklesBackground';
 import type { Metadata } from 'next';
-import { Inter, Cairo } from 'next/font/google';
+import { DM_Sans, Space_Grotesk, Cairo } from 'next/font/google';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
@@ -10,69 +9,86 @@ import { MobileStickyCTA } from '@/components/site/MobileStickyCTA';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 
-const inter = Inter({
+// Body / UI text
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
 });
 
+// Display / editorial headlines
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+// Arabic (body + display)
 const cairo = Cairo({
   subsets: ['arabic', 'latin'],
   variable: '--font-cairo',
   display: 'swap',
 });
 
-const siteUrl =
-  'https://osamatelloagency-telloagency.vercel.app';
+// TODO(DAMASAVERO): confirm the production domain and update this value.
+const siteUrl = 'https://osamatelloagency-telloagency.vercel.app';
+
+const title = 'DAMASAVERO — AI Automation & Business Systems';
+const description =
+  'DAMASAVERO designs and builds AI automation and business systems — voice agents, CRM and lead automation, messaging, scheduling, and custom integrations — for businesses across industries.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'TELLO — AI Automation for Modern Clinics',
-    template: '%s | TELLO',
+    default: title,
+    template: '%s | DAMASAVERO',
   },
-  description:
-    'TELLO builds AI automation systems, business software, websites, and lead generation workflows for modern clinics and healthcare businesses.',
+  description,
   keywords: [
-    'AI automation agency',
-    'clinic automation',
-    'AI lead generation',
-    'healthcare websites',
+    'AI automation',
+    'business systems',
+    'AI voice agents',
+    'business process automation',
     'CRM automation',
-    'AI chatbots',
-    'TELLO',
+    'lead automation',
+    'workflow automation',
+    'AI integrations',
+    'DAMASAVERO',
   ],
   authors: [{ name: 'Osama Tello' }],
   creator: 'Osama Tello',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'TELLO',
-    title: 'TELLO — AI Automation for Modern Clinics',
-    description:
-      'TELLO builds AI automation systems, business software, websites, and lead generation workflows for modern clinics.',
+    siteName: 'DAMASAVERO',
+    title,
+    description,
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'TELLO AI Automation Agency',
+        alt: 'DAMASAVERO — AI Automation & Business Systems',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'TELLO — AI Automation for Modern Clinics',
-    description:
-      'TELLO builds AI automation systems, business software, websites, and lead generation workflows for modern clinics.',
-    images: ['/og.png'],
+    title,
+    description,
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
     follow: true,
   },
+  // Official DAMASAVERO DS mark — transparent PNG at
+  // public/brand/damasavero-logo.png. The ?v= token busts any cached
+  // (previously white-background) version. No other icon reference exists.
   icons: {
-    icon: '/favicon.ico',
+    icon: [{ url: '/brand/damasavero-logo.png?v=3', type: 'image/png' }],
+    apple: '/brand/damasavero-logo.png?v=3',
   },
 };
 
@@ -84,23 +100,24 @@ export default function RootLayout({
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'TELLO',
+    name: 'DAMASAVERO',
     url: siteUrl,
     description:
-      'TELLO is an AI automation agency building automation systems, business software, websites, and lead generation workflows for modern clinics and healthcare businesses.',
+      'DAMASAVERO is an AI automation and business systems company. It designs and builds AI voice agents, CRM and lead automation, messaging and scheduling automation, and custom integrations for businesses across industries.',
     founder: {
       '@type': 'Person',
       name: 'Osama Tello',
-      jobTitle: 'Founder and AI Automation Builder',
+      jobTitle: 'Founder',
     },
-    email: 'hello@telloagency.ai',
+    // NOTE: contact email intentionally omitted until a verified DAMASAVERO
+    // address is confirmed. Do not re-add hello@telloagency.ai.
   };
 
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <body className={`${inter.variable} ${cairo.variable} font-sans`}>
-        <GlobalSparklesBackground />
-
+      <body
+        className={`${dmSans.variable} ${spaceGrotesk.variable} ${cairo.variable} font-sans`}
+      >
         <div className="relative z-10">
           <script
             type="application/ld+json"

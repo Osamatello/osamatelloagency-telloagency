@@ -20,7 +20,7 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-12">
           {/* Brand + description */}
           <div className="lg:col-span-4">
-            <Logo />
+            <Logo className="text-white" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
               {dict.footer.description}
             </p>

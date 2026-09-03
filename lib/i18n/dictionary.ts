@@ -117,10 +117,21 @@ export interface Dictionary {
       stat3Label: string;
     };
     tools: { eyebrow: string; title: string; subtitle: string; items: string[] };
+    capabilities: {
+      eyebrow: string;
+      title: string;
+      items: { index: string; title: string; summary: string; href: string }[];
+    };
+    shift: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      pairs: { problem: string; automated: string }[];
+    };
     servicesOverview: { eyebrow: string; title: string; subtitle: string; services: ServiceCardData[] };
     problems: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
     solutions: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
-    workflow: { eyebrow: string; title: string; subtitle: string; steps: StepItem[] };
+    workflow: { eyebrow: string; title: string; closer: string; steps: StepItem[] };
     benefits: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
     howItWorks: { eyebrow: string; title: string; subtitle: string; steps: StepItem[] };
     pricingPreview: { eyebrow: string; title: string; subtitle: string; note: string; plans: PricingPlanData[] };
