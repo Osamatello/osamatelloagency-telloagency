@@ -9,7 +9,7 @@ export function Footer() {
   const { dict } = useI18n();
 
   return (
-    <footer className="relative z-10 border-t border-[#dedbd3] bg-[#fbfaf7] text-[#1d2521]">
+    <footer className="relative z-10 border-t border-[#dedbd3] bg-[#eef2ec] text-[#1d2521]">
       <div className="container-page py-6 sm:py-10">
         <div className="grid gap-5 sm:gap-8 md:grid-cols-12 md:gap-7">
           <div className="md:col-span-5">
