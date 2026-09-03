@@ -6,7 +6,6 @@ import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { cn } from '@/lib/utils';
 import { HeroEnvironment } from '@/components/site/HeroEnvironment';
 import { BusinessAutomationDemo } from '@/components/site/BusinessAutomationDemo';
-import { NetRoute } from '@/components/site/home/NetRoute';
 import { IntegrationRail } from '@/components/site/home/IntegrationRail';
 import { Capabilities } from '@/components/site/home/Capabilities';
 import { ProblemShift } from '@/components/site/home/ProblemShift';
@@ -132,11 +131,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============ MILESTONE 3 — one continuous light automation story ============ */}
+      {/* ============ HOMEPAGE CONTENT ============ */}
       <div className="bg-paper text-ink">
         {/* Integrations — pipeline enters from the hero */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="integrations" />
           <div className="container-page relative z-10 py-20 pt-14 sm:py-24 lg:py-28 lg:pt-16">
             <IntegrationRail />
           </div>
@@ -144,7 +142,6 @@ export default function HomePage() {
 
         {/* Capabilities — the connected system branches into what we build */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="capabilities" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <Capabilities />
           </div>
@@ -152,7 +149,6 @@ export default function HomePage() {
 
         {/* The Shift — the route becomes the transformation rail (no bg network) */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="shift" className="net-route-handoff" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <ProblemShift />
           </div>
@@ -160,7 +156,6 @@ export default function HomePage() {
 
         {/* The Path — the route becomes the workflow timeline (no bg network) */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="path" className="net-route-handoff" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <AutomationPath />
           </div>
@@ -168,7 +163,6 @@ export default function HomePage() {
 
         {/* How It Works — the route becomes a structured implementation flow */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="method" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <MethodStages />
           </div>
@@ -176,7 +170,6 @@ export default function HomePage() {
 
         {/* FAQ — light */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="faq" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <HomeFaq />
           </div>
@@ -184,7 +177,6 @@ export default function HomePage() {
 
         {/* Final CTA — light, the route converges toward one action */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="cta" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-28 lg:py-32">
             <HomeCta />
           </div>
