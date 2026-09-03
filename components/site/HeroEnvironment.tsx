@@ -142,6 +142,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
           <path d="M97 19 L88 45 L93 70 L80 93" />
           <path d="M2 61 L30 69 L52 65 L46 90 M30 69 L7 86" />
           <path d="M80 93 L52 65" />
+          <path d="M46 90 L58 95 L72 100 M80 93 L72 100" />
         </g>
         <g
           className="flow-line"
@@ -153,6 +154,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
           <path d="M97 19 L88 45 L93 70 L80 93" />
           <path d="M2 61 L30 69 L52 65 L46 90 M30 69 L7 86" />
           <path d="M80 93 L52 65" />
+          <path d="M46 90 L58 95 L72 100 M80 93 L72 100" />
         </g>
       </svg>
 
