@@ -7,8 +7,8 @@ type Point = { x: number; y: number; scale: number; rotation: number; z: number 
 type Fragment = { depth: number; kind: number; color: string; phase: number; speed: number; states: Point[] };
 
 const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
-const VISIBILITY_BOOST = 1.78;
-const AMBIENT_SPEED = 1.65;
+const VISIBILITY_BOOST = 2.08;
+const AMBIENT_SPEED = 2.15;
 const STATE_COUNT = 8;
 const MOBILE_MASS_VERTICES = [[0.5, 0.13], [0.84, 0.34], [0.73, 0.73], [0.5, 0.89], [0.16, 0.7], [0.22, 0.32]] as const;
 const DESKTOP_MASS_VERTICES = [[0.5, 0.12], [0.82, 0.28], [0.76, 0.73], [0.5, 0.88], [0.18, 0.71], [0.24, 0.27]] as const;
