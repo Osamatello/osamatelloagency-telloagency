@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
-type Point = { x: number; y: number; scale: number; rotation: number };
+type Point = { x: number; y: number; scale: number; rotation: number; z: number };
 type Fragment = { depth: number; kind: number; color: string; states: Point[] };
 
 const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
@@ -24,23 +24,24 @@ function createFragments(count: number): Fragment[] {
     const group = index % 3;
     const lane = (index % 13) / 12;
     const pair = index % 2;
+    const band = index % 4;
     const latticeX = (index % 11) / 10;
     const latticeY = (Math.floor(index / 11) % 8) / 7;
     const clusterX = [0.2, 0.73, 0.5][group];
     const clusterY = [0.7, 0.34, 0.78][group];
-    const orbitRadius = 0.12 + (index % 5) * 0.018;
+    const stream = index % 3;
 
     return {
       depth,
       kind: index % 5,
       color: COLORS[index % COLORS.length],
       states: [
-        { x: 0.03 + a * 0.94, y: 0.04 + b * 0.9, scale: 0.65 + depth * 0.35, rotation: angle },
-        { x: clusterX + Math.cos(angle) * (0.035 + a * 0.14), y: clusterY + Math.sin(angle) * (0.025 + b * 0.12), scale: 0.75 + depth * 0.4, rotation: angle * 0.35 },
-        { x: (pair ? 0.7 : 0.3) + Math.cos(angle) * orbitRadius, y: 0.5 + Math.sin(angle) * orbitRadius * 1.55, scale: 0.65 + depth * 0.48, rotation: angle + Math.PI / 3 },
-        { x: 0.16 + pair * 0.67 + (a - 0.5) * 0.12, y: 0.13 + lane * 0.74, scale: 0.8 + depth * 0.32, rotation: pair ? Math.PI / 4 : -Math.PI / 4 },
-        { x: 0.06 + lane * 0.88, y: 0.5 + Math.sin(lane * Math.PI * 2.5 + group * 0.8) * (0.12 + depth * 0.05), scale: 0.6 + depth * 0.5, rotation: angle * 0.18 },
-        { x: 0.18 + latticeX * 0.64 + (latticeY % 2) * 0.025, y: 0.14 + latticeY * 0.7, scale: 0.55 + depth * 0.3, rotation: (latticeX + latticeY) * Math.PI * 0.25 },
+        { x: 0.02 + a * 0.96, y: 0.03 + b * 0.92, scale: 0.55 + depth * 0.5, rotation: angle, z: 0.35 + c * 1.15 },
+        { x: clusterX + Math.cos(angle) * (0.018 + a * 0.105), y: clusterY + Math.sin(angle) * (0.018 + b * 0.09), scale: 0.65 + depth * 0.62, rotation: angle * 0.25, z: 0.25 + rand(index + 310) * 1.45 },
+        { x: 0.1 + lane * 0.8, y: 0.2 + band * 0.19 + (b - 0.5) * 0.055, scale: 0.48 + depth * 0.4, rotation: band % 2 ? Math.PI / 4 : -Math.PI / 4, z: 0.42 + band * 0.22 + c * 0.42 },
+        { x: 0.13 + pair * 0.72 + (a - 0.5) * 0.075, y: 0.08 + lane * 0.84, scale: 0.58 + depth * 0.7, rotation: pair ? Math.PI / 4 : -Math.PI / 4, z: pair ? 1.3 - c * 0.45 : 0.38 + c * 0.5 },
+        { x: 0.04 + lane * 0.92, y: 0.5 + Math.sin(lane * Math.PI * (2.2 + stream * 0.34) + stream * 1.55) * (0.16 + stream * 0.045), scale: 0.55 + depth * 0.72, rotation: angle * 0.16 + lane * Math.PI, z: 0.25 + ((index + stream) % 7) * 0.2 },
+        { x: 0.14 + latticeX * 0.72 + (latticeY % 2) * 0.035, y: 0.1 + latticeY * 0.78, scale: 0.42 + depth * 0.46, rotation: (latticeX + latticeY) * Math.PI * 0.25, z: 0.38 + ((index % 6) / 5) * 1.05 },
       ],
     };
   });
@@ -77,7 +78,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      fragments = createFragments(width < 640 ? 62 : 156);
+      fragments = createFragments(width < 640 ? 68 : 210);
       measure();
       updateTarget();
       draw();
@@ -108,13 +109,14 @@ export function HeroEnvironment({ className }: { className?: string }) {
         y: from.y + (to.y - from.y) * amount,
         scale: from.scale + (to.scale - from.scale) * amount,
         rotation: from.rotation + (to.rotation - from.rotation) * amount,
+        z: from.z + (to.z - from.z) * amount,
       };
     };
 
     const drawWireframe = () => {
       const phase = progress / 5;
       context.save();
-      context.globalAlpha = 0.08 * calm;
+      context.globalAlpha = 0.105 * calm;
       context.strokeStyle = '#315f4d';
       context.lineWidth = 1;
       context.beginPath();
@@ -126,26 +128,32 @@ export function HeroEnvironment({ className }: { className?: string }) {
       context.moveTo(width * 0.57, height * 0.17);
       context.lineTo(width * 0.72, height * 0.49);
       context.lineTo(width * 0.9, height * (0.27 + phase * 0.05));
+      context.moveTo(width * (0.08 + phase * 0.12), height * 0.72);
+      context.lineTo(width * (0.27 + phase * 0.08), height * 0.61);
+      context.lineTo(width * (0.39 - phase * 0.08), height * 0.82);
+      context.lineTo(width * (0.18 - phase * 0.05), height * 0.9);
+      context.closePath();
       context.stroke();
       context.restore();
     };
 
     const draw = () => {
       context.clearRect(0, 0, width, height);
+      context.fillStyle = '#fbfaf7';
+      context.fillRect(0, 0, width, height);
       drawWireframe();
       fragments.forEach((fragment) => {
         const point = pointAt(fragment);
-        const parallax = (target - progress) * 20 * fragment.depth;
+        const parallax = (target - progress) * 38 * point.z;
         const x = point.x * width;
         const y = point.y * height + parallax;
-        const quiet = (point.x > 0.08 && point.x < 0.58 && point.y > 0.08 && point.y < 0.82) ||
-          (progress > 0.8 && point.x > 0.18 && point.x < 0.8 && point.y > 0.16 && point.y < 0.58);
+        const quiet = point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
         const base = width < 640 ? 3.2 : 4.2;
-        const size = (base + fragment.depth * (width < 640 ? 4.2 : 7.4)) * point.scale;
+        const size = (base + point.z * (width < 640 ? 4.5 : 8.2)) * point.scale;
         context.save();
         context.translate(x, y);
-        context.rotate(point.rotation + (target - progress) * fragment.depth * 0.5);
-        context.globalAlpha = (quiet ? 0.045 : 0.16 + fragment.depth * 0.075) * calm;
+        context.rotate(point.rotation + (target - progress) * point.z * 0.75);
+        context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * calm;
         context.fillStyle = fragment.color;
         context.strokeStyle = fragment.color;
         context.lineWidth = 1;
