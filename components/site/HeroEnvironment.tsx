@@ -142,7 +142,6 @@ export function HeroEnvironment({ className }: { className?: string }) {
           'M7 86 L14 93 L18 100',
           'M46 90 V100',
           'M80 93 L74 97 L72 100',
-          'M93 70 L90 84 L88 100',
         ]}
       />
 

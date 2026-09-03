@@ -8,10 +8,9 @@ type Variant = 'integrations' | 'capabilities' | 'shift' | 'path' | 'method' | '
 
 const ROUTES: Record<Variant, string[]> = {
   integrations: [
-    'M18 0 L13 5 H6 V30 M6 48 V72 L11 78 V92',
-    'M46 0 V4 L40 8 H28 M4 40 V58 L8 63',
-    'M72 0 V4 L78 8 H96 V36 M96 46 V66 L91 72',
-    'M88 0 L94 6 V28 M98 40 V76 L92 82 V94 L86 100',
+    'M18 0 L22 7 L18 11 H10',
+    'M46 0 V8 L42 12 H34',
+    'M72 0 L70 3 L76 9 H86',
   ],
   capabilities: [
     'M58 0 V7 L54 11 H42',
@@ -40,11 +39,16 @@ export function NetRoute({ variant, className }: { variant: Variant; className?:
   return (
     <div
       aria-hidden="true"
-      className={cn('net-route pointer-events-none absolute inset-0 z-0', className)}
+      className={cn(
+        'net-route pointer-events-none absolute inset-0 z-0',
+        variant === 'integrations' && 'net-route--integration',
+        className
+      )}
     >
       <PipelineTracks
         className={cn('h-full w-full', dir === 'rtl' && '-scale-x-100')}
         paths={ROUTES[variant]}
+        viewBox={variant === 'integrations' ? '0 0 100 65' : undefined}
       />
     </div>
   );
