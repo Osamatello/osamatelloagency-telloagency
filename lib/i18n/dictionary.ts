@@ -132,6 +132,13 @@ export interface Dictionary {
     problems: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
     solutions: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
     workflow: { eyebrow: string; title: string; closer: string; steps: StepItem[] };
+    beforeAfter: {
+      eyebrow: string;
+      title: string;
+      beforeLabel: string;
+      afterLabel: string;
+      pairs: { before: string; after: string }[];
+    };
     benefits: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
     howItWorks: { eyebrow: string; title: string; subtitle: string; steps: StepItem[] };
     pricingPreview: { eyebrow: string; title: string; subtitle: string; note: string; plans: PricingPlanData[] };
