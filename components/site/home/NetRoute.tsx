@@ -8,14 +8,10 @@ type Variant = 'integrations' | 'capabilities' | 'shift' | 'path' | 'method' | '
 
 const ROUTES: Record<Variant, string[]> = {
   integrations: [
-    'M72 0 V30 L68 36 H58',
-    'M58 36 L53 43 H34',
-    'M58 36 L64 48 H82',
-    'M34 43 L28 54 H15',
-    'M64 48 L59 61 H39',
-    'M15 54 L24 72 H57 L61 80',
-    'M39 61 L46 70 H57',
-    'M61 80 L58 91 V100',
+    'M18 0 L13 5 H6 V30 M6 48 V72 L11 78 V92',
+    'M46 0 V4 L40 8 H28 M4 40 V58 L8 63',
+    'M72 0 V4 L78 8 H96 V36 M96 46 V66 L91 72',
+    'M88 0 L94 6 V28 M98 40 V76 L92 82 V94 L86 100',
   ],
   capabilities: [
     'M58 0 V7 L54 11 H42',
