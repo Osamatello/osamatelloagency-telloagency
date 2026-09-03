@@ -30,8 +30,7 @@ const en: Dictionary = {
   },
   language: { en: 'EN', ar: 'AR', switchLabel: 'Switch language' },
   footer: {
-    description:
-      'TELLO builds AI automation systems, business software, websites, and lead generation workflows for modern clinics and healthcare businesses.',
+    description: 'AI Automation & Business Systems',
     navTitle: 'Navigation',
     servicesTitle: 'Services',
     legalTitle: 'Legal',

@@ -30,8 +30,7 @@ const ar: Dictionary = {
   },
   language: { en: 'EN', ar: 'AR', switchLabel: 'تبديل اللغة' },
   footer: {
-    description:
-      'TELLO تبني أنظمة أتمتة بالذكاء الاصطناعي وبرمجيات أعمال ومواقع إلكترونية وأنظمة توليد عملاء محتملين للعيادات الحديثة وقطاع الرعاية الصحية.',
+    description: 'أتمتة الذكاء الاصطناعي وأنظمة الأعمال',
     navTitle: 'التنقل',
     servicesTitle: 'الخدمات',
     legalTitle: 'قانوني',
