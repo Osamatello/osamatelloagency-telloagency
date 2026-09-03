@@ -165,14 +165,14 @@ export default function HomePage() {
         </section>
 
         {/* FAQ — light */}
-        <section className="relative overflow-hidden">
+        <section data-visual-state="6" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <HomeFaq />
           </div>
         </section>
 
         {/* Final CTA — light, the route converges toward one action */}
-        <section className="relative overflow-hidden">
+        <section data-visual-state="7" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-28 lg:py-32">
             <HomeCta />
           </div>
@@ -265,7 +265,7 @@ function HomeCta() {
   return (
     <div className="max-w-3xl">
       <span className="eyebrow">{t.eyebrow}</span>
-      <h2 className="text-display mt-6 text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink">
+      <h2 className="text-display mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink">
         {t.title}
       </h2>
       {t.subtitle ? (

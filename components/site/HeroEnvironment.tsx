@@ -7,7 +7,8 @@ type Point = { x: number; y: number; scale: number; rotation: number; z: number 
 type Fragment = { depth: number; kind: number; color: string; phase: number; speed: number; states: Point[] };
 
 const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
-const VISIBILITY_BOOST = 1.18;
+const VISIBILITY_BOOST = 1.44;
+const STATE_COUNT = 8;
 const MOBILE_MASS_VERTICES = [[0.5, 0.13], [0.84, 0.34], [0.73, 0.73], [0.5, 0.89], [0.16, 0.7], [0.22, 0.32]] as const;
 const DESKTOP_MASS_VERTICES = [[0.5, 0.12], [0.82, 0.28], [0.76, 0.73], [0.5, 0.88], [0.18, 0.71], [0.24, 0.27]] as const;
 const rand = (seed: number) => {
@@ -72,6 +73,24 @@ function createFragments(count: number, compact: boolean): Fragment[] {
     const massX = 0.5 + (edgeX - 0.5) * inset + (a - 0.5) * 0.018;
     const massY = 0.5 + (edgeY - 0.5) * inset + (b - 0.5) * 0.018;
 
+    // State 6: a layered orbital field that remains active through FAQ expansion.
+    const faqAngle = sequence * Math.PI * 3.4 + group * 0.54;
+    const faqRadiusX = 0.1 + layer * (compact ? 0.045 : 0.055);
+    const faqRadiusY = 0.09 + layer * (compact ? 0.035 : 0.045);
+    const faqCenterX = compact ? 0.52 : 0.76;
+    const faqCenterY = compact ? 0.66 : 0.55;
+    const faqX = faqCenterX + Math.cos(faqAngle) * faqRadiusX;
+    const faqY = faqCenterY + Math.sin(faqAngle) * faqRadiusY;
+
+    // State 7: ordered concentric bands — a calm but still living final formation.
+    const finalAngle = angle * 0.58 + layer * 0.72;
+    const finalRadiusX = 0.075 + sequence * (compact ? 0.34 : 0.3);
+    const finalRadiusY = 0.04 + sequence * (compact ? 0.25 : 0.2);
+    const finalCenterX = compact ? 0.5 : 0.74;
+    const finalCenterY = compact ? 0.68 : 0.54;
+    const finalX = finalCenterX + Math.cos(finalAngle) * finalRadiusX;
+    const finalY = finalCenterY + Math.sin(finalAngle) * finalRadiusY;
+
     return {
       depth,
       kind: index % 7,
@@ -85,6 +104,8 @@ function createFragments(count: number, compact: boolean): Fragment[] {
         { x: planetX, y: planetY, scale: planetaryCore ? 1.05 + depth * 0.7 : 0.4 + depth * 0.55, rotation: planetAngle, z: planetaryCore ? 1.35 + c * 0.45 : 0.16 + layer * 0.43 },
         { x: vortexX, y: vortexY, scale: 0.38 + depth * (0.45 + sequence * 0.45), rotation: vortexAngle + Math.PI / 4, z: 0.18 + sequence * 1.45 },
         { x: massX, y: massY, scale: 0.4 + depth * (inset < 1 ? 0.72 : 0.5), rotation: edge * (Math.PI / 3), z: inset < 1 ? 1.15 + c * 0.45 : 0.28 + layer * 0.34 },
+        { x: faqX, y: faqY, scale: 0.4 + depth * 0.58, rotation: faqAngle, z: 0.2 + layer * 0.42 + c * 0.2 },
+        { x: finalX, y: finalY, scale: 0.38 + depth * 0.55, rotation: finalAngle, z: 0.22 + layer * 0.38 + c * 0.22 },
       ],
     };
   });
@@ -105,7 +126,6 @@ export function HeroEnvironment({ className }: { className?: string }) {
     let height = 0;
     let target = reduced ? 0 : 0;
     let progress = target;
-    let calm = 1;
     let frame = 0;
     let elapsed = 0;
 
@@ -115,7 +135,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       );
       if (anchors.length) {
         const pageEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-        anchors[anchors.length - 1] = Math.max(anchors[anchors.length - 1], pageEnd * 0.86);
+        anchors[anchors.length - 1] = Math.max(anchors[anchors.length - 1], pageEnd * 0.9);
       }
     };
 
@@ -143,12 +163,11 @@ export function HeroEnvironment({ className }: { className?: string }) {
           break;
         }
       }
-      target = clamp(state, 0, 5);
-      calm = 1 - clamp((scroll - anchors[5]) / Math.max(height * 1.4, 1)) * 0.72;
+      target = clamp(state, 0, STATE_COUNT - 1);
     };
 
     const pointAt = (fragment: Fragment) => {
-      const state = Math.min(4, Math.floor(progress));
+      const state = Math.min(STATE_COUNT - 2, Math.floor(progress));
       const amount = smooth(progress - state);
       const from = fragment.states[state];
       const to = fragment.states[state + 1];
@@ -162,7 +181,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
     };
 
     const drawWireframe = () => {
-      const phase = progress / 5;
+      const phase = progress / (STATE_COUNT - 1);
       const idleX = reduced ? 0 : Math.sin(elapsed * 0.00016) * width * 0.004;
       const idleY = reduced ? 0 : Math.cos(elapsed * 0.00013) * height * 0.004;
       context.save();
@@ -170,7 +189,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       context.rotate(reduced ? 0 : Math.sin(elapsed * 0.00008) * 0.014);
       context.translate(-width * 0.5, -height * 0.5);
       const wireBreath = reduced ? 1 : 0.94 + Math.sin(elapsed * 0.00022) * 0.06;
-      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * VISIBILITY_BOOST * wireBreath * calm;
+      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * VISIBILITY_BOOST * wireBreath;
       context.strokeStyle = '#315f4d';
       context.lineWidth = 1;
       context.beginPath();
@@ -206,7 +225,9 @@ export function HeroEnvironment({ className }: { className?: string }) {
         const breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.04 * point.z;
         const orbitalPresence = Math.max(
           1 - clamp(Math.abs(progress - 1) / 0.85),
-          1 - clamp(Math.abs(progress - 3) / 0.85)
+          1 - clamp(Math.abs(progress - 3) / 0.85),
+          1 - clamp(Math.abs(progress - 6) / 0.9),
+          1 - clamp(Math.abs(progress - 7) / 0.9)
         );
         const vortexPresence = 1 - clamp(Math.abs(progress - 4) / 0.9);
         const localOrbit = reduced ? 0 : orbitalPresence * (3.5 + point.z * 3.2);
@@ -222,7 +243,8 @@ export function HeroEnvironment({ className }: { className?: string }) {
         context.save();
         context.translate(x, y);
         context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : elapsed * 0.000018 * fragment.speed * point.z));
-        context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * calm;
+        const depthPresence = 0.96 + clamp(point.z / 1.8) * 0.16;
+        context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * depthPresence;
         context.fillStyle = fragment.color;
         context.strokeStyle = fragment.color;
         context.lineWidth = 1;
@@ -273,12 +295,15 @@ export function HeroEnvironment({ className }: { className?: string }) {
     };
 
     resize();
+    const layoutObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    layoutObserver?.observe(document.body);
     window.addEventListener('resize', resize);
     window.addEventListener('scroll', updateTarget, { passive: true });
     if (!reduced) frame = requestAnimationFrame(animate);
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', updateTarget);
+      layoutObserver?.disconnect();
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);

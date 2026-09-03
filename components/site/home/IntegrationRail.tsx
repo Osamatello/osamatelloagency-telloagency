@@ -6,9 +6,8 @@ import { cn } from '@/lib/utils';
 import { SectionHead } from './SectionHead';
 
 /**
- * Integrations — not a logo grid. A slow two-row drift of tool names on a wire,
- * resolving toward "one operating layer". Reduced-motion → static wrapped list.
- * Names only (no logo assets, no "trusted by / partner / certified").
+ * Integrations — a slow two-row drift of recognizable platform marks,
+ * resolving toward one operating layer without becoming a conventional logo grid.
  */
 export function IntegrationRail() {
   const { dict } = useI18n();
@@ -33,7 +32,7 @@ export function IntegrationRail() {
 
       <div className="mt-10 flex items-center gap-4 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-ink-faint">
         <span className="h-px flex-1 bg-line" />
-        <span className="whitespace-nowrap text-brand">One operating layer</span>
+        <span className="whitespace-nowrap text-brand">{t.operatingLayer}</span>
         <span className="h-px w-8 shrink-0 bg-brand" />
       </div>
     </div>
@@ -54,13 +53,50 @@ function MarqueeRow({ items, reverse }: { items: string[]; reverse: boolean }) {
         {loop.map((name, i) => (
           <li
             key={`${name}-${i}`}
-            className="flex items-center gap-x-10 whitespace-nowrap text-[0.95rem] text-ink-muted"
+            aria-label={name}
+            className="flex items-center gap-x-10 text-brand/75"
           >
-            {name}
+            <PlatformMark name={name} />
             <span aria-hidden="true" className="h-1 w-1 rounded-full bg-line" />
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+const ICON_PATHS: Record<string, string> = {
+  OpenAI: '/integrations/openai.svg',
+  Anthropic: '/integrations/anthropic.svg',
+  n8n: '/integrations/n8n.svg',
+  Make: '/integrations/make.svg',
+  Zapier: '/integrations/zapier.svg',
+  Vapi: '/integrations/vapi.svg',
+  ElevenLabs: '/integrations/elevenlabs.svg',
+  Gmail: '/integrations/gmail.svg',
+  'Google Calendar': '/integrations/googlecalendar.svg',
+  WhatsApp: '/integrations/whatsapp.svg',
+  Slack: '/integrations/slack.svg',
+  HubSpot: '/integrations/hubspot.svg',
+  Salesforce: '/integrations/salesforce.svg',
+  Stripe: '/integrations/stripe.svg',
+};
+
+function PlatformMark({ name }: { name: string }) {
+  const source = ICON_PATHS[name];
+  const wide = name === 'Vapi';
+
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        'block shrink-0 bg-current transition-[color,transform] duration-300 hover:scale-110 hover:text-brand',
+        wide ? 'h-5 w-16' : 'h-8 w-8'
+      )}
+      style={{
+        WebkitMask: `url(${source}) center / contain no-repeat`,
+        mask: `url(${source}) center / contain no-repeat`,
+      }}
+    />
   );
 }
