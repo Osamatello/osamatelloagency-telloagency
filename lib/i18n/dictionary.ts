@@ -116,7 +116,7 @@ export interface Dictionary {
       stat3Value: string;
       stat3Label: string;
     };
-    tools: { eyebrow: string; title: string; subtitle: string; items: string[] };
+    tools: { eyebrow: string; title: string; subtitle: string; operatingLayer: string; items: string[] };
     capabilities: {
       eyebrow: string;
       title: string;

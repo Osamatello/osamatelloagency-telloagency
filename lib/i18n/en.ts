@@ -4,13 +4,13 @@ const en: Dictionary = {
   meta: { localeName: 'English', htmlLang: 'en' },
   brand: { name: 'DAMASAVERO', tagline: 'AI Automation & Business Systems' },
   nav: [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Services', href: '/services' },
+    { label: 'Overview', href: '/' },
+    { label: 'The Company', href: '/about' },
+    { label: 'Capabilities', href: '/services' },
     { label: 'Industries', href: '/industries' },
-    { label: 'Case Studies', href: '/case-studies' },
-    { label: 'Pricing', href: '/pricing' },
-    { label: 'Contact', href: '/contact' },
+    { label: 'Deployments', href: '/case-studies' },
+    { label: 'Engagement Models', href: '/pricing' },
+    { label: 'Start a Conversation', href: '/contact' },
     { label: 'Book a Consultation', href: '/consult' },
   ],
   actions: {
@@ -46,8 +46,8 @@ const en: Dictionary = {
   home: {
     hero: {
       eyebrow: 'AI Automation · Business Systems',
-      title: 'The problem brought you here.',
-      titleAccent: 'Automation takes it from here.',
+      title: 'Complexity ends here.',
+      titleAccent: 'Intelligence takes over.',
       subtitle: '',
       primaryCta: 'Book a Free Consultation',
       secondaryCta: 'Explore Services',
@@ -60,9 +60,10 @@ const en: Dictionary = {
     },
     tools: {
       eyebrow: 'Integrations',
-      title: 'Works with the tools your business already uses.',
+      title: 'One ecosystem. Every system in sync.',
       subtitle:
-        'DAMASAVERO sits between your existing tools — it reads what comes in, decides what to do, and writes the result back where your team already looks. Nothing gets ripped out.',
+        'DAMASAVERO connects your AI, communication, revenue and operational platforms into one governed automation environment — preserving the tools your teams already rely on while orchestrating data, decisions and execution across them.',
+      operatingLayer: 'One operating layer',
       items: [
         'OpenAI',
         'Anthropic',
@@ -71,7 +72,6 @@ const en: Dictionary = {
         'Zapier',
         'Vapi',
         'ElevenLabs',
-        'Google Workspace',
         'Gmail',
         'Google Calendar',
         'WhatsApp',
@@ -79,7 +79,6 @@ const en: Dictionary = {
         'HubSpot',
         'Salesforce',
         'Stripe',
-        'Webhooks & REST APIs',
       ],
     },
     capabilities: {
@@ -88,44 +87,44 @@ const en: Dictionary = {
       items: [
         {
           index: '01',
-          title: 'AI Voice Agents',
+          title: 'INTELLIGENT OPERATIONS INFRASTRUCTURE',
           summary:
-            'AI that answers calls and enquiries, understands what people want, and books or routes them — at any hour.',
+            'Design interconnected automation systems that run critical business operations with minimal manual intervention.',
           href: '/services',
         },
         {
           index: '02',
-          title: 'CRM & Lead Automation',
+          title: 'AUTONOMOUS CUSTOMER OPERATIONS',
           summary:
-            'Leads captured, enriched, scored and written straight into your CRM — no one re-typing anything.',
+            'Build intelligent systems that manage enquiries, qualification, communication, scheduling, service and escalation across the customer lifecycle.',
           href: '/services',
         },
         {
           index: '03',
-          title: 'Messaging & Follow-up',
+          title: 'REVENUE OPERATIONS ARCHITECTURE',
           summary:
-            'Replies and follow-ups across WhatsApp, SMS and email that go out on time, in your business’s voice.',
+            'Engineer the infrastructure connecting lead acquisition, qualification, routing, conversion, follow-up and revenue recovery.',
           href: '/services',
         },
         {
           index: '04',
-          title: 'Scheduling & Booking Systems',
+          title: 'UNIFIED BUSINESS INTELLIGENCE',
           summary:
-            'Bookings, reschedules and reminders handled end to end and kept in sync with your calendar.',
+            'Transform fragmented operational data into a connected intelligence layer for visibility, decision-making and automated action.',
           href: '/services',
         },
         {
           index: '05',
-          title: 'Business Workflow Automation',
+          title: 'ENTERPRISE WORKFLOW ORCHESTRATION',
           summary:
-            'The repetitive steps between tools — approvals, hand-offs, data entry, reporting — running on their own.',
+            'Coordinate complex processes across teams, departments, software and AI through one operational architecture.',
           href: '/services',
         },
         {
           index: '06',
-          title: 'Custom Integrations',
+          title: 'SYSTEMS INTEGRATION & MODERNIZATION',
           summary:
-            'If a system has an API, a webhook or a database, we connect it into the same operating layer.',
+            'Connect fragmented or legacy infrastructure into a scalable automation ecosystem without forcing businesses to replace everything they already use.',
           href: '/services',
         },
       ],
@@ -225,13 +224,13 @@ const en: Dictionary = {
     beforeAfter: {
       eyebrow: 'Before / After Automation',
       title: 'From operational friction to flow.',
-      beforeLabel: 'Before',
+      beforeLabel: 'Before Automation',
       afterLabel: 'After Automation',
       pairs: [
-        { before: 'Manual Work', after: 'Automated' },
-        { before: 'Missed Leads', after: 'Captured' },
-        { before: 'Scattered Tools', after: 'Connected' },
-        { before: 'Slow Follow-ups', after: 'Instant' },
+        { before: 'Operational Friction', after: 'Operational Autonomy' },
+        { before: 'Revenue Leakage', after: 'Revenue Capture' },
+        { before: 'Fragmented Systems', after: 'Unified Infrastructure' },
+        { before: 'Execution Bottlenecks', after: 'Accelerated Execution' },
       ],
     },
     benefits: {
@@ -249,13 +248,13 @@ const en: Dictionary = {
     },
     howItWorks: {
       eyebrow: 'Method',
-      title: 'How it works',
+      title: 'Engineering Automation, End to End.',
       subtitle: 'Four stages, from first conversation to a system that keeps improving.',
       steps: [
-        { step: '01', title: 'Understand', description: 'We map where time, leads and money are leaking out of the business today.' },
-        { step: '02', title: 'Design', description: 'We design the automation around how the team actually works — not a template.' },
-        { step: '03', title: 'Build', description: 'We connect the AI, the software and the systems, and test it against your live stack.' },
-        { step: '04', title: 'Improve', description: 'We monitor it, refine it, and widen what it covers as the business grows.' },
+        { step: '01', title: 'DIAGNOSE', description: 'Identify operational constraints.' },
+        { step: '02', title: 'ARCHITECT', description: 'Engineer the automation framework.' },
+        { step: '03', title: 'DEPLOY', description: 'Implement across your operations.' },
+        { step: '04', title: 'OPTIMIZE', description: 'Continuously refine performance.' },
       ],
     },
     pricingPreview: {
@@ -327,9 +326,9 @@ const en: Dictionary = {
     },
     cta: {
       eyebrow: 'Ready When You Are',
-      title: 'Connect it. Automate it. One clear next step.',
+      title: 'Transform Operations.\nEliminate Friction.\nScale Intelligently.',
       subtitle:
-        'Book a free 20-minute consultation. We’ll map where your business is losing time and leads, and where automation makes the biggest difference first.',
+        'Engineer a more autonomous operation. We identify the structural bottlenecks, integration gaps, and repetitive processes limiting your business — then design the automation architecture to eliminate them.',
       primaryCta: 'Book a Free Consultation',
       secondaryCta: 'Explore Services',
     },
