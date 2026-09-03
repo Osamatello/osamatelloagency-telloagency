@@ -7,7 +7,8 @@ type Point = { x: number; y: number; scale: number; rotation: number; z: number 
 type Fragment = { depth: number; kind: number; color: string; phase: number; speed: number; states: Point[] };
 
 const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
-const VISIBILITY_BOOST = 1.44;
+const VISIBILITY_BOOST = 1.78;
+const AMBIENT_SPEED = 1.65;
 const STATE_COUNT = 8;
 const MOBILE_MASS_VERTICES = [[0.5, 0.13], [0.84, 0.34], [0.73, 0.73], [0.5, 0.89], [0.16, 0.7], [0.22, 0.32]] as const;
 const DESKTOP_MASS_VERTICES = [[0.5, 0.12], [0.82, 0.28], [0.76, 0.73], [0.5, 0.88], [0.18, 0.71], [0.24, 0.27]] as const;
@@ -32,20 +33,17 @@ function createFragments(count: number, compact: boolean): Fragment[] {
     const scatterX = localCluster ? [0.12, 0.82, 0.68][group] + (a - 0.5) * 0.16 : 0.02 + a * 0.96;
     const scatterY = localCluster ? [0.76, 0.2, 0.68][group] + (b - 0.5) * 0.15 : 0.03 + b * 0.92;
 
-    // State 1: a dense core surrounded by several abstract orbital shells.
     const nucleusCore = index % 4 === 0;
     const nucleusRadiusX = nucleusCore ? 0.018 + a * 0.055 : 0.13 + layer * 0.045 + a * 0.018;
     const nucleusRadiusY = nucleusCore ? 0.012 + b * 0.038 : (compact ? 0.055 : 0.075) + layer * (compact ? 0.021 : 0.032);
     const nucleusX = 0.5 + Math.cos(angle) * nucleusRadiusX;
     const nucleusY = (compact ? 0.54 : 0.5) + Math.sin(angle) * nucleusRadiusY;
 
-    // State 2: a dimensional zigzag / wave made from particles, never a line.
     const wavePhase = (sequence * (compact ? 2.35 : 3.2)) % 1;
     const zigzag = 1 - 4 * Math.abs(wavePhase - 0.5);
     const waveX = compact ? 0.5 + zigzag * 0.31 + (group - 1) * 0.022 : 0.05 + sequence * 0.9;
     const waveY = compact ? 0.08 + sequence * 0.84 : 0.5 + zigzag * 0.27 + (group - 1) * 0.026;
 
-    // State 3: one dominant planetary body with asymmetric depth-layered orbits.
     const planetaryCore = index % 6 === 0;
     const planetCenterX = compact ? 0.5 : 0.62;
     const planetCenterY = compact ? 0.52 : 0.48;
@@ -55,13 +53,11 @@ function createFragments(count: number, compact: boolean): Fragment[] {
     const planetX = planetCenterX + Math.cos(planetAngle) * planetRadiusX;
     const planetY = planetCenterY + Math.sin(planetAngle) * planetRadiusY;
 
-    // State 4: a spiral field that tightens into a deep spatial vortex.
     const vortexRadius = 0.055 + (1 - sequence) * (compact ? 0.36 : 0.43);
     const vortexAngle = sequence * Math.PI * 7 + group * 0.42;
     const vortexX = (compact ? 0.52 : 0.48) + Math.cos(vortexAngle) * vortexRadius;
     const vortexY = (compact ? 0.52 : 0.5) + Math.sin(vortexAngle) * vortexRadius * (compact ? 0.48 : 0.67);
 
-    // State 5: nested fragments assemble into an architectural six-plane mass.
     const massVertices = compact ? MOBILE_MASS_VERTICES : DESKTOP_MASS_VERTICES;
     const edge = index % massVertices.length;
     const nextEdge = (edge + 1) % massVertices.length;
@@ -73,7 +69,6 @@ function createFragments(count: number, compact: boolean): Fragment[] {
     const massX = 0.5 + (edgeX - 0.5) * inset + (a - 0.5) * 0.018;
     const massY = 0.5 + (edgeY - 0.5) * inset + (b - 0.5) * 0.018;
 
-    // State 6: a layered orbital field that remains active through FAQ expansion.
     const faqAngle = sequence * Math.PI * 3.4 + group * 0.54;
     const faqRadiusX = 0.1 + layer * (compact ? 0.045 : 0.055);
     const faqRadiusY = 0.09 + layer * (compact ? 0.035 : 0.045);
@@ -82,7 +77,6 @@ function createFragments(count: number, compact: boolean): Fragment[] {
     const faqX = faqCenterX + Math.cos(faqAngle) * faqRadiusX;
     const faqY = faqCenterY + Math.sin(faqAngle) * faqRadiusY;
 
-    // State 7: ordered concentric bands — a calm but still living final formation.
     const finalAngle = angle * 0.58 + layer * 0.72;
     const finalRadiusX = 0.075 + sequence * (compact ? 0.34 : 0.3);
     const finalRadiusY = 0.04 + sequence * (compact ? 0.25 : 0.2);
@@ -124,7 +118,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
     let anchors: number[] = [];
     let width = 0;
     let height = 0;
-    let target = reduced ? 0 : 0;
+    let target = 0;
     let progress = target;
     let frame = 0;
     let elapsed = 0;
@@ -137,19 +131,6 @@ export function HeroEnvironment({ className }: { className?: string }) {
         const pageEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
         anchors[anchors.length - 1] = Math.max(anchors[anchors.length - 1], pageEnd * 0.9);
       }
-    };
-
-    const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
-      canvas.width = Math.round(width * ratio);
-      canvas.height = Math.round(height * ratio);
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      fragments = createFragments(width < 640 ? 96 : 258, width < 640);
-      measure();
-      updateTarget();
-      draw();
     };
 
     const updateTarget = () => {
@@ -182,13 +163,14 @@ export function HeroEnvironment({ className }: { className?: string }) {
 
     const drawWireframe = () => {
       const phase = progress / (STATE_COUNT - 1);
-      const idleX = reduced ? 0 : Math.sin(elapsed * 0.00016) * width * 0.004;
-      const idleY = reduced ? 0 : Math.cos(elapsed * 0.00013) * height * 0.004;
+      const ambientTime = elapsed * AMBIENT_SPEED;
+      const idleX = reduced ? 0 : Math.sin(ambientTime * 0.00016) * width * 0.004;
+      const idleY = reduced ? 0 : Math.cos(ambientTime * 0.00013) * height * 0.004;
       context.save();
       context.translate(width * 0.5 + idleX, height * 0.5 + idleY);
-      context.rotate(reduced ? 0 : Math.sin(elapsed * 0.00008) * 0.014);
+      context.rotate(reduced ? 0 : Math.sin(ambientTime * 0.00008) * 0.014);
       context.translate(-width * 0.5, -height * 0.5);
-      const wireBreath = reduced ? 1 : 0.94 + Math.sin(elapsed * 0.00022) * 0.06;
+      const wireBreath = reduced ? 1 : 0.94 + Math.sin(ambientTime * 0.00022) * 0.06;
       context.globalAlpha = (width < 640 ? 0.07 : 0.105) * VISIBILITY_BOOST * wireBreath;
       context.strokeStyle = '#315f4d';
       context.lineWidth = 1;
@@ -215,11 +197,12 @@ export function HeroEnvironment({ className }: { className?: string }) {
       context.fillStyle = '#fbfaf7';
       context.fillRect(0, 0, width, height);
       drawWireframe();
+      const ambientTime = elapsed * AMBIENT_SPEED;
       fragments.forEach((fragment) => {
         const point = pointAt(fragment);
         const parallax = (target - progress) * 38 * point.z;
         const idleStrength = reduced ? 0 : (1.8 + point.z * 3.8);
-        const idlePhase = fragment.phase + elapsed * 0.00016 * fragment.speed;
+        const idlePhase = fragment.phase + ambientTime * 0.00016 * fragment.speed;
         const idleX = Math.sin(idlePhase * 1.7) * idleStrength;
         const idleY = Math.cos(idlePhase * 1.13) * idleStrength * 0.72;
         const breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.04 * point.z;
@@ -242,7 +225,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
         const size = (base + point.z * (width < 640 ? 4.4 : 9.4)) * point.scale * foregroundBoost * breath;
         context.save();
         context.translate(x, y);
-        context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : elapsed * 0.000018 * fragment.speed * point.z));
+        context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : ambientTime * 0.000018 * fragment.speed * point.z));
         const depthPresence = 0.96 + clamp(point.z / 1.8) * 0.16;
         context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * depthPresence;
         context.fillStyle = fragment.color;
@@ -292,6 +275,19 @@ export function HeroEnvironment({ className }: { className?: string }) {
       progress += (target - progress) * 0.09;
       draw();
       frame = requestAnimationFrame(animate);
+    };
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      fragments = createFragments(width < 640 ? 96 : 258, width < 640);
+      measure();
+      updateTarget();
+      draw();
     };
 
     resize();
