@@ -6,10 +6,10 @@ import { usePinnedProgress } from '@/lib/usePinnedProgress';
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
 const ease = (value: number) => value * value * (3 - 2 * value);
 const SCATTER = [
-  { x: -34, y: 22, r: -2.8 },
-  { x: 42, y: -12, r: 2.2 },
-  { x: -18, y: -24, r: 1.8 },
-  { x: 31, y: 28, r: -2.1 },
+  { x: -10, y: 7, r: -1.2 },
+  { x: 12, y: -6, r: 1.1 },
+  { x: -7, y: -5, r: 0.9 },
+  { x: 9, y: 7, r: -1 },
 ];
 
 /** A pinned scene that resolves scattered manual work into one ordered system. */
@@ -17,12 +17,12 @@ export function BeforeAfterAutomation() {
   const { dict, dir } = useI18n();
   const t = dict.home.beforeAfter;
   const { ref, progress } = usePinnedProgress<HTMLElement>();
-  const scene = ease(clamp((progress - 0.1) / 0.78));
+  const scene = ease(clamp((progress - 0.08) / 0.82));
 
   return (
-    <section ref={ref} className="relative min-h-[200svh] sm:min-h-[215svh] lg:min-h-[230svh]">
+    <section ref={ref} className="relative min-h-[190svh] sm:min-h-[210svh] lg:min-h-[230svh]">
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-        <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
+        <div className="container-page relative z-10 border-t border-line py-6 sm:py-10 lg:py-12">
           <div className="grid gap-5 sm:grid-cols-12 sm:items-end">
             <div className="sm:col-span-7">
               <span className="eyebrow">{t.eyebrow}</span>
@@ -30,33 +30,35 @@ export function BeforeAfterAutomation() {
                 {t.title}
               </h2>
             </div>
-            <div className="flex items-center gap-3 text-end sm:col-span-4 sm:col-start-9 sm:justify-end">
+            <div className="flex items-center gap-3 sm:col-span-4 sm:col-start-9 sm:justify-end">
               <span
-                className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-ink-faint"
-                style={{ opacity: 1 - scene }}
+                className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors text-ink-faint"
+                style={{ color: scene < 0.5 ? 'hsl(var(--ds-ink))' : 'hsl(var(--ds-ink-faint))' }}
               >
                 {t.beforeLabel}
               </span>
               <span className="h-px w-10 bg-line" />
               <span
-                className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-brand"
-                style={{ opacity: 0.3 + scene * 0.7 }}
+                className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors"
+                style={{ color: scene >= 0.5 ? 'hsl(var(--brand))' : 'hsl(var(--ds-ink-faint))' }}
               >
                 {t.afterLabel}
               </span>
             </div>
           </div>
 
-          <div className="relative mt-8 grid grid-cols-2 gap-x-5 gap-y-4 sm:mt-12 sm:gap-x-12 sm:gap-y-7 lg:ms-auto lg:w-[82%]">
+          <div className="relative mt-6 grid grid-cols-1 gap-y-0 sm:mt-12 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-7 lg:ms-auto lg:w-[82%]">
             {t.pairs.map((pair, index) => {
-              const local = ease(clamp((scene - index * 0.055) / 0.82));
+              const local = ease(clamp((scene - index * 0.17) / 0.28));
               const scatter = SCATTER[index];
               const x = scatter.x * (dir === 'rtl' ? -1 : 1) * (1 - local);
+              const outgoing = 1 - ease(clamp(local / 0.46));
+              const incoming = ease(clamp((local - 0.54) / 0.46));
 
               return (
                 <article
                   key={pair.before}
-                  className="relative min-h-[7rem] border-t border-line py-4 sm:min-h-[9rem] sm:py-5"
+                  className="relative min-h-[4.65rem] border-t border-line py-3 sm:min-h-[9rem] sm:py-5"
                   style={{
                     transform: `translate3d(${x}px, ${scatter.y * (1 - local)}px, 0) rotate(${scatter.r * (1 - local)}deg)`,
                   }}
@@ -64,25 +66,24 @@ export function BeforeAfterAutomation() {
                   <span className="text-display text-[0.68rem] tabular-nums text-ink-faint">
                     0{index + 1}
                   </span>
-                  <div className="relative mt-3 min-h-[2.5rem] sm:mt-4">
-                    <p
-                      className="text-display absolute inset-x-0 top-0 text-[clamp(1.15rem,3.4vw,2.25rem)] text-ink"
-                      style={{
-                        opacity: 1 - local,
-                        transform: `translate3d(0, ${-8 * local}px, 0)`,
-                      }}
+                  <div className="mt-1.5 h-[2rem] overflow-hidden sm:mt-4 sm:h-[3rem]">
+                    <div
+                      className="h-[4rem] sm:h-[6rem]"
+                      style={{ transform: `translate3d(0, ${-local * 50}%, 0)` }}
                     >
-                      {pair.before}
-                    </p>
-                    <p
-                      className="text-display absolute inset-x-0 top-0 text-[clamp(1.15rem,3.4vw,2.25rem)] text-brand"
-                      style={{
-                        opacity: local,
-                        transform: `translate3d(0, ${(1 - local) * 12}px, 0)`,
-                      }}
-                    >
-                      {pair.after}
-                    </p>
+                      <p
+                        className="text-display flex h-1/2 items-center text-[clamp(1.05rem,3.4vw,2.25rem)] text-ink"
+                        style={{ opacity: outgoing, transform: `scale(${1 - local * 0.035})` }}
+                      >
+                        {pair.before}
+                      </p>
+                      <p
+                        className="text-display flex h-1/2 items-center text-[clamp(1.05rem,3.4vw,2.25rem)] text-brand"
+                        style={{ opacity: incoming, transform: `scale(${0.965 + local * 0.035})` }}
+                      >
+                        {pair.after}
+                      </p>
+                    </div>
                   </div>
                 </article>
               );

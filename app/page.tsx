@@ -185,6 +185,7 @@ export default function HomePage() {
 function HomeFaq() {
   const { dict } = useI18n();
   const t = dict.home.faqPreview;
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   return (
     <div>
       <span className="eyebrow">{t.eyebrow}</span>
@@ -192,34 +193,66 @@ function HomeFaq() {
         {t.title}
       </h2>
       <dl className="mt-10 border-t border-line sm:mt-12">
-        {t.items.map((item) => (
-          <details
-            key={item.q}
-            className="group border-b border-line py-5 [&_summary::-webkit-details-marker]:hidden"
-          >
-            <summary className="flex cursor-pointer list-none items-start justify-between gap-6">
-              <dt className="text-display text-[clamp(1rem,2vw,1.2rem)] text-ink transition-colors group-open:text-brand">
-                {item.q}
+        {t.items.map((item, index) => {
+          const open = openIndex === index;
+          const answerId = `home-faq-answer-${index}`;
+          return (
+            <div
+              key={item.q}
+              className={cn(
+                'border-b py-1 transition-colors duration-500',
+                open ? 'border-[hsl(var(--brand)/0.38)]' : 'border-line'
+              )}
+            >
+              <dt>
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(open ? null : index)}
+                  aria-expanded={open}
+                  aria-controls={answerId}
+                  className="group flex min-h-16 w-full items-center justify-between gap-6 py-4 text-start focus-visible:outline-none"
+                >
+                  <span
+                    className={cn(
+                      'text-display text-[clamp(1rem,2vw,1.2rem)] transition-[color,transform] duration-500',
+                      open ? 'translate-x-1 text-brand rtl:-translate-x-1' : 'text-ink group-hover:text-brand'
+                    )}
+                  >
+                    {item.q}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'h-5 w-5 shrink-0 transition-[color,transform] duration-500',
+                      open ? 'rotate-45 text-brand' : 'text-ink-faint group-hover:text-brand'
+                    )}
+                  >
+                    <svg viewBox="0 0 20 20" fill="none" className="h-full w-full">
+                      <path d="M10 3v14M3 10h14" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                </button>
               </dt>
-              <span
-                aria-hidden="true"
-                className="mt-1 h-4 w-4 shrink-0 text-ink-faint transition-transform duration-300 group-open:rotate-45 group-open:text-brand"
+              <dd
+                id={answerId}
+                aria-hidden={!open}
+                className={cn(
+                  'grid max-w-2xl transition-[grid-template-rows,opacity] duration-500 ease-out',
+                  open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                )}
               >
-                <svg viewBox="0 0 16 16" fill="none" className="h-full w-full">
-                  <path
-                    d="M8 2v12M2 8h12"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-            </summary>
-            <dd className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
-              {item.a}
-            </dd>
-          </details>
-        ))}
+                <div className="overflow-hidden">
+                  <p
+                    className="pb-5 pe-10 text-sm leading-relaxed text-ink-muted transition-transform duration-500 ease-out"
+                    style={{ transform: open ? 'translateY(0)' : 'translateY(-0.45rem)' }}
+                  >
+                    {item.a}
+                  </p>
+                </div>
+              </dd>
+            </div>
+          );
+        })}
       </dl>
     </div>
   );

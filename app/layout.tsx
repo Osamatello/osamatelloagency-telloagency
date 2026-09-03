@@ -5,7 +5,6 @@ import { DM_Sans, Space_Grotesk, Cairo } from 'next/font/google';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
-import { MobileStickyCTA } from '@/components/site/MobileStickyCTA';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -134,9 +133,6 @@ export default function RootLayout({
             </main>
 
             <Footer />
-            <MobileStickyCTA />
-
-            <div className="h-16 lg:hidden" aria-hidden="true" />
           </LanguageProvider>
 
           <SpeedInsights />

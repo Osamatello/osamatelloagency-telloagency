@@ -7,6 +7,9 @@ type Point = { x: number; y: number; scale: number; rotation: number; z: number 
 type Fragment = { depth: number; kind: number; color: string; phase: number; speed: number; states: Point[] };
 
 const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
+const VISIBILITY_BOOST = 1.18;
+const MOBILE_MASS_VERTICES = [[0.5, 0.13], [0.84, 0.34], [0.73, 0.73], [0.5, 0.89], [0.16, 0.7], [0.22, 0.32]] as const;
+const DESKTOP_MASS_VERTICES = [[0.5, 0.12], [0.82, 0.28], [0.76, 0.73], [0.5, 0.88], [0.18, 0.71], [0.24, 0.27]] as const;
 const rand = (seed: number) => {
   const value = Math.sin(seed * 91.713) * 43758.5453;
   return value - Math.floor(value);
@@ -22,40 +25,52 @@ function createFragments(count: number, compact: boolean): Fragment[] {
     const depth = 0.25 + c * 1.15;
     const angle = index * 2.39996;
     const group = index % 3;
-    const lane = (index % 13) / 12;
-    const pair = index % 2;
-    const band = index % 4;
-    const latticeColumns = compact ? 6 : 11;
-    const latticeRows = compact ? 16 : 8;
-    const latticeX = (index % latticeColumns) / (latticeColumns - 1);
-    const latticeY = (Math.floor(index / latticeColumns) % latticeRows) / (latticeRows - 1);
-    const clusterX = (compact ? [0.2, 0.78, 0.5] : [0.2, 0.73, 0.5])[group];
-    const clusterY = (compact ? [0.28, 0.54, 0.82] : [0.7, 0.34, 0.78])[group];
-    const stream = index % 3;
+    const sequence = index / Math.max(count - 1, 1);
+    const layer = index % 4;
     const localCluster = index % 6 === 0;
     const scatterX = localCluster ? [0.12, 0.82, 0.68][group] + (a - 0.5) * 0.16 : 0.02 + a * 0.96;
     const scatterY = localCluster ? [0.76, 0.2, 0.68][group] + (b - 0.5) * 0.15 : 0.03 + b * 0.92;
-    const orbitRadius = 0.08 + (index % 8) * 0.018 + c * 0.035;
-    const structuredX = compact ? 0.16 + (index % 3) * 0.34 : 0.1 + lane * 0.8;
-    const structuredY = compact
-      ? 0.14 + ((Math.floor(index / 3) % 13) / 12) * 0.72
-      : 0.2 + band * 0.19 + (b - 0.5) * 0.055;
-    const orbitX = compact
-      ? 0.5 + Math.cos(angle) * (0.16 + (index % 7) * 0.018)
-      : (pair ? 0.73 : 0.27) + Math.cos(angle) * orbitRadius;
-    const orbitY = compact
-      ? 0.52 + Math.sin(angle) * (0.075 + (index % 7) * 0.009)
-      : 0.49 + Math.sin(angle) * orbitRadius * 1.65;
-    const streamX = compact
-      ? 0.5 + Math.sin(lane * Math.PI * (2.2 + stream * 0.38) + stream * 1.7) * (0.19 + stream * 0.035)
-      : 0.01 + lane * 0.98;
-    const streamY = compact
-      ? 0.08 + lane * 0.84
-      : 0.72 - lane * 0.42 + Math.sin(lane * Math.PI * (2.4 + stream * 0.4) + stream * 1.7) * (0.13 + stream * 0.045);
-    const latticeFinalX = compact
-      ? 0.12 + latticeX * 0.76 + (latticeY % 2) * 0.018
-      : 0.14 + latticeX * 0.72 + (latticeY % 2) * 0.035;
-    const latticeFinalY = compact ? 0.09 + latticeY * 0.82 : 0.1 + latticeY * 0.78;
+
+    // State 1: a dense core surrounded by several abstract orbital shells.
+    const nucleusCore = index % 4 === 0;
+    const nucleusRadiusX = nucleusCore ? 0.018 + a * 0.055 : 0.13 + layer * 0.045 + a * 0.018;
+    const nucleusRadiusY = nucleusCore ? 0.012 + b * 0.038 : (compact ? 0.055 : 0.075) + layer * (compact ? 0.021 : 0.032);
+    const nucleusX = 0.5 + Math.cos(angle) * nucleusRadiusX;
+    const nucleusY = (compact ? 0.54 : 0.5) + Math.sin(angle) * nucleusRadiusY;
+
+    // State 2: a dimensional zigzag / wave made from particles, never a line.
+    const wavePhase = (sequence * (compact ? 2.35 : 3.2)) % 1;
+    const zigzag = 1 - 4 * Math.abs(wavePhase - 0.5);
+    const waveX = compact ? 0.5 + zigzag * 0.31 + (group - 1) * 0.022 : 0.05 + sequence * 0.9;
+    const waveY = compact ? 0.08 + sequence * 0.84 : 0.5 + zigzag * 0.27 + (group - 1) * 0.026;
+
+    // State 3: one dominant planetary body with asymmetric depth-layered orbits.
+    const planetaryCore = index % 6 === 0;
+    const planetCenterX = compact ? 0.5 : 0.62;
+    const planetCenterY = compact ? 0.52 : 0.48;
+    const planetRadiusX = planetaryCore ? 0.018 + a * 0.05 : 0.11 + layer * 0.055 + a * 0.02;
+    const planetRadiusY = planetaryCore ? 0.014 + b * 0.04 : (compact ? 0.055 : 0.07) + layer * (compact ? 0.025 : 0.035);
+    const planetAngle = angle * 0.72 + layer * 0.48;
+    const planetX = planetCenterX + Math.cos(planetAngle) * planetRadiusX;
+    const planetY = planetCenterY + Math.sin(planetAngle) * planetRadiusY;
+
+    // State 4: a spiral field that tightens into a deep spatial vortex.
+    const vortexRadius = 0.055 + (1 - sequence) * (compact ? 0.36 : 0.43);
+    const vortexAngle = sequence * Math.PI * 7 + group * 0.42;
+    const vortexX = (compact ? 0.52 : 0.48) + Math.cos(vortexAngle) * vortexRadius;
+    const vortexY = (compact ? 0.52 : 0.5) + Math.sin(vortexAngle) * vortexRadius * (compact ? 0.48 : 0.67);
+
+    // State 5: nested fragments assemble into an architectural six-plane mass.
+    const massVertices = compact ? MOBILE_MASS_VERTICES : DESKTOP_MASS_VERTICES;
+    const edge = index % massVertices.length;
+    const nextEdge = (edge + 1) % massVertices.length;
+    const edgeSteps = Math.max(2, Math.ceil(count / massVertices.length));
+    const edgeAmount = (Math.floor(index / massVertices.length) % edgeSteps) / (edgeSteps - 1);
+    const edgeX = massVertices[edge][0] + (massVertices[nextEdge][0] - massVertices[edge][0]) * edgeAmount;
+    const edgeY = massVertices[edge][1] + (massVertices[nextEdge][1] - massVertices[edge][1]) * edgeAmount;
+    const inset = index % 4 === 0 ? 0.58 : 1;
+    const massX = 0.5 + (edgeX - 0.5) * inset + (a - 0.5) * 0.018;
+    const massY = 0.5 + (edgeY - 0.5) * inset + (b - 0.5) * 0.018;
 
     return {
       depth,
@@ -65,11 +80,11 @@ function createFragments(count: number, compact: boolean): Fragment[] {
       speed: 0.22 + b * 0.38,
       states: [
         { x: scatterX, y: scatterY, scale: 0.42 + depth * 0.62, rotation: angle, z: 0.18 + c * 1.65 },
-        { x: clusterX + Math.cos(angle) * (0.018 + a * 0.105), y: clusterY + Math.sin(angle) * (0.018 + b * 0.09), scale: 0.65 + depth * 0.62, rotation: angle * 0.25, z: 0.25 + rand(index + 310) * 1.45 },
-        { x: structuredX, y: structuredY, scale: 0.48 + depth * 0.4, rotation: band % 2 ? Math.PI / 4 : -Math.PI / 4, z: 0.42 + band * 0.22 + c * 0.42 },
-        { x: orbitX, y: orbitY, scale: 0.48 + depth * 0.82, rotation: angle + (pair ? Math.PI / 2 : -Math.PI / 2), z: 0.16 + ((index + pair * 3) % 9) * 0.19 },
-        { x: streamX, y: streamY, scale: 0.42 + depth * 0.9, rotation: angle * 0.16 + lane * Math.PI, z: 0.12 + ((index + stream) % 10) * 0.18 },
-        { x: latticeFinalX, y: latticeFinalY, scale: 0.42 + depth * 0.46, rotation: (latticeX + latticeY) * Math.PI * 0.25, z: 0.38 + ((index % 6) / 5) * 1.05 },
+        { x: nucleusX, y: nucleusY, scale: nucleusCore ? 0.95 + depth * 0.72 : 0.42 + depth * 0.52, rotation: angle * 0.32, z: nucleusCore ? 1.25 + c * 0.55 : 0.2 + layer * 0.42 },
+        { x: waveX, y: waveY, scale: 0.44 + depth * 0.58, rotation: zigzag > 0 ? Math.PI / 4 : -Math.PI / 4, z: 0.22 + group * 0.48 + c * 0.3 },
+        { x: planetX, y: planetY, scale: planetaryCore ? 1.05 + depth * 0.7 : 0.4 + depth * 0.55, rotation: planetAngle, z: planetaryCore ? 1.35 + c * 0.45 : 0.16 + layer * 0.43 },
+        { x: vortexX, y: vortexY, scale: 0.38 + depth * (0.45 + sequence * 0.45), rotation: vortexAngle + Math.PI / 4, z: 0.18 + sequence * 1.45 },
+        { x: massX, y: massY, scale: 0.4 + depth * (inset < 1 ? 0.72 : 0.5), rotation: edge * (Math.PI / 3), z: inset < 1 ? 1.15 + c * 0.45 : 0.28 + layer * 0.34 },
       ],
     };
   });
@@ -151,8 +166,11 @@ export function HeroEnvironment({ className }: { className?: string }) {
       const idleX = reduced ? 0 : Math.sin(elapsed * 0.00016) * width * 0.004;
       const idleY = reduced ? 0 : Math.cos(elapsed * 0.00013) * height * 0.004;
       context.save();
-      context.translate(idleX, idleY);
-      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * calm;
+      context.translate(width * 0.5 + idleX, height * 0.5 + idleY);
+      context.rotate(reduced ? 0 : Math.sin(elapsed * 0.00008) * 0.014);
+      context.translate(-width * 0.5, -height * 0.5);
+      const wireBreath = reduced ? 1 : 0.94 + Math.sin(elapsed * 0.00022) * 0.06;
+      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * VISIBILITY_BOOST * wireBreath * calm;
       context.strokeStyle = '#315f4d';
       context.lineWidth = 1;
       context.beginPath();
@@ -181,13 +199,20 @@ export function HeroEnvironment({ className }: { className?: string }) {
       fragments.forEach((fragment) => {
         const point = pointAt(fragment);
         const parallax = (target - progress) * 38 * point.z;
-        const idleStrength = reduced ? 0 : (1.2 + point.z * 2.8);
-        const idlePhase = fragment.phase + elapsed * 0.0001 * fragment.speed;
+        const idleStrength = reduced ? 0 : (1.8 + point.z * 3.8);
+        const idlePhase = fragment.phase + elapsed * 0.00016 * fragment.speed;
         const idleX = Math.sin(idlePhase * 1.7) * idleStrength;
         const idleY = Math.cos(idlePhase * 1.13) * idleStrength * 0.72;
-        const breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.025 * point.z;
-        const x = point.x * width + idleX;
-        const y = point.y * height + parallax + idleY;
+        const breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.04 * point.z;
+        const orbitalPresence = Math.max(
+          1 - clamp(Math.abs(progress - 1) / 0.85),
+          1 - clamp(Math.abs(progress - 3) / 0.85)
+        );
+        const vortexPresence = 1 - clamp(Math.abs(progress - 4) / 0.9);
+        const localOrbit = reduced ? 0 : orbitalPresence * (3.5 + point.z * 3.2);
+        const localSpiral = reduced ? 0 : vortexPresence * (2.5 + point.z * 2.4);
+        const x = point.x * width + idleX + Math.cos(idlePhase * 1.25) * localOrbit + Math.sin(idlePhase * 1.8) * localSpiral;
+        const y = point.y * height + parallax + idleY + Math.sin(idlePhase) * localOrbit * 0.58 + Math.cos(idlePhase * 1.45) * localSpiral;
         const quiet = width < 640
           ? point.x > 0.1 && point.x < 0.9 && point.y > 0.08 && point.y < 0.45
           : point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
@@ -197,7 +222,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
         context.save();
         context.translate(x, y);
         context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : elapsed * 0.000018 * fragment.speed * point.z));
-        context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * calm;
+        context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * calm;
         context.fillStyle = fragment.color;
         context.strokeStyle = fragment.color;
         context.lineWidth = 1;
