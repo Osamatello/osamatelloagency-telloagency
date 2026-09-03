@@ -14,7 +14,7 @@ const rand = (seed: number) => {
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 const smooth = (value: number) => value * value * (3 - 2 * value);
 
-function createFragments(count: number): Fragment[] {
+function createFragments(count: number, compact: boolean): Fragment[] {
   return Array.from({ length: count }, (_, index) => {
     const a = rand(index + 1);
     const b = rand(index + 71);
@@ -25,15 +25,37 @@ function createFragments(count: number): Fragment[] {
     const lane = (index % 13) / 12;
     const pair = index % 2;
     const band = index % 4;
-    const latticeX = (index % 11) / 10;
-    const latticeY = (Math.floor(index / 11) % 8) / 7;
-    const clusterX = [0.2, 0.73, 0.5][group];
-    const clusterY = [0.7, 0.34, 0.78][group];
+    const latticeColumns = compact ? 6 : 11;
+    const latticeRows = compact ? 16 : 8;
+    const latticeX = (index % latticeColumns) / (latticeColumns - 1);
+    const latticeY = (Math.floor(index / latticeColumns) % latticeRows) / (latticeRows - 1);
+    const clusterX = (compact ? [0.2, 0.78, 0.5] : [0.2, 0.73, 0.5])[group];
+    const clusterY = (compact ? [0.28, 0.54, 0.82] : [0.7, 0.34, 0.78])[group];
     const stream = index % 3;
     const localCluster = index % 6 === 0;
     const scatterX = localCluster ? [0.12, 0.82, 0.68][group] + (a - 0.5) * 0.16 : 0.02 + a * 0.96;
     const scatterY = localCluster ? [0.76, 0.2, 0.68][group] + (b - 0.5) * 0.15 : 0.03 + b * 0.92;
     const orbitRadius = 0.08 + (index % 8) * 0.018 + c * 0.035;
+    const structuredX = compact ? 0.16 + (index % 3) * 0.34 : 0.1 + lane * 0.8;
+    const structuredY = compact
+      ? 0.14 + ((Math.floor(index / 3) % 13) / 12) * 0.72
+      : 0.2 + band * 0.19 + (b - 0.5) * 0.055;
+    const orbitX = compact
+      ? 0.5 + Math.cos(angle) * (0.16 + (index % 7) * 0.018)
+      : (pair ? 0.73 : 0.27) + Math.cos(angle) * orbitRadius;
+    const orbitY = compact
+      ? 0.52 + Math.sin(angle) * (0.075 + (index % 7) * 0.009)
+      : 0.49 + Math.sin(angle) * orbitRadius * 1.65;
+    const streamX = compact
+      ? 0.5 + Math.sin(lane * Math.PI * (2.2 + stream * 0.38) + stream * 1.7) * (0.19 + stream * 0.035)
+      : 0.01 + lane * 0.98;
+    const streamY = compact
+      ? 0.08 + lane * 0.84
+      : 0.72 - lane * 0.42 + Math.sin(lane * Math.PI * (2.4 + stream * 0.4) + stream * 1.7) * (0.13 + stream * 0.045);
+    const latticeFinalX = compact
+      ? 0.12 + latticeX * 0.76 + (latticeY % 2) * 0.018
+      : 0.14 + latticeX * 0.72 + (latticeY % 2) * 0.035;
+    const latticeFinalY = compact ? 0.09 + latticeY * 0.82 : 0.1 + latticeY * 0.78;
 
     return {
       depth,
@@ -44,10 +66,10 @@ function createFragments(count: number): Fragment[] {
       states: [
         { x: scatterX, y: scatterY, scale: 0.42 + depth * 0.62, rotation: angle, z: 0.18 + c * 1.65 },
         { x: clusterX + Math.cos(angle) * (0.018 + a * 0.105), y: clusterY + Math.sin(angle) * (0.018 + b * 0.09), scale: 0.65 + depth * 0.62, rotation: angle * 0.25, z: 0.25 + rand(index + 310) * 1.45 },
-        { x: 0.1 + lane * 0.8, y: 0.2 + band * 0.19 + (b - 0.5) * 0.055, scale: 0.48 + depth * 0.4, rotation: band % 2 ? Math.PI / 4 : -Math.PI / 4, z: 0.42 + band * 0.22 + c * 0.42 },
-        { x: (pair ? 0.73 : 0.27) + Math.cos(angle) * orbitRadius, y: 0.49 + Math.sin(angle) * orbitRadius * 1.65, scale: 0.48 + depth * 0.82, rotation: angle + (pair ? Math.PI / 2 : -Math.PI / 2), z: 0.16 + ((index + pair * 3) % 9) * 0.19 },
-        { x: 0.01 + lane * 0.98, y: 0.72 - lane * 0.42 + Math.sin(lane * Math.PI * (2.4 + stream * 0.4) + stream * 1.7) * (0.13 + stream * 0.045), scale: 0.42 + depth * 0.9, rotation: angle * 0.16 + lane * Math.PI, z: 0.12 + ((index + stream) % 10) * 0.18 },
-        { x: 0.14 + latticeX * 0.72 + (latticeY % 2) * 0.035, y: 0.1 + latticeY * 0.78, scale: 0.42 + depth * 0.46, rotation: (latticeX + latticeY) * Math.PI * 0.25, z: 0.38 + ((index % 6) / 5) * 1.05 },
+        { x: structuredX, y: structuredY, scale: 0.48 + depth * 0.4, rotation: band % 2 ? Math.PI / 4 : -Math.PI / 4, z: 0.42 + band * 0.22 + c * 0.42 },
+        { x: orbitX, y: orbitY, scale: 0.48 + depth * 0.82, rotation: angle + (pair ? Math.PI / 2 : -Math.PI / 2), z: 0.16 + ((index + pair * 3) % 9) * 0.19 },
+        { x: streamX, y: streamY, scale: 0.42 + depth * 0.9, rotation: angle * 0.16 + lane * Math.PI, z: 0.12 + ((index + stream) % 10) * 0.18 },
+        { x: latticeFinalX, y: latticeFinalY, scale: 0.42 + depth * 0.46, rotation: (latticeX + latticeY) * Math.PI * 0.25, z: 0.38 + ((index % 6) / 5) * 1.05 },
       ],
     };
   });
@@ -89,7 +111,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      fragments = createFragments(width < 640 ? 72 : 258);
+      fragments = createFragments(width < 640 ? 96 : 258, width < 640);
       measure();
       updateTarget();
       draw();
@@ -130,7 +152,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       const idleY = reduced ? 0 : Math.cos(elapsed * 0.00013) * height * 0.004;
       context.save();
       context.translate(idleX, idleY);
-      context.globalAlpha = 0.105 * calm;
+      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * calm;
       context.strokeStyle = '#315f4d';
       context.lineWidth = 1;
       context.beginPath();
@@ -166,8 +188,10 @@ export function HeroEnvironment({ className }: { className?: string }) {
         const breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.025 * point.z;
         const x = point.x * width + idleX;
         const y = point.y * height + parallax + idleY;
-        const quiet = point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
-        const base = width < 640 ? 2.8 : 3.6;
+        const quiet = width < 640
+          ? point.x > 0.1 && point.x < 0.9 && point.y > 0.08 && point.y < 0.45
+          : point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
+        const base = width < 640 ? 3.2 : 3.6;
         const foregroundBoost = fragment.kind === 6 && point.z > 1.15 ? 1.7 : 1;
         const size = (base + point.z * (width < 640 ? 4.4 : 9.4)) * point.scale * foregroundBoost * breath;
         context.save();

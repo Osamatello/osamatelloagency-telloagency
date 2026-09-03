@@ -9,7 +9,7 @@ import { BusinessAutomationDemo } from '@/components/site/BusinessAutomationDemo
 import { IntegrationRail } from '@/components/site/home/IntegrationRail';
 import { Capabilities } from '@/components/site/home/Capabilities';
 import { ProblemShift } from '@/components/site/home/ProblemShift';
-import { AutomationPath } from '@/components/site/home/AutomationPath';
+import { BeforeAfterAutomation } from '@/components/site/home/BeforeAfterAutomation';
 import { MethodStages } from '@/components/site/home/MethodStages';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -120,8 +120,8 @@ export default function HomePage() {
             >
               {stats.map((s) => (
                 <div key={s.label} className="flex items-baseline gap-2.5">
-                  <dt className="text-display text-xl text-brand">{s.value}</dt>
-                  <dd className="max-w-[11rem] text-xs leading-tight text-ink-faint">
+                  <dt className="text-display text-2xl text-brand">{s.value}</dt>
+                  <dd className="max-w-[9rem] text-xs font-medium leading-tight text-ink-faint">
                     {s.label}
                   </dd>
                 </div>
@@ -140,12 +140,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Capabilities — the connected system branches into what we build */}
-        <section data-visual-state="2" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
-            <Capabilities />
-          </div>
-        </section>
+        {/* Capabilities — pinned progressive accumulation */}
+        <div data-visual-state="2" className="relative">
+          <Capabilities />
+        </div>
 
         {/* The Shift — the route becomes the transformation rail (no bg network) */}
         <section data-visual-state="3" className="relative overflow-hidden">
@@ -154,12 +152,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* The Path — the route becomes the workflow timeline (no bg network) */}
-        <section data-visual-state="4" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
-            <AutomationPath />
-          </div>
-        </section>
+        {/* Before / After — pinned transformation from manual to automated */}
+        <div data-visual-state="4" className="relative">
+          <BeforeAfterAutomation />
+        </div>
 
         {/* How It Works — the route becomes a structured implementation flow */}
         <section data-visual-state="5" className="relative overflow-hidden">

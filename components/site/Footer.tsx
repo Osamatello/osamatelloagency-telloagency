@@ -7,25 +7,24 @@ import { Logo } from './Logo';
 
 export function Footer() {
   const { dict } = useI18n();
-  const year = new Date().getFullYear();
 
   return (
-    <footer className="relative z-10 border-t border-line bg-paper text-ink">
-      <div className="container-page py-10 sm:py-12">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-12 lg:gap-7">
-          <div className="lg:col-span-4">
+    <footer className="relative z-10 border-t border-[#dedbd3] bg-[#fbfaf7] text-[#1d2521]">
+      <div className="container-page py-9 sm:py-10">
+        <div className="grid gap-8 md:grid-cols-12 md:gap-7">
+          <div className="md:col-span-5">
             <Logo />
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-muted">
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#626a66]">
               {dict.footer.description}
             </p>
           </div>
 
-          <div className="lg:col-span-2">
-            <h3 className="eyebrow text-ink-faint">{dict.footer.navTitle}</h3>
-            <ul className="mt-3 space-y-2">
-              {dict.nav.slice(0, 4).map((item) => (
+          <div className="md:col-span-3">
+            <h3 className="eyebrow text-[#858b87]">{dict.footer.navTitle}</h3>
+            <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 md:grid-cols-1">
+              {dict.nav.slice(0, 6).map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-ink-muted transition-colors hover:text-brand">
+                  <Link href={item.href} className="text-sm text-[#626a66] transition-colors hover:text-brand">
                     {item.label}
                   </Link>
                 </li>
@@ -33,22 +32,9 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="lg:col-span-2">
-            <h3 className="eyebrow text-ink-faint">{dict.footer.servicesTitle}</h3>
-            <ul className="mt-3 space-y-2">
-              {dict.nav.slice(4, 7).map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-sm text-ink-muted transition-colors hover:text-brand">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="lg:col-span-4">
-            <h3 className="eyebrow text-ink-faint">{dict.footer.contactTitle}</h3>
-            <ul className="mt-3 space-y-2.5 text-sm text-ink-muted">
+          <div className="md:col-span-4">
+            <h3 className="eyebrow text-[#858b87]">{dict.footer.contactTitle}</h3>
+            <ul className="mt-3 space-y-2.5 text-sm text-[#626a66]">
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-brand" />
                 <a href="tel:+971501607600" className="transition-colors hover:text-brand">+971 50 160 7600</a>
@@ -65,8 +51,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-9 flex flex-col gap-4 border-t border-line pt-5 text-xs text-ink-faint sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} {dict.brand.name}. {dict.footer.rights}</p>
+        <div className="mt-8 flex flex-col gap-4 border-t border-[#dedbd3] pt-5 text-xs text-[#858b87] sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 {dict.brand.name}. {dict.footer.rights}</p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             {dict.footer.legal.map((item) => (
               <Link key={item.label} href={item.href} className="transition-colors hover:text-brand">
