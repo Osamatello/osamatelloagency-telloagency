@@ -5,11 +5,8 @@ import { useEffect, useState } from 'react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { cn } from '@/lib/utils';
 import { HeroEnvironment } from '@/components/site/HeroEnvironment';
-import { SectionHeading } from '@/components/site/SectionHeading';
-import { FAQAccordion } from '@/components/site/FAQAccordion';
-import { CTASection } from '@/components/site/CTASection';
 import { BusinessAutomationDemo } from '@/components/site/BusinessAutomationDemo';
-import { AutomationNetwork } from '@/components/site/home/AutomationNetwork';
+import { NetRoute } from '@/components/site/home/NetRoute';
 import { IntegrationRail } from '@/components/site/home/IntegrationRail';
 import { Capabilities } from '@/components/site/home/Capabilities';
 import { ProblemShift } from '@/components/site/home/ProblemShift';
@@ -137,76 +134,133 @@ export default function HomePage() {
 
       {/* ============ MILESTONE 3 — one continuous light automation story ============ */}
       <div className="bg-paper text-ink">
-        {/* Integrations */}
+        {/* Integrations — pipeline enters from the hero */}
         <section className="relative overflow-hidden">
-          <AutomationNetwork variant="integrations" />
+          <NetRoute variant="integrations" />
           <div className="container-page relative z-10 py-20 pt-14 sm:py-24 lg:py-28 lg:pt-16">
             <IntegrationRail />
           </div>
         </section>
 
-        {/* Capabilities */}
+        {/* Capabilities — the connected system branches into what we build */}
         <section className="relative overflow-hidden">
-          <AutomationNetwork variant="capabilities" />
+          <NetRoute variant="capabilities" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <Capabilities />
           </div>
         </section>
 
-        {/* The Shift */}
+        {/* The Shift — the route becomes the transformation rail (no bg network) */}
         <section className="relative overflow-hidden">
-          <AutomationNetwork variant="shift" />
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
+          <div className="container-page border-t border-line py-20 sm:py-24 lg:py-28">
             <ProblemShift />
           </div>
         </section>
 
-        {/* The Path */}
+        {/* The Path — the route becomes the workflow timeline (no bg network) */}
         <section className="relative overflow-hidden">
-          <AutomationNetwork variant="path" />
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
+          <div className="container-page border-t border-line py-20 sm:py-24 lg:py-28">
             <AutomationPath />
           </div>
         </section>
 
-        {/* How It Works */}
+        {/* How It Works — the route becomes a structured implementation flow */}
         <section className="relative overflow-hidden">
-          <AutomationNetwork variant="method" />
+          <NetRoute variant="method" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <MethodStages />
           </div>
         </section>
+
+        {/* FAQ — light */}
+        <section className="relative overflow-hidden">
+          <NetRoute variant="method" />
+          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
+            <HomeFaq />
+          </div>
+        </section>
+
+        {/* Final CTA — light, the route converges toward one action */}
+        <section className="relative overflow-hidden">
+          <NetRoute variant="cta" />
+          <div className="container-page relative z-10 border-t border-line py-20 sm:py-28 lg:py-32">
+            <HomeCta />
+          </div>
+        </section>
       </div>
-
-      {/* ===== FAQ PREVIEW ===== */}
-      <section className="py-20 lg:py-28">
-        <div className="container-tello">
-          <SectionHeading
-            eyebrow={home.faqPreview.eyebrow}
-            title={home.faqPreview.title}
-            subtitle={home.faqPreview.subtitle}
-          />
-          <div className="mx-auto mt-12 max-w-3xl">
-            <FAQAccordion items={home.faqPreview.items} />
-          </div>
-          <div className="mt-10 text-center">
-            <Link href="/faq" className="btn-ghost-tello">
-              {dict.actions.viewAllFaqs}
-              <Arrow className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== FINAL CTA ===== */}
-      <CTASection
-        className="py-20 lg:py-28"
-        eyebrow={home.cta.eyebrow}
-        title={home.cta.title}
-        subtitle={home.cta.subtitle}
-        primaryCta={home.cta.primaryCta}
-        secondaryCta={home.cta.secondaryCta}
-      />
     </>
+  );
+}
+
+function HomeFaq() {
+  const { dict } = useI18n();
+  const t = dict.home.faqPreview;
+  return (
+    <div>
+      <span className="eyebrow">{t.eyebrow}</span>
+      <h2 className="text-display mt-5 max-w-2xl text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">
+        {t.title}
+      </h2>
+      <dl className="mt-10 border-t border-line sm:mt-12">
+        {t.items.map((item) => (
+          <details
+            key={item.q}
+            className="group border-b border-line py-5 [&_summary::-webkit-details-marker]:hidden"
+          >
+            <summary className="flex cursor-pointer list-none items-start justify-between gap-6">
+              <dt className="text-display text-[clamp(1rem,2vw,1.2rem)] text-ink transition-colors group-open:text-brand">
+                {item.q}
+              </dt>
+              <span
+                aria-hidden="true"
+                className="mt-1 h-4 w-4 shrink-0 text-ink-faint transition-transform duration-300 group-open:rotate-45 group-open:text-brand"
+              >
+                <svg viewBox="0 0 16 16" fill="none" className="h-full w-full">
+                  <path
+                    d="M8 2v12M2 8h12"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+            </summary>
+            <dd className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
+              {item.a}
+            </dd>
+          </details>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
+function HomeCta() {
+  const { dict, dir } = useI18n();
+  const t = dict.home.cta;
+  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
+  return (
+    <div className="max-w-3xl">
+      <span className="eyebrow">{t.eyebrow}</span>
+      <h2 className="text-display mt-6 text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink">
+        {t.title}
+      </h2>
+      {t.subtitle ? (
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted">
+          {t.subtitle}
+        </p>
+      ) : null}
+      <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+        <Link href="/consult" className="btn-primary">
+          {t.primaryCta}
+          <Arrow className="h-4 w-4" />
+        </Link>
+        {t.secondaryCta ? (
+          <Link href="/services" className="btn-outline">
+            {t.secondaryCta}
+          </Link>
+        ) : null}
+      </div>
+    </div>
   );
 }

@@ -441,33 +441,63 @@
 }
 
 /* ===========================================================================
-   AUTOMATION NETWORK  — shared layer behind every homepage section
-   (<AutomationNetwork variant="…" />). Neutral hairlines + a faint travelling
-   forest "flow" dash. Always behind content; mobile-reduced; RTL-mirrored.
+   AUTOMATION ROUTE  — one continuous pipeline down the homepage
+   (<NetRoute variant="…" />). A thin line pinned to the same left anchor in
+   every section (container gutter + 6px), junction nodes, forest active fill.
 =========================================================================== */
-.auto-net {
-  z-index: 0;
-  opacity: 0.7;
+.net-route {
+  inset-inline-start: calc(1.5rem + 6px);
+  width: 1px;
 }
-.auto-net-flow path {
-  stroke-dasharray: 2 13;
-  animation: flow-dash-slow 14s linear infinite;
+@media (min-width: 640px) {
+  .net-route { inset-inline-start: calc(2.5rem + 6px); }
 }
-.auto-net--rtl svg {
-  transform: scaleX(-1);
+@media (min-width: 1024px) {
+  .net-route { inset-inline-start: calc(4rem + 6px); }
 }
-@media (max-width: 767px) {
-  .auto-net-desk {
-    display: none;
-  }
-  .auto-net {
-    opacity: 0.5;
-  }
+.net-line,
+.net-line-active {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 1px;
 }
+.net-line {
+  bottom: 0;
+  background-color: hsl(var(--ds-line));
+}
+.net-line-active {
+  height: 0;
+  background-color: hsl(var(--brand));
+  transition: height 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.net-line-active.is-in {
+  height: 100%;
+}
+.net-node {
+  position: absolute;
+  inset-inline-start: 0;
+  height: 7px;
+  width: 7px;
+  margin-inline-start: -3px;
+  border-radius: 9999px;
+  border: 1.5px solid hsl(var(--ds-line-strong));
+  background-color: hsl(var(--ds-paper));
+  transform: scale(0.55);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease,
+    border-color 0.6s ease, background-color 0.6s ease;
+}
+.net-node.is-in {
+  transform: scale(1);
+  opacity: 1;
+  border-color: hsl(var(--brand));
+  background-color: hsl(var(--brand));
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .auto-net-flow path {
-    animation: none;
-  }
+  .net-line-active { transition: none; }
+  .net-node { transition: none; }
 }
 
 @keyframes fade-up {
