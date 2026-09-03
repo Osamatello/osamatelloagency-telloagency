@@ -442,6 +442,10 @@
 
 /* Section geometry uses the exact same PipelineTracks rendering as the Hero. */
 .net-route { opacity: 1; }
+.net-route--integration {
+  bottom: auto;
+  height: 65svh;
+}
 .net-route-handoff { height: 7rem; bottom: auto; }
 
 @media (max-width: 767px) {
