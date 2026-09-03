@@ -38,8 +38,8 @@ export default function HomePage() {
   return (
     <>
       {/* ===== HERO ===== */}
-      <section className="relative isolate -mt-16 flex min-h-[100svh] items-center overflow-hidden bg-paper text-ink lg:-mt-[72px]">
-        <HeroEnvironment />
+      <HeroEnvironment />
+      <section data-visual-state="0" className="relative isolate -mt-16 flex min-h-[100svh] items-center overflow-hidden bg-transparent text-ink lg:-mt-[72px]">
 
         <div className="container-page relative z-10 w-full pb-14 pt-28 sm:pt-32 lg:pb-16 lg:pt-32">
           {/* Row 1 — eyebrow + full-width editorial headline */}
@@ -132,37 +132,37 @@ export default function HomePage() {
       </section>
 
       {/* ============ HOMEPAGE CONTENT ============ */}
-      <div className="bg-paper text-ink">
+      <div className="relative bg-transparent text-ink">
         {/* Integrations — pipeline enters from the hero */}
-        <section className="relative overflow-hidden">
+        <section data-visual-state="1" className="relative overflow-hidden">
           <div className="container-page relative z-10 py-20 pt-14 sm:py-24 lg:py-28 lg:pt-16">
             <IntegrationRail />
           </div>
         </section>
 
         {/* Capabilities — the connected system branches into what we build */}
-        <section className="relative overflow-hidden">
+        <section data-visual-state="2" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <Capabilities />
           </div>
         </section>
 
         {/* The Shift — the route becomes the transformation rail (no bg network) */}
-        <section className="relative overflow-hidden">
+        <section data-visual-state="3" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <ProblemShift />
           </div>
         </section>
 
         {/* The Path — the route becomes the workflow timeline (no bg network) */}
-        <section className="relative overflow-hidden">
+        <section data-visual-state="4" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <AutomationPath />
           </div>
         </section>
 
         {/* How It Works — the route becomes a structured implementation flow */}
-        <section className="relative overflow-hidden">
+        <section data-visual-state="5" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <MethodStages />
           </div>

@@ -3,14 +3,15 @@
 import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
-type Point = { x: number; y: number };
-type Fragment = { depth: number; rotation: number; kind: number; states: [Point, Point, Point, Point] };
+type Point = { x: number; y: number; scale: number; rotation: number };
+type Fragment = { depth: number; kind: number; color: string; states: Point[] };
 
 const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
 const rand = (seed: number) => {
   const value = Math.sin(seed * 91.713) * 43758.5453;
   return value - Math.floor(value);
 };
+const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 const smooth = (value: number) => value * value * (3 - 2 * value);
 
 function createFragments(count: number): Fragment[] {
@@ -18,18 +19,28 @@ function createFragments(count: number): Fragment[] {
     const a = rand(index + 1);
     const b = rand(index + 71);
     const c = rand(index + 149);
+    const depth = 0.25 + c * 1.15;
     const angle = index * 2.39996;
-    const radius = 0.06 + Math.sqrt(a) * 0.25;
-    const lane = (index % 9) / 8;
+    const group = index % 3;
+    const lane = (index % 13) / 12;
+    const pair = index % 2;
+    const latticeX = (index % 11) / 10;
+    const latticeY = (Math.floor(index / 11) % 8) / 7;
+    const clusterX = [0.2, 0.73, 0.5][group];
+    const clusterY = [0.7, 0.34, 0.78][group];
+    const orbitRadius = 0.12 + (index % 5) * 0.018;
+
     return {
-      depth: 0.35 + c * 0.85,
-      rotation: b * Math.PI,
-      kind: index % 4,
+      depth,
+      kind: index % 5,
+      color: COLORS[index % COLORS.length],
       states: [
-        { x: 0.04 + a * 0.92, y: 0.06 + b * 0.86 },
-        { x: 0.73 + Math.cos(angle) * radius, y: 0.47 + Math.sin(angle) * radius * 1.18 },
-        { x: 0.08 + lane * 0.86, y: 0.53 + Math.sin(lane * Math.PI * 2.4 + b) * 0.16 },
-        { x: 0.58 + Math.cos(angle * 0.72) * (0.12 + a * 0.31), y: 0.49 + Math.sin(angle * 1.13) * (0.1 + b * 0.32) },
+        { x: 0.03 + a * 0.94, y: 0.04 + b * 0.9, scale: 0.65 + depth * 0.35, rotation: angle },
+        { x: clusterX + Math.cos(angle) * (0.035 + a * 0.14), y: clusterY + Math.sin(angle) * (0.025 + b * 0.12), scale: 0.75 + depth * 0.4, rotation: angle * 0.35 },
+        { x: (pair ? 0.7 : 0.3) + Math.cos(angle) * orbitRadius, y: 0.5 + Math.sin(angle) * orbitRadius * 1.55, scale: 0.65 + depth * 0.48, rotation: angle + Math.PI / 3 },
+        { x: 0.16 + pair * 0.67 + (a - 0.5) * 0.12, y: 0.13 + lane * 0.74, scale: 0.8 + depth * 0.32, rotation: pair ? Math.PI / 4 : -Math.PI / 4 },
+        { x: 0.06 + lane * 0.88, y: 0.5 + Math.sin(lane * Math.PI * 2.5 + group * 0.8) * (0.12 + depth * 0.05), scale: 0.6 + depth * 0.5, rotation: angle * 0.18 },
+        { x: 0.18 + latticeX * 0.64 + (latticeY % 2) * 0.025, y: 0.14 + latticeY * 0.7, scale: 0.55 + depth * 0.3, rotation: (latticeX + latticeY) * Math.PI * 0.25 },
       ],
     };
   });
@@ -45,50 +56,101 @@ export function HeroEnvironment({ className }: { className?: string }) {
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let fragments: Fragment[] = [];
+    let anchors: number[] = [];
     let width = 0;
     let height = 0;
-    let target = reduced ? 0.33 : 0;
+    let target = reduced ? 0 : 0;
     let progress = target;
+    let calm = 1;
     let frame = 0;
-    let visible = true;
 
-    const positionAt = (fragment: Fragment) => {
-      const scaled = Math.min(2.999, Math.max(0, progress * 3));
-      const state = Math.floor(scaled);
-      const amount = smooth(scaled - state);
+    const measure = () => {
+      anchors = Array.from(document.querySelectorAll<HTMLElement>('[data-visual-state]')).map(
+        (element) => element.getBoundingClientRect().top + window.scrollY + element.offsetHeight * 0.5 - window.innerHeight * 0.5
+      );
+    };
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      fragments = createFragments(width < 640 ? 62 : 156);
+      measure();
+      updateTarget();
+      draw();
+    };
+
+    const updateTarget = () => {
+      if (reduced || anchors.length < 2) return;
+      const scroll = window.scrollY;
+      let state = anchors.length - 1;
+      for (let index = 0; index < anchors.length - 1; index++) {
+        if (scroll <= anchors[index + 1]) {
+          const local = clamp((scroll - anchors[index]) / Math.max(anchors[index + 1] - anchors[index], 1));
+          state = index + smooth(local);
+          break;
+        }
+      }
+      target = clamp(state, 0, 5);
+      calm = 1 - clamp((scroll - anchors[5]) / Math.max(height * 1.4, 1)) * 0.72;
+    };
+
+    const pointAt = (fragment: Fragment) => {
+      const state = Math.min(4, Math.floor(progress));
+      const amount = smooth(progress - state);
       const from = fragment.states[state];
-      const to = fragment.states[Math.min(state + 1, 3)];
-      return { x: from.x + (to.x - from.x) * amount, y: from.y + (to.y - from.y) * amount };
+      const to = fragment.states[state + 1];
+      return {
+        x: from.x + (to.x - from.x) * amount,
+        y: from.y + (to.y - from.y) * amount,
+        scale: from.scale + (to.scale - from.scale) * amount,
+        rotation: from.rotation + (to.rotation - from.rotation) * amount,
+      };
+    };
+
+    const drawWireframe = () => {
+      const phase = progress / 5;
+      context.save();
+      context.globalAlpha = 0.08 * calm;
+      context.strokeStyle = '#315f4d';
+      context.lineWidth = 1;
+      context.beginPath();
+      context.moveTo(width * (0.57 + phase * 0.05), height * 0.17);
+      context.lineTo(width * 0.9, height * (0.27 + phase * 0.05));
+      context.lineTo(width * (0.82 - phase * 0.08), height * 0.76);
+      context.lineTo(width * 0.5, height * (0.68 - phase * 0.08));
+      context.closePath();
+      context.moveTo(width * 0.57, height * 0.17);
+      context.lineTo(width * 0.72, height * 0.49);
+      context.lineTo(width * 0.9, height * (0.27 + phase * 0.05));
+      context.stroke();
+      context.restore();
     };
 
     const draw = () => {
       context.clearRect(0, 0, width, height);
-      context.save();
-      context.strokeStyle = 'rgba(49, 95, 77, 0.085)';
-      context.lineWidth = 1;
-      context.beginPath();
-      context.moveTo(width * 0.59, height * (0.16 + progress * 0.04));
-      context.lineTo(width * 0.91, height * (0.29 - progress * 0.02));
-      context.lineTo(width * 0.82, height * (0.73 + progress * 0.02));
-      context.lineTo(width * 0.54, height * (0.68 - progress * 0.02));
-      context.closePath();
-      context.stroke();
-      context.restore();
-
-      fragments.forEach((fragment, index) => {
-        const point = positionAt(fragment);
+      drawWireframe();
+      fragments.forEach((fragment) => {
+        const point = pointAt(fragment);
+        const parallax = (target - progress) * 20 * fragment.depth;
         const x = point.x * width;
-        const y = point.y * height + (progress - 0.5) * 22 * fragment.depth;
-        const textZone = point.x < 0.57 && point.y < 0.76;
-        const size = (width < 640 ? 3.5 : 5) + fragment.depth * 5;
+        const y = point.y * height + parallax;
+        const quiet = (point.x > 0.08 && point.x < 0.58 && point.y > 0.08 && point.y < 0.82) ||
+          (progress > 0.8 && point.x > 0.18 && point.x < 0.8 && point.y > 0.16 && point.y < 0.58);
+        const base = width < 640 ? 3.2 : 4.2;
+        const size = (base + fragment.depth * (width < 640 ? 4.2 : 7.4)) * point.scale;
         context.save();
         context.translate(x, y);
-        context.rotate(fragment.rotation + progress * (fragment.kind % 2 ? 0.8 : -0.55));
-        context.fillStyle = COLORS[index % COLORS.length];
-        context.strokeStyle = COLORS[index % COLORS.length];
-        context.globalAlpha = (textZone ? 0.075 : 0.2) * fragment.depth;
-        if (fragment.kind === 3) {
-          context.fillRect(-size * 0.75, -size * 0.25, size * 1.5, size * 0.5);
+        context.rotate(point.rotation + (target - progress) * fragment.depth * 0.5);
+        context.globalAlpha = (quiet ? 0.045 : 0.16 + fragment.depth * 0.075) * calm;
+        context.fillStyle = fragment.color;
+        context.strokeStyle = fragment.color;
+        context.lineWidth = 1;
+        if (fragment.kind === 4) {
+          context.fillRect(-size, -size * 0.22, size * 2, size * 0.44);
         } else {
           context.beginPath();
           context.moveTo(0, -size);
@@ -102,47 +164,28 @@ export function HeroEnvironment({ className }: { className?: string }) {
       });
     };
 
-    const resize = () => {
-      const box = canvas.getBoundingClientRect();
-      width = box.width;
-      height = box.height;
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
-      canvas.width = Math.round(width * ratio);
-      canvas.height = Math.round(height * ratio);
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      fragments = createFragments(width < 640 ? 44 : 108);
-      draw();
-    };
-    const updateTarget = () => {
-      if (reduced) return;
-      const rect = canvas.getBoundingClientRect();
-      target = Math.min(1, Math.max(0, -rect.top / Math.max(rect.height * 0.82, 1)));
-    };
     const animate = () => {
-      if (!visible) return;
-      progress += (target - progress) * 0.085;
+      progress += (target - progress) * 0.09;
       draw();
       frame = requestAnimationFrame(animate);
     };
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      if (visible && !frame && !reduced) frame = requestAnimationFrame(animate);
-      if (!visible && frame) { cancelAnimationFrame(frame); frame = 0; }
-    });
 
     resize();
-    updateTarget();
-    observer.observe(canvas);
     window.addEventListener('resize', resize);
     window.addEventListener('scroll', updateTarget, { passive: true });
     if (!reduced) frame = requestAnimationFrame(animate);
     return () => {
-      observer.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', updateTarget);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
 
-  return <canvas ref={canvasRef} aria-hidden="true" className={cn('pointer-events-none absolute inset-0 z-0 h-full w-full', className)} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className={cn('pointer-events-none fixed inset-0 z-0 h-screen w-screen', className)}
+    />
+  );
 }
