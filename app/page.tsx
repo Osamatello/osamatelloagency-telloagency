@@ -152,14 +152,16 @@ export default function HomePage() {
 
         {/* The Shift — the route becomes the transformation rail (no bg network) */}
         <section className="relative overflow-hidden">
-          <div className="container-page border-t border-line py-20 sm:py-24 lg:py-28">
+          <NetRoute variant="shift" className="net-route-handoff" />
+          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <ProblemShift />
           </div>
         </section>
 
         {/* The Path — the route becomes the workflow timeline (no bg network) */}
         <section className="relative overflow-hidden">
-          <div className="container-page border-t border-line py-20 sm:py-24 lg:py-28">
+          <NetRoute variant="path" className="net-route-handoff" />
+          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <AutomationPath />
           </div>
         </section>
@@ -174,7 +176,7 @@ export default function HomePage() {
 
         {/* FAQ — light */}
         <section className="relative overflow-hidden">
-          <NetRoute variant="method" />
+          <NetRoute variant="faq" />
           <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
             <HomeFaq />
           </div>
