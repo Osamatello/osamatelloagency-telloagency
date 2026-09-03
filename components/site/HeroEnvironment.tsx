@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { cn } from '@/lib/utils';
+import { PipelineTracks } from '@/components/site/PipelineTracks';
 
 /**
  * The automation environment living behind the hero typography.
@@ -131,32 +132,16 @@ export function HeroEnvironment({ className }: { className?: string }) {
       )}
     >
       {/* flow lines — faint automation paths threading the space */}
-      <svg
+      <PipelineTracks
         className="hero-env-flow absolute inset-0 h-full w-full"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        fill="none"
-      >
-        <g stroke="hsl(var(--brand) / 0.09)" strokeWidth="1" vectorEffect="non-scaling-stroke">
-          <path d="M2 9 L34 13 L70 10 L97 19" />
-          <path d="M97 19 L88 45 L93 70 L80 93" />
-          <path d="M2 61 L30 69 L52 65 L46 90 M30 69 L7 86" />
-          <path d="M80 93 L52 65" />
-          <path d="M46 90 L58 95 L72 100 M80 93 L72 100" />
-        </g>
-        <g
-          className="flow-line"
-          stroke="hsl(var(--brand) / 0.34)"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        >
-          <path d="M2 9 L34 13 L70 10 L97 19" />
-          <path d="M97 19 L88 45 L93 70 L80 93" />
-          <path d="M2 61 L30 69 L52 65 L46 90 M30 69 L7 86" />
-          <path d="M80 93 L52 65" />
-          <path d="M46 90 L58 95 L72 100 M80 93 L72 100" />
-        </g>
-      </svg>
+        paths={[
+          'M2 9 L34 13 L70 10 L97 19',
+          'M97 19 L88 45 L93 70 L80 93',
+          'M2 61 L30 69 L52 65 L46 90 M30 69 L7 86',
+          'M80 93 L52 65',
+          'M46 90 L58 95 L72 100 M80 93 L72 100',
+        ]}
+      />
 
       {grouped.map((idxs, layer) => (
         <div
