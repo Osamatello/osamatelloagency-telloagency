@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 type Point = { x: number; y: number; scale: number; rotation: number; z: number };
-type Fragment = { depth: number; kind: number; color: string; states: Point[] };
+type Fragment = { depth: number; kind: number; color: string; phase: number; speed: number; states: Point[] };
 
 const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
 const rand = (seed: number) => {
@@ -39,6 +39,8 @@ function createFragments(count: number): Fragment[] {
       depth,
       kind: index % 7,
       color: COLORS[index % COLORS.length],
+      phase: a * Math.PI * 2,
+      speed: 0.22 + b * 0.38,
       states: [
         { x: scatterX, y: scatterY, scale: 0.42 + depth * 0.62, rotation: angle, z: 0.18 + c * 1.65 },
         { x: clusterX + Math.cos(angle) * (0.018 + a * 0.105), y: clusterY + Math.sin(angle) * (0.018 + b * 0.09), scale: 0.65 + depth * 0.62, rotation: angle * 0.25, z: 0.25 + rand(index + 310) * 1.45 },
@@ -68,11 +70,16 @@ export function HeroEnvironment({ className }: { className?: string }) {
     let progress = target;
     let calm = 1;
     let frame = 0;
+    let elapsed = 0;
 
     const measure = () => {
       anchors = Array.from(document.querySelectorAll<HTMLElement>('[data-visual-state]')).map(
         (element) => element.getBoundingClientRect().top + window.scrollY + element.offsetHeight * 0.5 - window.innerHeight * 0.5
       );
+      if (anchors.length) {
+        const pageEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        anchors[anchors.length - 1] = Math.max(anchors[anchors.length - 1], pageEnd * 0.86);
+      }
     };
 
     const resize = () => {
@@ -119,7 +126,10 @@ export function HeroEnvironment({ className }: { className?: string }) {
 
     const drawWireframe = () => {
       const phase = progress / 5;
+      const idleX = reduced ? 0 : Math.sin(elapsed * 0.00016) * width * 0.004;
+      const idleY = reduced ? 0 : Math.cos(elapsed * 0.00013) * height * 0.004;
       context.save();
+      context.translate(idleX, idleY);
       context.globalAlpha = 0.105 * calm;
       context.strokeStyle = '#315f4d';
       context.lineWidth = 1;
@@ -149,15 +159,20 @@ export function HeroEnvironment({ className }: { className?: string }) {
       fragments.forEach((fragment) => {
         const point = pointAt(fragment);
         const parallax = (target - progress) * 38 * point.z;
-        const x = point.x * width;
-        const y = point.y * height + parallax;
+        const idleStrength = reduced ? 0 : (1.2 + point.z * 2.8);
+        const idlePhase = fragment.phase + elapsed * 0.0001 * fragment.speed;
+        const idleX = Math.sin(idlePhase * 1.7) * idleStrength;
+        const idleY = Math.cos(idlePhase * 1.13) * idleStrength * 0.72;
+        const breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.025 * point.z;
+        const x = point.x * width + idleX;
+        const y = point.y * height + parallax + idleY;
         const quiet = point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
         const base = width < 640 ? 2.8 : 3.6;
         const foregroundBoost = fragment.kind === 6 && point.z > 1.15 ? 1.7 : 1;
-        const size = (base + point.z * (width < 640 ? 4.4 : 9.4)) * point.scale * foregroundBoost;
+        const size = (base + point.z * (width < 640 ? 4.4 : 9.4)) * point.scale * foregroundBoost * breath;
         context.save();
         context.translate(x, y);
-        context.rotate(point.rotation + (target - progress) * point.z * 0.75);
+        context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : elapsed * 0.000018 * fragment.speed * point.z));
         context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * calm;
         context.fillStyle = fragment.color;
         context.strokeStyle = fragment.color;
@@ -201,7 +216,8 @@ export function HeroEnvironment({ className }: { className?: string }) {
       });
     };
 
-    const animate = () => {
+    const animate = (time: number) => {
+      elapsed = time;
       progress += (target - progress) * 0.09;
       draw();
       frame = requestAnimationFrame(animate);
