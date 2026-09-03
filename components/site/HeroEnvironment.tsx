@@ -30,17 +30,21 @@ function createFragments(count: number): Fragment[] {
     const clusterX = [0.2, 0.73, 0.5][group];
     const clusterY = [0.7, 0.34, 0.78][group];
     const stream = index % 3;
+    const localCluster = index % 6 === 0;
+    const scatterX = localCluster ? [0.12, 0.82, 0.68][group] + (a - 0.5) * 0.16 : 0.02 + a * 0.96;
+    const scatterY = localCluster ? [0.76, 0.2, 0.68][group] + (b - 0.5) * 0.15 : 0.03 + b * 0.92;
+    const orbitRadius = 0.08 + (index % 8) * 0.018 + c * 0.035;
 
     return {
       depth,
-      kind: index % 5,
+      kind: index % 7,
       color: COLORS[index % COLORS.length],
       states: [
-        { x: 0.02 + a * 0.96, y: 0.03 + b * 0.92, scale: 0.55 + depth * 0.5, rotation: angle, z: 0.35 + c * 1.15 },
+        { x: scatterX, y: scatterY, scale: 0.42 + depth * 0.62, rotation: angle, z: 0.18 + c * 1.65 },
         { x: clusterX + Math.cos(angle) * (0.018 + a * 0.105), y: clusterY + Math.sin(angle) * (0.018 + b * 0.09), scale: 0.65 + depth * 0.62, rotation: angle * 0.25, z: 0.25 + rand(index + 310) * 1.45 },
         { x: 0.1 + lane * 0.8, y: 0.2 + band * 0.19 + (b - 0.5) * 0.055, scale: 0.48 + depth * 0.4, rotation: band % 2 ? Math.PI / 4 : -Math.PI / 4, z: 0.42 + band * 0.22 + c * 0.42 },
-        { x: 0.13 + pair * 0.72 + (a - 0.5) * 0.075, y: 0.08 + lane * 0.84, scale: 0.58 + depth * 0.7, rotation: pair ? Math.PI / 4 : -Math.PI / 4, z: pair ? 1.3 - c * 0.45 : 0.38 + c * 0.5 },
-        { x: 0.04 + lane * 0.92, y: 0.5 + Math.sin(lane * Math.PI * (2.2 + stream * 0.34) + stream * 1.55) * (0.16 + stream * 0.045), scale: 0.55 + depth * 0.72, rotation: angle * 0.16 + lane * Math.PI, z: 0.25 + ((index + stream) % 7) * 0.2 },
+        { x: (pair ? 0.73 : 0.27) + Math.cos(angle) * orbitRadius, y: 0.49 + Math.sin(angle) * orbitRadius * 1.65, scale: 0.48 + depth * 0.82, rotation: angle + (pair ? Math.PI / 2 : -Math.PI / 2), z: 0.16 + ((index + pair * 3) % 9) * 0.19 },
+        { x: 0.01 + lane * 0.98, y: 0.72 - lane * 0.42 + Math.sin(lane * Math.PI * (2.4 + stream * 0.4) + stream * 1.7) * (0.13 + stream * 0.045), scale: 0.42 + depth * 0.9, rotation: angle * 0.16 + lane * Math.PI, z: 0.12 + ((index + stream) % 10) * 0.18 },
         { x: 0.14 + latticeX * 0.72 + (latticeY % 2) * 0.035, y: 0.1 + latticeY * 0.78, scale: 0.42 + depth * 0.46, rotation: (latticeX + latticeY) * Math.PI * 0.25, z: 0.38 + ((index % 6) / 5) * 1.05 },
       ],
     };
@@ -78,7 +82,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      fragments = createFragments(width < 640 ? 68 : 210);
+      fragments = createFragments(width < 640 ? 72 : 258);
       measure();
       updateTarget();
       draw();
@@ -148,8 +152,9 @@ export function HeroEnvironment({ className }: { className?: string }) {
         const x = point.x * width;
         const y = point.y * height + parallax;
         const quiet = point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
-        const base = width < 640 ? 3.2 : 4.2;
-        const size = (base + point.z * (width < 640 ? 4.5 : 8.2)) * point.scale;
+        const base = width < 640 ? 2.8 : 3.6;
+        const foregroundBoost = fragment.kind === 6 && point.z > 1.15 ? 1.7 : 1;
+        const size = (base + point.z * (width < 640 ? 4.4 : 9.4)) * point.scale * foregroundBoost;
         context.save();
         context.translate(x, y);
         context.rotate(point.rotation + (target - progress) * point.z * 0.75);
@@ -159,6 +164,30 @@ export function HeroEnvironment({ className }: { className?: string }) {
         context.lineWidth = 1;
         if (fragment.kind === 4) {
           context.fillRect(-size, -size * 0.22, size * 2, size * 0.44);
+        } else if (fragment.kind === 5) {
+          context.beginPath();
+          context.moveTo(-size * 1.45, -size * 0.13);
+          context.lineTo(size * 1.25, -size * 0.42);
+          context.lineTo(size * 0.8, size * 0.18);
+          context.lineTo(-size * 1.2, size * 0.38);
+          context.closePath();
+          context.fill();
+        } else if (fragment.kind === 6) {
+          const inset = size * 0.55;
+          context.beginPath();
+          context.moveTo(0, -size);
+          context.lineTo(size, -size * 0.35);
+          context.lineTo(size, size * 0.7);
+          context.lineTo(0, size);
+          context.lineTo(-size, size * 0.35);
+          context.lineTo(-size, -size * 0.7);
+          context.closePath();
+          context.moveTo(0, -size);
+          context.lineTo(0, size);
+          context.moveTo(-size, -size * 0.7);
+          context.lineTo(inset, -size * 0.12);
+          context.lineTo(size, -size * 0.35);
+          context.stroke();
         } else {
           context.beginPath();
           context.moveTo(0, -size);
