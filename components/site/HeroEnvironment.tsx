@@ -1,201 +1,148 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { cn } from '@/lib/utils';
-import { PipelineTracks } from '@/components/site/PipelineTracks';
 
-/**
- * The automation environment living behind the hero typography.
- *
- * Operational signals rendered as spatial typography (never cards) across three
- * depth layers: slow independent drift + scroll-linked parallax + a whisper of
- * pointer parallax on the nearest layer. Faint flow lines thread the space, and
- * one label keeps flipping manual → automated. Everything is charcoal/forest at
- * 4–13% opacity so the headline stays fully legible.
- *
- * Transform/opacity only. Fully static under prefers-reduced-motion. RTL-aware
- * via logical inset positioning.
- */
+type Point = { x: number; y: number };
+type Fragment = { depth: number; rotation: number; kind: number; states: [Point, Point, Point, Point] };
 
-const SIGNALS = {
-  en: [
-    'Lead captured',
-    'Qualified',
-    'CRM updated',
-    'Message received',
-    'Call booked',
-    'Data synced',
-    'Follow-up sent',
-    'Workflow running',
-    'Invoice sent',
-    'Report generated',
-    'Reply drafted',
-  ],
-  ar: [
-    'تم التقاط عميل',
-    'تم التأهيل',
-    'تحديث CRM',
-    'رسالة واردة',
-    'تم حجز مكالمة',
-    'مزامنة البيانات',
-    'إرسال متابعة',
-    'سير العمل نشط',
-    'إرسال فاتورة',
-    'إنشاء تقرير',
-    'صياغة رد',
-  ],
-} as const;
+const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
+const rand = (seed: number) => {
+  const value = Math.sin(seed * 91.713) * 43758.5453;
+  return value - Math.floor(value);
+};
+const smooth = (value: number) => value * value * (3 - 2 * value);
 
-// top %, inline-start %, depth layer, drift keyframe, fire delay (s), keep on mobile
-const PLACEMENT = [
-  { top: 13, side: 4, layer: 0, drift: 'drift-a', delay: 0, m: true },
-  { top: 20, side: 40, layer: 1, drift: 'drift-c', delay: 3.6, m: false }, // behind headline
-  { top: 30, side: 72, layer: 1, drift: 'drift-b', delay: 1.3, m: false },
-  { top: 40, side: 87, layer: 0, drift: 'drift-a', delay: 5.5, m: true },
-  { top: 46, side: 2, layer: 2, drift: 'drift-c', delay: 3.0, m: false }, // behind headline
-  { top: 55, side: 29, layer: 0, drift: 'drift-b', delay: 6.2, m: true },
-  { top: 58, side: 66, layer: 1, drift: 'drift-a', delay: 2.1, m: false },
-  { top: 66, side: 46, layer: 2, drift: 'drift-b', delay: 5.1, m: false }, // behind headline
-  { top: 74, side: 10, layer: 1, drift: 'drift-c', delay: 4.0, m: true },
-  { top: 82, side: 57, layer: 2, drift: 'drift-a', delay: 0.7, m: false },
-  { top: 90, side: 30, layer: 0, drift: 'drift-b', delay: 7.4, m: true },
-] as const;
-
-export function HeroEnvironment({ className }: { className?: string }) {
-  const { dir, locale } = useI18n();
-  const labels = SIGNALS[locale === 'ar' ? 'ar' : 'en'];
-  const rtl = dir === 'rtl';
-
-  const layer0 = useRef<HTMLDivElement>(null);
-  const layer1 = useRef<HTMLDivElement>(null);
-  const layer2 = useRef<HTMLDivElement>(null);
-  const layerRefs = [layer0, layer1, layer2];
-
-  useEffect(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (reduce.matches) return;
-
-    const fine = window.matchMedia('(pointer: fine)').matches;
-    // near → far: layer 2 (near) moves most
-    const scrollF = [0.03, 0.06, 0.1];
-    const mouseF = [0, 0.004, 0.01];
-    const dirSign = rtl ? -1 : 1;
-
-    let sy = window.scrollY;
-    let mx = 0;
-    let raf = 0;
-
-    const apply = () => {
-      raf = 0;
-      for (let i = 0; i < layerRefs.length; i++) {
-        const el = layerRefs[i].current;
-        if (!el) continue;
-        const ty = sy * scrollF[i];
-        const tx = mx * mouseF[i] * dirSign;
-        el.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0)`;
-      }
+function createFragments(count: number): Fragment[] {
+  return Array.from({ length: count }, (_, index) => {
+    const a = rand(index + 1);
+    const b = rand(index + 71);
+    const c = rand(index + 149);
+    const angle = index * 2.39996;
+    const radius = 0.06 + Math.sqrt(a) * 0.25;
+    const lane = (index % 9) / 8;
+    return {
+      depth: 0.35 + c * 0.85,
+      rotation: b * Math.PI,
+      kind: index % 4,
+      states: [
+        { x: 0.04 + a * 0.92, y: 0.06 + b * 0.86 },
+        { x: 0.73 + Math.cos(angle) * radius, y: 0.47 + Math.sin(angle) * radius * 1.18 },
+        { x: 0.08 + lane * 0.86, y: 0.53 + Math.sin(lane * Math.PI * 2.4 + b) * 0.16 },
+        { x: 0.58 + Math.cos(angle * 0.72) * (0.12 + a * 0.31), y: 0.49 + Math.sin(angle * 1.13) * (0.1 + b * 0.32) },
+      ],
     };
-    const schedule = () => {
-      if (!raf) raf = requestAnimationFrame(apply);
-    };
-    const onScroll = () => {
-      sy = window.scrollY;
-      schedule();
-    };
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX - window.innerWidth / 2;
-      schedule();
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    if (fine) window.addEventListener('mousemove', onMove, { passive: true });
-    apply();
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('mousemove', onMove);
-      if (raf) cancelAnimationFrame(raf);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rtl]);
-
-  const grouped: number[][] = [[], [], []];
-  PLACEMENT.forEach((p, i) => grouped[p.layer].push(i));
-
-  return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        'pointer-events-none absolute inset-0 z-0 overflow-hidden [contain:paint]',
-        className
-      )}
-    >
-      {/* flow lines — faint automation paths threading the space */}
-      <PipelineTracks
-        className="hero-env-flow absolute inset-0 h-full w-full"
-        paths={[
-          'M2 9 L34 13 L70 10 L97 19',
-          'M97 19 L88 45 L93 70 L80 93',
-          'M2 61 L30 69 L52 65 L46 90 M30 69 L7 86',
-          'M80 93 L52 65',
-          'M7 86 L14 93 L18 100',
-          'M46 90 V100',
-          'M80 93 L74 97 L72 100',
-        ]}
-      />
-
-      {grouped.map((idxs, layer) => (
-        <div
-          key={layer}
-          ref={layerRefs[layer]}
-          className="absolute inset-0 will-change-transform"
-        >
-          {idxs.map((i) => {
-            const p = PLACEMENT[i];
-            return (
-              <div
-                key={i}
-                className={cn('absolute', p.drift, !p.m && 'hidden sm:block')}
-                style={{
-                  top: `${p.top}%`,
-                  insetInlineStart: `${p.side}%`,
-                  animationDelay: `${(p.delay * 1.7).toFixed(1)}s`,
-                }}
-              >
-                <span
-                  className={cn('hero-signal', `sig-${p.layer}`)}
-                  style={{ animationDelay: `${p.delay}s` }}
-                >
-                  {labels[i]}
-                </span>
-              </div>
-            );
-          })}
-
-          {/* manual → automated lives on the mid layer */}
-          {layer === 1 && (
-            <div
-              className="drift-b absolute"
-              style={{ top: '28%', insetInlineStart: '8%', animationDelay: '2s' }}
-            >
-              <ManualToAuto rtl={rtl} />
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
+  });
 }
 
-function ManualToAuto({ rtl }: { rtl: boolean }) {
-  return (
-    <span className="hero-signal relative inline-block whitespace-nowrap">
-      <span className="invisible">{rtl ? 'مؤتمت' : 'Automated'}</span>
-      <span className="mta-manual absolute inset-0">{rtl ? 'يدوي' : 'Manual'}</span>
-      <span className="mta-auto absolute inset-0 text-brand">
-        {rtl ? 'مؤتمت' : 'Automated'}
-      </span>
-    </span>
-  );
+export function HeroEnvironment({ className }: { className?: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext('2d');
+    if (!canvas || !context) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let fragments: Fragment[] = [];
+    let width = 0;
+    let height = 0;
+    let target = reduced ? 0.33 : 0;
+    let progress = target;
+    let frame = 0;
+    let visible = true;
+
+    const positionAt = (fragment: Fragment) => {
+      const scaled = Math.min(2.999, Math.max(0, progress * 3));
+      const state = Math.floor(scaled);
+      const amount = smooth(scaled - state);
+      const from = fragment.states[state];
+      const to = fragment.states[Math.min(state + 1, 3)];
+      return { x: from.x + (to.x - from.x) * amount, y: from.y + (to.y - from.y) * amount };
+    };
+
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+      context.save();
+      context.strokeStyle = 'rgba(49, 95, 77, 0.085)';
+      context.lineWidth = 1;
+      context.beginPath();
+      context.moveTo(width * 0.59, height * (0.16 + progress * 0.04));
+      context.lineTo(width * 0.91, height * (0.29 - progress * 0.02));
+      context.lineTo(width * 0.82, height * (0.73 + progress * 0.02));
+      context.lineTo(width * 0.54, height * (0.68 - progress * 0.02));
+      context.closePath();
+      context.stroke();
+      context.restore();
+
+      fragments.forEach((fragment, index) => {
+        const point = positionAt(fragment);
+        const x = point.x * width;
+        const y = point.y * height + (progress - 0.5) * 22 * fragment.depth;
+        const textZone = point.x < 0.57 && point.y < 0.76;
+        const size = (width < 640 ? 3.5 : 5) + fragment.depth * 5;
+        context.save();
+        context.translate(x, y);
+        context.rotate(fragment.rotation + progress * (fragment.kind % 2 ? 0.8 : -0.55));
+        context.fillStyle = COLORS[index % COLORS.length];
+        context.strokeStyle = COLORS[index % COLORS.length];
+        context.globalAlpha = (textZone ? 0.075 : 0.2) * fragment.depth;
+        if (fragment.kind === 3) {
+          context.fillRect(-size * 0.75, -size * 0.25, size * 1.5, size * 0.5);
+        } else {
+          context.beginPath();
+          context.moveTo(0, -size);
+          context.lineTo(size, 0);
+          context.lineTo(0, size);
+          context.lineTo(-size, 0);
+          context.closePath();
+          fragment.kind === 2 ? context.stroke() : context.fill();
+        }
+        context.restore();
+      });
+    };
+
+    const resize = () => {
+      const box = canvas.getBoundingClientRect();
+      width = box.width;
+      height = box.height;
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      fragments = createFragments(width < 640 ? 44 : 108);
+      draw();
+    };
+    const updateTarget = () => {
+      if (reduced) return;
+      const rect = canvas.getBoundingClientRect();
+      target = Math.min(1, Math.max(0, -rect.top / Math.max(rect.height * 0.82, 1)));
+    };
+    const animate = () => {
+      if (!visible) return;
+      progress += (target - progress) * 0.085;
+      draw();
+      frame = requestAnimationFrame(animate);
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !frame && !reduced) frame = requestAnimationFrame(animate);
+      if (!visible && frame) { cancelAnimationFrame(frame); frame = 0; }
+    });
+
+    resize();
+    updateTarget();
+    observer.observe(canvas);
+    window.addEventListener('resize', resize);
+    window.addEventListener('scroll', updateTarget, { passive: true });
+    if (!reduced) frame = requestAnimationFrame(animate);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('scroll', updateTarget);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} aria-hidden="true" className={cn('pointer-events-none absolute inset-0 z-0 h-full w-full', className)} />;
 }

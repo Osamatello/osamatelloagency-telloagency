@@ -362,63 +362,6 @@
 }
 
 /* ===========================================================================
-   HERO AUTOMATION ENVIRONMENT
-   Plain CSS (not a Tailwind @layer) so the dynamically-composed class names
-   (`sig-0/1/2`, `drift-a/b/c`) are never tree-shaken.
-   Operational signals as spatial typography behind the headline — charcoal /
-   forest at 5–26% opacity, never legible enough to compete with the H1.
-=========================================================================== */
-.hero-signal {
-  display: inline-block;
-  white-space: nowrap;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: hsl(var(--ds-ink));
-  opacity: 0.16;
-}
-[dir='rtl'] .hero-signal {
-  letter-spacing: 0.06em;
-  font-family: var(--font-cairo), 'Segoe UI', system-ui, sans-serif;
-}
-/* depth-graded pulse: far = smaller & fainter, near = larger & stronger */
-.sig-0 {
-  font-size: 0.64rem;
-  animation: signal-fire-far 11s ease-in-out infinite;
-}
-.sig-1 {
-  font-size: 0.74rem;
-  animation: signal-fire-mid 9s ease-in-out infinite;
-}
-.sig-2 {
-  font-size: 0.9rem;
-  animation: signal-fire-near 8s ease-in-out infinite;
-}
-.drift-a { animation: drift-a 46s ease-in-out infinite; }
-.drift-b { animation: drift-b 58s ease-in-out infinite; }
-.drift-c { animation: drift-c 71s ease-in-out infinite; }
-.flow-line {
-  stroke-dasharray: 2 13;
-  animation: flow-dash-slow 12s linear infinite;
-}
-.mta-manual {
-  text-decoration: line-through;
-  animation: mta-a 7s ease-in-out infinite;
-}
-.mta-auto {
-  animation: mta-b 7s ease-in-out infinite;
-}
-
-/* Calmer environment on small screens */
-@media (max-width: 767px) {
-  .hero-signal { font-size: 0.58rem; letter-spacing: 0.18em; }
-  .sig-1 { animation-name: signal-fire-far; }
-  .sig-2 { animation-name: signal-fire-mid; font-size: 0.68rem; }
-  .hero-env-flow { opacity: 0.55; }
-}
-
-/* ===========================================================================
    INTEGRATION MARQUEE  (homepage "Integrations" section)
    Plain CSS so the classes survive Tailwind's purge regardless.
 =========================================================================== */
@@ -438,20 +381,6 @@
     width: 100%;
     row-gap: 0.75rem;
   }
-}
-
-/* Section geometry uses the exact same PipelineTracks rendering as the Hero. */
-.net-route { opacity: 1; }
-.net-route--integration {
-  bottom: auto;
-  height: 65svh;
-}
-.net-route-handoff { height: 7rem; bottom: auto; }
-
-@media (max-width: 767px) {
-  .net-route { opacity: 0.55; }
-  .net-route:not(.net-route-handoff) svg { transform: scaleX(0.72); transform-origin: center; }
-  [dir='rtl'] .net-route:not(.net-route-handoff) svg { transform: scaleX(-0.72); }
 }
 
 @keyframes fade-up {
@@ -477,49 +406,6 @@
   to { background-position: 56px 56px; }
 }
 
-/* Hero environment — slow independent drift per depth layer */
-@keyframes drift-a {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(9%, -7%, 0); }
-}
-@keyframes drift-b {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-8%, 9%, 0); }
-}
-@keyframes drift-c {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  33% { transform: translate3d(7%, 6%, 0); }
-  66% { transform: translate3d(-6%, -7%, 0); }
-}
-@keyframes signal-fire-far {
-  0%, 100% { opacity: 0.06; }
-  46% { opacity: 0.15; }
-  62% { opacity: 0.11; }
-}
-@keyframes signal-fire-mid {
-  0%, 100% { opacity: 0.09; }
-  44% { opacity: 0.22; }
-  60% { opacity: 0.16; }
-}
-@keyframes signal-fire-near {
-  0%, 100% { opacity: 0.12; }
-  42% { opacity: 0.3; }
-  58% { opacity: 0.21; }
-}
-@keyframes flow-dash-slow {
-  to { stroke-dashoffset: -160; }
-}
-@keyframes mta-a {
-  0%, 42% { opacity: 1; }
-  50%, 92% { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes mta-b {
-  0%, 42% { opacity: 0; }
-  50%, 92% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -530,21 +416,4 @@
   .bg-grid-animated {
     animation: none;
   }
-  /* Freeze the hero environment into a calm static state. */
-  .hero-signal,
-  .sig-0,
-  .sig-1,
-  .sig-2,
-  .drift-a,
-  .drift-b,
-  .drift-c,
-  .flow-line,
-  .mta-manual,
-  .mta-auto {
-    animation: none !important;
-    transform: none !important;
-  }
-  .hero-signal { opacity: 0.1; }
-  .mta-manual { opacity: 0; }
-  .mta-auto { opacity: 1; }
 }
