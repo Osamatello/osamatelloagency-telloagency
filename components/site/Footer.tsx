@@ -10,7 +10,7 @@ export function Footer() {
 
   return (
     <footer className="relative z-10 border-t border-[#dedbd3] bg-[#eef2ec] text-[#1d2521]">
-      <div className="container-page py-6 sm:py-8 lg:py-8">
+      <div className="container-page py-6 sm:py-8 lg:py-6">
         <div className="grid gap-5 sm:gap-8 md:grid-cols-12 md:gap-7">
           <div className="md:col-span-4 lg:col-span-3">
             <Logo />
@@ -19,9 +19,9 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="md:col-span-4 lg:col-span-5">
+          <div className="md:col-span-4 lg:col-span-6">
             <h3 className="eyebrow text-[#858b87]">{dict.footer.navTitle}</h3>
-            <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:mt-3 sm:gap-y-2 lg:flex lg:flex-wrap lg:gap-x-5 lg:gap-y-2">
+            <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:mt-3 sm:gap-y-2 lg:flex lg:flex-wrap lg:gap-x-4 lg:gap-y-2 xl:flex-nowrap">
               {dict.nav.slice(0, 6).map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-sm text-[#626a66] transition-colors hover:text-brand">
@@ -32,7 +32,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="md:col-span-4">
+          <div className="md:col-span-4 lg:col-span-3">
             <h3 className="eyebrow text-[#858b87]">{dict.footer.contactTitle}</h3>
             <ul className="mt-2 space-y-1.5 text-sm text-[#626a66] sm:mt-3 sm:space-y-2.5">
               <li className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-2.5 border-t border-[#dedbd3] pt-4 text-xs text-[#858b87] sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:pt-4">
+        <div className="mt-5 flex flex-col gap-2.5 border-t border-[#dedbd3] pt-4 text-xs text-[#858b87] sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:pt-4 lg:mt-4 lg:pt-3">
           <p>© 2026 {dict.brand.name}. {dict.footer.rights}</p>
           <div className="flex flex-wrap gap-x-3 gap-y-1.5 sm:gap-x-4 sm:gap-y-2">
             {dict.footer.legal.map((item) => (
