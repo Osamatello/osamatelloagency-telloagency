@@ -148,22 +148,6 @@ export default function AboutPage() {
               </ol>
             </Reveal>
           </div>
-          <div className="mt-24 border-y border-line bg-paper/45 py-10 sm:mt-32 sm:py-14">
-            <Reveal className="grid gap-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-start">
-              <div>
-                <span className="eyebrow">{about.narrative.positionEyebrow}</span>
-                <h3 className="text-display mt-6 max-w-3xl text-[clamp(2rem,4.2vw,4rem)]">{about.narrative.positionTitle}</h3>
-              </div>
-              <ol className="space-y-0">
-                {about.narrative.principles.map((principle, index) => (
-                  <li key={principle} className={cn('flex items-baseline gap-5 border-t border-line py-5 last:border-b sm:py-6', index % 2 ? 'sm:ms-[14%]' : 'sm:me-[14%]')}>
-                    <span className="text-[0.62rem] tabular-nums text-brand">0{index + 1}</span>
-                    <span className="text-display text-[clamp(1.45rem,3vw,2.8rem)]">{principle}</span>
-                  </li>
-                ))}
-              </ol>
-            </Reveal>
-          </div>
         </div>
       </section>
 
