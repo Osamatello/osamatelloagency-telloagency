@@ -17,30 +17,56 @@ export function Capabilities() {
   const headingProgress = ease(clamp(progress / 0.1));
 
   return (
-    <section ref={ref} className="relative min-h-[145svh] sm:min-h-[150svh] lg:min-h-[155svh]">
+    <section ref={ref} className="relative min-h-[165svh] sm:min-h-[175svh] lg:min-h-[190svh]">
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-        <div className="container-page relative z-10 border-t border-line py-6 sm:py-8 lg:py-9">
-          <div className="grid gap-3 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] sm:items-end" style={{ opacity: headingProgress, transform: `translate3d(0, ${(1 - headingProgress) * 18}px, 0)` }}>
+        <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
+          <div
+            className="grid gap-3 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] sm:items-end"
+            style={{
+              opacity: headingProgress,
+              transform: `translate3d(0, ${(1 - headingProgress) * 18}px, 0)`,
+            }}
+          >
             <span className="eyebrow">{t.eyebrow}</span>
-            <h2 className="text-display text-[clamp(1.7rem,4.4vw,3.2rem)] text-ink sm:text-end">{t.title}</h2>
+            <h2 className="text-display text-[clamp(1.7rem,4.4vw,3.2rem)] text-ink sm:text-end">
+              {t.title}
+            </h2>
           </div>
 
-          <ol className="mt-5 grid grid-cols-2 gap-x-4 gap-y-0 sm:mt-7 sm:gap-x-10 lg:mt-8 lg:gap-x-20">
+          <ol className="mt-5 grid grid-cols-2 gap-x-4 gap-y-0 sm:mt-8 sm:gap-x-10 lg:mt-10 lg:gap-x-20">
             {t.items.map((item, index) => {
-              const start = 0.06 + index * 0.105;
-              const amount = ease(clamp((progress - start) / 0.12));
+              const start = 0.08 + index * 0.125;
+              const amount = ease(clamp((progress - start) / 0.13));
               const direction = (index % 2 === 0 ? -1 : 1) * (dir === 'rtl' ? -1 : 1);
               const finalOffset = index % 3 === 1 ? 12 : index % 3 === 2 ? -8 : 0;
+
               return (
-                <li key={item.index} className="border-t border-line" style={{ opacity: amount, transform: `translate3d(${direction * (1 - amount) * 54 + finalOffset * amount}px, ${(1 - amount) * 14}px, 0)`, pointerEvents: amount > 0.85 ? 'auto' : 'none' }}>
-                  <Link href={item.href} className="group grid min-h-[5.6rem] grid-cols-[auto_1fr] content-center gap-x-2 py-3 sm:min-h-[6.7rem] sm:gap-x-4 sm:py-3.5 lg:min-h-[7.2rem]">
-                    <span className="text-display text-[0.65rem] tabular-nums text-brand sm:text-xs">{item.index}</span>
+                <li
+                  key={item.index}
+                  className="border-t border-line"
+                  style={{
+                    opacity: amount,
+                    transform: `translate3d(${direction * (1 - amount) * 54 + finalOffset * amount}px, ${(1 - amount) * 14}px, 0)`,
+                    pointerEvents: amount > 0.85 ? 'auto' : 'none',
+                  }}
+                >
+                  <Link
+                    href={item.href}
+                    className="group grid min-h-[6.2rem] grid-cols-[auto_1fr] content-center gap-x-2 py-3 sm:min-h-[7.5rem] sm:gap-x-4 sm:py-4 lg:min-h-[8.4rem]"
+                  >
+                    <span className="text-display text-[0.65rem] tabular-nums text-brand sm:text-xs">
+                      {item.index}
+                    </span>
                     <div className="min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-display text-[clamp(0.95rem,2.1vw,1.55rem)] leading-[1.02] text-ink transition-colors duration-300 group-hover:text-brand rtl:leading-[1.25]">{item.title}</h3>
+                        <h3 className="text-display text-[clamp(0.95rem,2.1vw,1.55rem)] leading-[1.02] text-ink transition-colors duration-300 group-hover:text-brand rtl:leading-[1.25]">
+                          {item.title}
+                        </h3>
                         <Arrow className="mt-0.5 hidden h-4 w-4 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-brand rtl:group-hover:-translate-x-1 sm:block" />
                       </div>
-                      <p className="mt-1.5 text-[0.68rem] leading-snug text-ink-muted sm:mt-2 sm:text-xs sm:leading-relaxed lg:max-w-md">{item.summary}</p>
+                      <p className="mt-1.5 text-[0.68rem] leading-snug text-ink-muted sm:mt-2 sm:text-xs sm:leading-relaxed lg:max-w-md">
+                        {item.summary}
+                      </p>
                     </div>
                   </Link>
                 </li>
