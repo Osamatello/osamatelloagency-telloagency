@@ -32,15 +32,15 @@ export function BeforeAfterAutomation() {
             </div>
             <div className="flex items-center gap-3 sm:col-span-4 sm:col-start-9 sm:justify-end">
               <span
-                className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors text-ink-faint"
-                style={{ color: scene < 0.5 ? 'hsl(var(--ds-ink))' : 'hsl(var(--ds-ink-faint))' }}
+                className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors text-ink-muted"
+                style={{ color: scene < 0.5 ? 'hsl(var(--ds-ink))' : 'hsl(var(--ds-ink-muted))' }}
               >
                 {t.beforeLabel}
               </span>
               <span className="h-px w-10 bg-line" />
               <span
                 className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors"
-                style={{ color: scene >= 0.5 ? 'hsl(var(--brand))' : 'hsl(var(--ds-ink-faint))' }}
+                style={{ color: scene >= 0.5 ? 'hsl(var(--brand))' : 'hsl(var(--ds-ink-muted))' }}
               >
                 {t.afterLabel}
               </span>
