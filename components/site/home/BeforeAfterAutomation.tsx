@@ -20,13 +20,13 @@ export function BeforeAfterAutomation() {
   const scene = ease(clamp((progress - 0.06) / 0.76));
 
   return (
-    <section ref={ref} className="relative min-h-[140svh] sm:min-h-[145svh] lg:min-h-[150svh]">
+    <section ref={ref} className="relative min-h-[118svh] sm:min-h-[122svh] lg:min-h-[126svh]">
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-        <div className="container-page relative z-10 border-t border-line py-5 sm:py-7 lg:py-8">
-          <div className="grid gap-5 sm:grid-cols-12 sm:items-end">
+        <div className="container-page relative z-10 border-t border-line py-4 sm:py-5 lg:py-6">
+          <div className="grid gap-4 sm:grid-cols-12 sm:items-end">
             <div className="sm:col-span-7">
               <span className="eyebrow">{t.eyebrow}</span>
-              <h2 className="text-display mt-4 max-w-2xl text-[clamp(1.75rem,4.4vw,3.25rem)] text-ink">{t.title}</h2>
+              <h2 className="text-display mt-3 max-w-2xl text-[clamp(1.75rem,4.4vw,3.25rem)] text-ink">{t.title}</h2>
             </div>
             <div className="flex items-center gap-3 sm:col-span-4 sm:col-start-9 sm:justify-end">
               <span className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] transition-colors text-ink-faint" style={{ color: scene < 0.5 ? 'hsl(var(--ds-ink))' : 'hsl(var(--ds-ink-faint))' }}>{t.beforeLabel}</span>
@@ -35,7 +35,7 @@ export function BeforeAfterAutomation() {
             </div>
           </div>
 
-          <div className="relative mt-5 grid grid-cols-1 gap-y-0 sm:mt-8 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-4 lg:ms-auto lg:w-[82%]">
+          <div className="relative mt-4 grid grid-cols-1 gap-y-0 sm:mt-6 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-2 lg:ms-auto lg:w-[86%]">
             {t.pairs.map((pair, index) => {
               const local = ease(clamp((scene - index * 0.17) / 0.28));
               const scatter = SCATTER[index];
@@ -43,10 +43,10 @@ export function BeforeAfterAutomation() {
               const outgoing = 1 - ease(clamp(local / 0.46));
               const incoming = ease(clamp((local - 0.54) / 0.46));
               return (
-                <article key={pair.before} className="relative min-h-[4.3rem] border-t border-line py-2.5 sm:min-h-[7.2rem] sm:py-4" style={{ transform: `translate3d(${x}px, ${scatter.y * (1 - local)}px, 0) rotate(${scatter.r * (1 - local)}deg)` }}>
+                <article key={pair.before} className="relative min-h-[4rem] border-t border-line py-2 sm:min-h-[5.8rem] sm:py-3" style={{ transform: `translate3d(${x}px, ${scatter.y * (1 - local)}px, 0) rotate(${scatter.r * (1 - local)}deg)` }}>
                   <span className="text-display text-[0.68rem] tabular-nums text-ink-faint">0{index + 1}</span>
-                  <div className="mt-1.5 h-[2rem] overflow-hidden sm:mt-3 sm:h-[2.6rem]">
-                    <div className="h-[4rem] sm:h-[5.2rem]" style={{ transform: `translate3d(0, ${-local * 50}%, 0)` }}>
+                  <div className="mt-1 h-[2rem] overflow-hidden sm:mt-2 sm:h-[2.5rem]">
+                    <div className="h-[4rem] sm:h-[5rem]" style={{ transform: `translate3d(0, ${-local * 50}%, 0)` }}>
                       <p className="text-display flex h-1/2 items-center text-[clamp(1rem,2.7vw,1.85rem)] text-ink" style={{ opacity: outgoing, transform: `scale(${1 - local * 0.035})` }}>{pair.before}</p>
                       <p className="text-display flex h-1/2 items-center text-[clamp(1rem,2.7vw,1.85rem)] text-brand" style={{ opacity: incoming, transform: `scale(${0.965 + local * 0.035})` }}>{pair.after}</p>
                     </div>
