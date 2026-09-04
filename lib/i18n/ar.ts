@@ -7,9 +7,6 @@ const ar: Dictionary = {
     { label: 'نظرة عامة', href: '/' },
     { label: 'الشركة', href: '/about' },
     { label: 'القدرات', href: '/services' },
-    { label: 'القطاعات', href: '/industries' },
-    { label: 'التطبيقات', href: '/case-studies' },
-    { label: 'التعاون', href: '/pricing' },
     { label: 'تواصل', href: '/contact' },
     { label: 'احجز استشارة', href: '/consult' },
   ],
@@ -142,6 +139,13 @@ const ar: Dictionary = {
         { problem: 'أعمال إدارية متكررة', automated: 'المهمة تعمل من تلقاء نفسها' },
         { problem: 'أوقات استجابة بطيئة', automated: 'ردود فورية ومتّسقة' },
         { problem: 'أدوات غير مترابطة', automated: 'نظام واحد مترابط' },
+      ],
+      pairsRight: [
+        { problem: 'تسليمات يدوية', automated: 'العمل ينتقل تلقائيًا' },
+        { problem: 'أنظمة غير مترابطة', automated: 'الأنظمة تشترك بمصدر واحد' },
+        { problem: 'عمل متكرر', automated: 'الروتين يشغّل نفسه' },
+        { problem: 'بيانات تشغيلية متناثرة', automated: 'البيانات تصل إلى مكان واحد' },
+        { problem: 'تنفيذ مجزّأ', automated: 'التنفيذ يعمل من البداية إلى النهاية' },
       ],
     },
     servicesOverview: {

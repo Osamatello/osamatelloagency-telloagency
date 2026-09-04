@@ -127,6 +127,7 @@ export interface Dictionary {
       title: string;
       lead: string;
       pairs: { problem: string; automated: string }[];
+      pairsRight: { problem: string; automated: string }[];
     };
     servicesOverview: { eyebrow: string; title: string; subtitle: string; services: ServiceCardData[] };
     problems: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };

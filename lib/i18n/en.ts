@@ -7,9 +7,6 @@ const en: Dictionary = {
     { label: 'Overview', href: '/' },
     { label: 'Company', href: '/about' },
     { label: 'Capabilities', href: '/services' },
-    { label: 'Industries', href: '/industries' },
-    { label: 'Deployments', href: '/case-studies' },
-    { label: 'Engagement', href: '/pricing' },
     { label: 'Contact', href: '/contact' },
     { label: 'Book a Consultation', href: '/consult' },
   ],
@@ -142,6 +139,13 @@ const en: Dictionary = {
         { problem: 'Repetitive admin', automated: 'Task runs on its own' },
         { problem: 'Slow response times', automated: 'Instant, consistent replies' },
         { problem: 'Disconnected tools', automated: 'One connected system' },
+      ],
+      pairsRight: [
+        { problem: 'Manual handoffs', automated: 'Work moves automatically' },
+        { problem: 'Disconnected systems', automated: 'Systems share one source' },
+        { problem: 'Repetitive work', automated: 'Routine runs itself' },
+        { problem: 'Scattered operational data', automated: 'Data lands in one place' },
+        { problem: 'Fragmented execution', automated: 'Execution runs end to end' },
       ],
     },
     servicesOverview: {
