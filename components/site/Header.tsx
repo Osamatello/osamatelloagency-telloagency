@@ -36,6 +36,11 @@ export function Header() {
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
+  const navLabel = (item: { label: string; href: string }) => {
+    if (item.href !== '/about') return item.label;
+    return item.label === 'الشركة' ? 'من نحن' : 'Who We Are';
+  };
+
   const primaryNav = dict.nav.slice(0, 4);
   const forceLight = pathname.startsWith('/about');
 
@@ -77,7 +82,7 @@ export function Header() {
                   active ? 'text-ink' : 'text-ink-muted hover:text-ink'
                 )}
               >
-                {item.label}
+                {navLabel(item)}
                 <span
                   aria-hidden="true"
                   className={cn(
@@ -147,7 +152,7 @@ export function Header() {
                     active ? 'text-brand' : 'text-ink hover:text-brand'
                   )}
                 >
-                  <span className="text-display">{item.label}</span>
+                  <span className="text-display">{navLabel(item)}</span>
                 </Link>
               );
             })}
