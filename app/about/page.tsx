@@ -23,7 +23,6 @@ function ArchitecturalAssembly() {
       <div className="company-rotate-layer company-rotate-layer-d absolute inset-x-[39%] inset-y-[35%] bg-brand/90" />
       <div className="absolute start-[4%] top-[22%] h-px w-[32%] bg-brand/30" />
       <div className="absolute end-[3%] bottom-[19%] h-px w-[38%] bg-brand/35" />
-      <div className="absolute end-[16%] top-[5%] h-10 w-10 border border-line-strong bg-paper/70" />
       <div className="absolute bottom-[4%] start-[18%] h-16 w-7 bg-brand/12" />
       <span className="absolute end-[6%] top-[24%] h-2 w-2 rounded-full bg-brand" />
       <span className="absolute bottom-[16%] start-[8%] h-1.5 w-1.5 rounded-full bg-brand-soft" />
