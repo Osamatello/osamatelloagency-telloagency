@@ -18,17 +18,17 @@ export function Capabilities() {
 
   return (
     <section ref={ref} className="relative min-h-[165svh] sm:min-h-[175svh] lg:min-h-[190svh]">
-      <div className="sticky top-0 flex h-[100svh] items-start overflow-hidden">
+      <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
         <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
           <div
-            className="grid gap-3 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] sm:items-end"
+            className="max-w-3xl"
             style={{
               opacity: headingProgress,
               transform: `translate3d(0, ${(1 - headingProgress) * 18}px, 0)`,
             }}
           >
             <span className="eyebrow">{t.eyebrow}</span>
-            <h2 className="text-display text-[clamp(1.7rem,4.4vw,3.2rem)] text-ink sm:text-end">
+            <h2 className="text-display mt-5 text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">
               {t.title}
             </h2>
           </div>
@@ -59,12 +59,12 @@ export function Capabilities() {
                     </span>
                     <div className="min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-display text-[clamp(0.95rem,2.1vw,1.55rem)] leading-[1.02] text-ink transition-colors duration-300 group-hover:text-brand rtl:leading-[1.25]">
+                        <h3 className="text-[clamp(0.98rem,2vw,1.3rem)] font-medium leading-tight text-ink transition-colors duration-300 group-hover:text-brand rtl:leading-[1.35]">
                           {item.title}
                         </h3>
                         <Arrow className="mt-0.5 hidden h-4 w-4 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-brand rtl:group-hover:-translate-x-1 sm:block" />
                       </div>
-                      <p className="mt-1.5 text-[0.68rem] leading-snug text-ink-muted sm:mt-2 sm:text-xs sm:leading-relaxed lg:max-w-md">
+                      <p className="mt-2 text-[0.98rem] leading-relaxed text-ink-muted lg:max-w-md">
                         {item.summary}
                       </p>
                     </div>
