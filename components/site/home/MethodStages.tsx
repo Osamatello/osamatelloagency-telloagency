@@ -14,7 +14,7 @@ export function MethodStages() {
   const { ref, inView } = useInView();
 
   return (
-    <div ref={ref} className="grid gap-x-10 gap-y-10 lg:grid-cols-12">
+    <div ref={ref} className="grid gap-x-10 gap-y-8 lg:grid-cols-12">
       <div className="lg:col-span-4">
         <span className={cn('eyebrow reveal-up', inView && 'is-in')}>
           {t.eyebrow}
@@ -44,7 +44,7 @@ export function MethodStages() {
           <li
             key={s.step}
             className={cn(
-              'reveal-up grid grid-cols-[auto_1fr] items-baseline gap-x-5 border-t border-line py-6 last:border-b',
+              'reveal-up grid grid-cols-[auto_1fr] items-baseline gap-x-5 border-t border-line py-5 last:border-b',
               inView && 'is-in'
             )}
             style={{ transitionDelay: `${200 + i * 70}ms` }}
