@@ -155,11 +155,11 @@ export function HeroEnvironment({ className }: { className?: string }) {
     const readabilityAt = (x: number, y: number) => {
       let attenuation = 1;
       for (const zone of protectedZones) {
-        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.18;
+        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.3;
         const dx = Math.max(zone.left - x, 0, x - zone.right);
         const dy = Math.max(zone.top - y, 0, y - zone.bottom);
         const distance = Math.hypot(dx, dy);
-        if (distance < 28) attenuation = Math.min(attenuation, 0.5 + distance / 56);
+        if (distance < 28) attenuation = Math.min(attenuation, 0.62 + distance / 74);
       }
       return attenuation;
     };
