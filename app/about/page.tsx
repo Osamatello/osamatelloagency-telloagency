@@ -16,11 +16,11 @@ function Reveal({ children, className, delay = 0 }: { children: ReactNode; class
 
 function ArchitecturalAssembly() {
   return (
-    <div aria-hidden="true" className="company-orbit relative mx-auto aspect-square w-full max-w-[22rem] lg:max-w-[24rem]">
-      <div className="absolute inset-[7%] border border-brand/20" />
-      <div className="absolute inset-x-[17%] inset-y-[14%] -rotate-[7deg] border border-brand/28" />
-      <div className="absolute inset-x-[29%] inset-y-[25%] rotate-[9deg] border border-brand/38" />
-      <div className="absolute inset-x-[39%] inset-y-[35%] bg-brand/90" />
+    <div aria-hidden="true" className="relative mx-auto aspect-square w-full max-w-[22rem] lg:max-w-[24rem]">
+      <div className="company-rotate-layer company-rotate-layer-a absolute inset-[7%] border border-brand/20" />
+      <div className="company-rotate-layer company-rotate-layer-b absolute inset-x-[17%] inset-y-[14%] border border-brand/28" />
+      <div className="company-rotate-layer company-rotate-layer-c absolute inset-x-[29%] inset-y-[25%] border border-brand/38" />
+      <div className="company-rotate-layer company-rotate-layer-d absolute inset-x-[39%] inset-y-[35%] bg-brand/90" />
       <div className="absolute start-[4%] top-[22%] h-px w-[32%] bg-brand/30" />
       <div className="absolute end-[3%] bottom-[19%] h-px w-[38%] bg-brand/35" />
       <div className="absolute end-[16%] top-[5%] h-10 w-10 border border-line-strong bg-paper/70" />
@@ -86,15 +86,23 @@ export default function AboutPage() {
     <article id="company-page" ref={pageRef} className="relative isolate overflow-hidden bg-paper text-ink">
       <style jsx global>{`
         html, body { background-color: hsl(var(--ds-paper)) !important; color-scheme: light; }
-        @keyframes company-orbit {
-          0% { transform: translate3d(0, -7px, 0) rotate(0deg); }
-          25% { transform: translate3d(7px, 0, 0) rotate(2deg); }
-          50% { transform: translate3d(0, 7px, 0) rotate(0deg); }
-          75% { transform: translate3d(-7px, 0, 0) rotate(-2deg); }
-          100% { transform: translate3d(0, -7px, 0) rotate(0deg); }
+        .company-rotate-layer {
+          transform-origin: 50% 50%;
+          will-change: transform;
         }
-        .company-orbit { animation: company-orbit 6s linear infinite; will-change: transform; }
-        @media (prefers-reduced-motion: reduce) { .company-orbit { animation: none; } }
+        @keyframes company-rotate-a { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes company-rotate-b { from { transform: rotate(-7deg); } to { transform: rotate(353deg); } }
+        @keyframes company-rotate-c { from { transform: rotate(9deg); } to { transform: rotate(369deg); } }
+        @keyframes company-rotate-d { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        .company-rotate-layer-a { animation: company-rotate-a 14s linear infinite; }
+        .company-rotate-layer-b { animation: company-rotate-b 11s linear infinite; }
+        .company-rotate-layer-c { animation: company-rotate-c 8s linear infinite; }
+        .company-rotate-layer-d { animation: company-rotate-d 6s linear infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .company-rotate-layer { animation: none !important; }
+          .company-rotate-layer-b { transform: rotate(-7deg); }
+          .company-rotate-layer-c { transform: rotate(9deg); }
+        }
       `}</style>
       <CompanyEnvironment rootRef={pageRef} />
 
