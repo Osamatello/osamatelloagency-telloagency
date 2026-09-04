@@ -18,8 +18,9 @@ export function Capabilities() {
 
   return (
     <section ref={ref} className="relative min-h-[165svh] sm:min-h-[175svh] lg:min-h-[190svh]">
+      <div aria-hidden="true" className="container-page absolute inset-x-0 top-0 z-10 border-t border-line" />
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-        <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
+        <div className="container-page relative z-10 py-8 sm:py-10 lg:py-12">
           <div
             className="max-w-3xl"
             style={{
