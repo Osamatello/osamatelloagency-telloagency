@@ -137,27 +137,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section data-company-scene className="relative z-10 py-16 sm:py-24 lg:min-h-[105vh] lg:py-40">
-        <div className="container-page">
-          <div className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-16">
-            <Reveal className="lg:col-span-7">
-              <span className="eyebrow">{about.narrative.eyebrow}</span>
-              <h2 className="text-display mt-7 max-w-4xl text-[clamp(2.6rem,5.7vw,5.8rem)] leading-[0.93] rtl:leading-[1.14]">{about.narrative.title}</h2>
-            </Reveal>
-            <Reveal className="lg:col-span-5 lg:pt-24" delay={100}>
-              <p className="max-w-xl text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">{about.narrative.lead}</p>
-              <ol className="mt-7 border-t border-line sm:mt-10">
-                {about.narrative.problems.map((problem, index) => (
-                  <li key={problem} className="grid grid-cols-[2.5rem_1fr] items-center border-b border-line py-4 text-sm sm:text-base">
-                    <span className="text-[0.65rem] tabular-nums text-brand">0{index + 1}</span><span>{problem}</span>
-                  </li>
-                ))}
-              </ol>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       <section data-company-scene className="relative z-10 py-16 sm:py-24 lg:min-h-[115vh] lg:py-40">
         <div className="container-page">
           <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end">
