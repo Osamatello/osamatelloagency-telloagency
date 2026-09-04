@@ -335,65 +335,110 @@ const en: Dictionary = {
   },
   about: {
     hero: {
-      eyebrow: 'About TELLO',
-      title: 'A small agency focused on practical AI automation',
+      eyebrow: 'The Company',
+      title: 'We engineer businesses\nto operate differently.',
       subtitle:
-        'TELLO builds automation systems, websites, and lead generation workflows that help clinics save time and grow steadily.',
+        'DAMASAVERO is an AI Automation & Business Systems company designing intelligent operational infrastructure — systems that connect decisions, execution and continuous improvement.',
     },
-    story: {
-      eyebrow: 'Our Story',
-      title: 'Why TELLO exists',
-      paragraphs: [
-        'TELLO was founded with a clear goal: help clinics and healthcare businesses use AI automation without the complexity and cost of large agencies.',
-        'Many clinics still handle appointments, follow-ups, and lead capture manually. The result is missed calls, lost patients, and hours of repetitive work for already-busy teams.',
-        'TELLO was created to change that — by building simple, connected systems that handle the repetitive work so clinic teams can focus on patient care.',
+    narrative: {
+      eyebrow: 'Why DAMASAVERO Exists',
+      title: 'More software rarely solves a structural problem.',
+      lead:
+        'Businesses accumulate platforms faster than they redesign the operations between them. The result is fragmented infrastructure, isolated data and human coordination carrying work the system should handle.',
+      problems: [
+        'Disconnected software',
+        'Repetitive manual execution',
+        'Isolated operational data',
+        'Coordination that compounds with scale',
+      ],
+      positionEyebrow: 'The DAMASAVERO Position',
+      positionTitle: 'The answer is not another tool. It is an operating architecture.',
+      principles: ['Connect', 'Automate', 'Orchestrate', 'Optimize'],
+    },
+    philosophy: {
+      eyebrow: 'Operating Philosophy',
+      title: 'Automation should remove complexity,\nnot create more of it.',
+      lead:
+        'Every system is judged by how clearly it improves the operation — not by how much technology it introduces.',
+      principles: [
+        {
+          index: '01',
+          title: 'Systems over tools',
+          description: 'We design around the operating outcome, then select the components that serve it.',
+        },
+        {
+          index: '02',
+          title: 'Integration over replacement',
+          description: 'Existing infrastructure becomes part of a stronger architecture instead of being discarded by default.',
+        },
+        {
+          index: '03',
+          title: 'Autonomy with control',
+          description: 'Automation executes independently while preserving visibility, governance and human authority where it matters.',
+        },
+        {
+          index: '04',
+          title: 'Built around the operation',
+          description: 'Every decision begins with how the business actually works — its constraints, exceptions and responsibilities.',
+        },
       ],
     },
-    mission: {
-      eyebrow: 'Our Mission',
-      title: 'Make practical automation accessible to clinics',
-      body: 'To help clinics save time, capture more leads, and deliver a better patient experience through automation systems that are simple to understand and easy to maintain.',
+    perspective: {
+      eyebrow: 'Strategic Perspective',
+      title: "We don’t start with AI.\nWe start with the operation.",
+      lead: 'Technology enters only after the operation is understood.',
+      steps: [
+        { index: '01', title: 'Understand the operation' },
+        { index: '02', title: 'Identify structural friction' },
+        { index: '03', title: 'Architect the system' },
+        { index: '04', title: 'Introduce intelligence' },
+        { index: '05', title: 'Connect execution' },
+        { index: '06', title: 'Continuously optimize' },
+      ],
     },
-    vision: {
-      eyebrow: 'Our Vision',
-      title: 'Automation that works for every clinic',
-      body: 'A future where every clinic — regardless of size — can run efficiently with AI handling repetitive tasks, so healthcare teams can focus on what matters most: their patients.',
-    },
-    why: {
-      eyebrow: 'Why TELLO',
-      title: 'What makes TELLO different',
-      subtitle: 'Practical, clinic-focused, and built to grow with you.',
-      items: [
-        { icon: 'Target', title: 'Practical, not flashy', description: 'We build systems that solve real problems — no hype, just automation that saves time.' },
-        { icon: 'Stethoscope', title: 'Clinic-focused', description: 'Our first focus is healthcare, so every solution is built around how clinics actually work.' },
-        { icon: 'Plug', title: 'Connected systems', description: 'We connect your existing tools instead of forcing you to replace everything.' },
-        { icon: 'Wallet', title: 'Affordable starting point', description: 'Pricing designed for clinics new to automation, with room to grow over time.' },
-        { icon: 'Layers', title: 'Modular by design', description: 'Start with one workflow and add more as your needs grow.' },
-        { icon: 'HeartHandshake', title: 'Honest guidance', description: 'Clear advice on what to automate first and what can wait, based on your goals.' },
+    architecture: {
+      eyebrow: 'Systems Architecture',
+      title: 'One operational framework.\nFour interdependent layers.',
+      lead:
+        'Intelligence, automation, integration and operations are engineered as one coherent business architecture.',
+      layers: [
+        {
+          index: '01',
+          title: 'Intelligence',
+          description: 'Reasoning, decision systems and machine interpretation.',
+        },
+        {
+          index: '02',
+          title: 'Automation',
+          description: 'Workflow execution and autonomous operational processes.',
+        },
+        {
+          index: '03',
+          title: 'Integration',
+          description: 'APIs, platforms, data synchronization and existing infrastructure.',
+        },
+        {
+          index: '04',
+          title: 'Operations',
+          description: 'The real business processes the architecture is built to serve.',
+        },
       ],
     },
     founder: {
-      eyebrow: 'Meet the Founder',
-      title: 'Built by someone who loves practical automation',
-      intro:
-        'TELLO was founded by Osama Tello to help clinics save time and grow with automation systems that are simple, reliable, and genuinely useful.',
-      name: 'Osama Tello',
-      role: 'Founder and AI Automation Builder',
-      message:
-        'I started TELLO to help clinics focus on patients, not paperwork. My focus is on building practical automation systems that are simple to use, reliable, and genuinely save time. No over-engineered tools — just systems that improve real business results.',
-      highlights: [
-        'Focuses on practical automation over hype',
-        'Builds systems for real clinic workflows',
-        'Believes in simple, maintainable technology',
-        'Designed TELLO to grow with each client',
-      ],
+      eyebrow: 'Leadership',
+      title: 'Designing for how businesses will operate next.',
+      name: 'OSAMA TELLO',
+      role: 'Founder — DAMASAVERO',
+      perspectiveLabel: 'Founder Perspective',
+      perspective:
+        'The objective is not simply to add AI to a business. It is to redesign how the business operates when intelligence, automation and connected systems become part of its infrastructure.',
     },
     cta: {
-      eyebrow: 'Let’s Talk',
-      title: 'Curious what automation could do for your clinic?',
-      subtitle: 'Book a free consultation and get honest advice on where to start.',
-      primaryCta: 'Book a Free Consultation',
-      secondaryCta: 'Explore Services',
+      eyebrow: 'Strategic Engagement',
+      title: 'Build the operation\nyour business is ready for.',
+      subtitle: 'Start with the constraints limiting execution today. We’ll define the architecture required to move beyond them.',
+      primaryCta: 'Start a Conversation',
+      secondaryCta: 'Explore Capabilities',
     },
   },
   services: {
