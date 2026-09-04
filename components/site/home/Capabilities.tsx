@@ -3,77 +3,59 @@
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
-import { usePinnedProgress } from '@/lib/usePinnedProgress';
 
-const clamp = (value: number) => Math.min(1, Math.max(0, value));
-const ease = (value: number) => 1 - Math.pow(1 - value, 3);
+const placements = [
+  'lg:col-start-1 lg:col-span-5',
+  'lg:col-start-8 lg:col-span-5 lg:mt-14',
+  'lg:col-start-2 lg:col-span-5 lg:mt-4',
+  'lg:col-start-7 lg:col-span-5 lg:-mt-5',
+  'lg:col-start-1 lg:col-span-5 lg:mt-7',
+  'lg:col-start-8 lg:col-span-5 lg:mt-1',
+];
 
-/** A pinned scene that accumulates all six capabilities as scroll progresses. */
+/** Spatial capability field: six persistent points arranged around the visual environment. */
 export function Capabilities() {
   const { dict, dir } = useI18n();
   const t = dict.home.capabilities;
-  const { ref, progress } = usePinnedProgress<HTMLElement>();
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
-  const headingProgress = ease(clamp((progress + 0.08) / 0.1));
 
   return (
-    <section ref={ref} className="relative min-h-[165svh] sm:min-h-[175svh] lg:min-h-[190svh]">
-      <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-        <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
-          <div
-            className="max-w-3xl"
-            style={{
-              opacity: headingProgress,
-              transform: `translate3d(0, ${(1 - headingProgress) * 18}px, 0)`,
-            }}
-          >
-            <span className="eyebrow">{t.eyebrow}</span>
-            <h2 className="text-display mt-5 text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">
-              {t.title}
-            </h2>
-          </div>
-
-          <ol className="mt-5 grid grid-cols-2 gap-x-4 gap-y-0 sm:mt-8 sm:gap-x-10 lg:mt-10 lg:gap-x-20">
-            {t.items.map((item, index) => {
-              const start = index * 0.125;
-              const amount = ease(clamp((progress - start) / 0.13));
-              const direction = (index % 2 === 0 ? -1 : 1) * (dir === 'rtl' ? -1 : 1);
-              const finalOffset = index % 3 === 1 ? 12 : index % 3 === 2 ? -8 : 0;
-
-              return (
-                <li
-                  key={item.index}
-                  className="border-t border-line"
-                  style={{
-                    opacity: amount,
-                    transform: `translate3d(${direction * (1 - amount) * 54 + finalOffset * amount}px, ${(1 - amount) * 14}px, 0)`,
-                    pointerEvents: amount > 0.85 ? 'auto' : 'none',
-                  }}
-                >
-                  <Link
-                    href={item.href}
-                    className="group grid min-h-[6.2rem] grid-cols-[auto_1fr] content-center gap-x-2 py-3 sm:min-h-[7.5rem] sm:gap-x-4 sm:py-4 lg:min-h-[8.4rem]"
-                  >
-                    <span className="text-display text-[0.65rem] tabular-nums text-brand sm:text-xs">
-                      {item.index}
-                    </span>
-                    <div className="min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-[clamp(0.98rem,2vw,1.3rem)] font-medium leading-tight text-ink transition-colors duration-300 group-hover:text-brand rtl:leading-[1.35]">
-                          {item.title}
-                        </h3>
-                        <Arrow className="mt-0.5 hidden h-4 w-4 shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-brand rtl:group-hover:-translate-x-1 sm:block" />
-                      </div>
-                      <p className="mt-2 text-[0.98rem] leading-relaxed text-ink-muted lg:max-w-md">
-                        {item.summary}
-                      </p>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ol>
+    <section className="relative overflow-hidden">
+      <div className="container-page relative z-10 border-t border-line py-14 sm:py-16 lg:py-20">
+        <div className="max-w-3xl">
+          <span className="eyebrow">{t.eyebrow}</span>
+          <h2 className="text-display mt-5 text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">
+            {t.title}
+          </h2>
         </div>
+
+        <ol className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-12 lg:mt-16 lg:grid-cols-12 lg:gap-y-4">
+          {t.items.map((item, index) => (
+            <li key={item.index} className={placements[index] ?? 'lg:col-span-5'}>
+              <Link
+                href={item.href}
+                className="group block border-t border-line pt-4 transition-transform duration-300 hover:-translate-y-1 sm:pt-5"
+              >
+                <div className="flex items-start gap-4">
+                  <span className="text-display mt-1 shrink-0 text-xs tabular-nums text-brand">
+                    {item.index}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="text-[clamp(1.05rem,2vw,1.3rem)] font-medium leading-tight text-ink transition-colors duration-300 group-hover:text-brand rtl:leading-[1.35]">
+                        {item.title}
+                      </h3>
+                      <Arrow className="mt-0.5 h-4 w-4 shrink-0 text-ink-faint transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-brand rtl:group-hover:-translate-x-1" />
+                    </div>
+                    <p className="mt-2 max-w-md text-[0.98rem] leading-relaxed text-ink-muted">
+                      {item.summary}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
