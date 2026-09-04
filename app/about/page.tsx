@@ -16,7 +16,7 @@ function Reveal({ children, className, delay = 0 }: { children: ReactNode; class
 
 function ArchitecturalAssembly() {
   return (
-    <div aria-hidden="true" className="relative mx-auto aspect-[4/5] w-full max-w-[29rem] sm:aspect-square">
+    <div aria-hidden="true" className="relative mx-auto aspect-[4/5] w-full max-w-[24rem] sm:aspect-square">
       <div className="absolute inset-[7%] border border-brand/20" />
       <div className="absolute inset-x-[17%] inset-y-[14%] -rotate-[7deg] border border-brand/28" />
       <div className="absolute inset-x-[29%] inset-y-[25%] rotate-[9deg] border border-brand/38" />
@@ -122,13 +122,13 @@ export default function AboutPage() {
       `}</style>
       <CompanyEnvironment rootRef={pageRef} />
 
-      <section data-company-scene className="relative z-10 flex items-center border-b border-line py-14 sm:py-20 lg:min-h-[calc(100vh-4.5rem)] lg:py-28">
-        <div className="container-page grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+      <section data-company-scene className="relative z-10 flex items-center border-b border-line py-12 sm:min-h-[100svh] sm:py-16 lg:py-20">
+        <div className="container-page grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
           <div className="relative">
             <span className="eyebrow animate-fade-up">{about.hero.eyebrow}</span>
-            <h1 className="text-display mt-8 whitespace-pre-line text-[clamp(3.1rem,7vw,7.1rem)] leading-[0.88] text-ink rtl:leading-[1.08]">{about.hero.title}</h1>
-            <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg sm:leading-8">{about.hero.subtitle}</p>
-            <div className="mt-12 flex items-center gap-4 text-[0.64rem] uppercase tracking-[0.24em] text-ink-faint">
+            <h1 className="text-display mt-7 whitespace-pre-line text-[clamp(2.35rem,5.6vw,4.5rem)] leading-[0.94] text-ink rtl:leading-[1.08]">{about.hero.title}</h1>
+            <p className="mt-6 max-w-2xl text-[0.98rem] leading-relaxed text-ink-muted sm:text-base">{about.hero.subtitle}</p>
+            <div className="mt-8 flex items-center gap-4 text-[0.64rem] uppercase tracking-[0.24em] text-ink-faint sm:mt-10">
               <span className="h-px w-12 bg-brand" />
               <span>{dict.brand.tagline}</span>
             </div>
