@@ -10,7 +10,6 @@ import { IntegrationRail } from '@/components/site/home/IntegrationRail';
 import { Capabilities } from '@/components/site/home/Capabilities';
 import { ProblemShift } from '@/components/site/home/ProblemShift';
 import { BeforeAfterAutomation } from '@/components/site/home/BeforeAfterAutomation';
-import { MethodStages } from '@/components/site/home/MethodStages';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 export default function HomePage() {
@@ -140,29 +139,22 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Capabilities — pinned progressive accumulation */}
+        {/* Capabilities */}
         <div data-visual-state="2" className="relative">
           <Capabilities />
         </div>
 
-        {/* The Shift — the route becomes the transformation rail (no bg network) */}
+        {/* The Shift */}
         <section data-visual-state="3" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
             <ProblemShift />
           </div>
         </section>
 
-        {/* Before / After — pinned transformation from manual to automated */}
+        {/* Before / After */}
         <div data-visual-state="4" className="relative">
           <BeforeAfterAutomation />
         </div>
-
-        {/* How It Works — the route becomes a structured implementation flow */}
-        <section data-visual-state="5" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
-            <MethodStages />
-          </div>
-        </section>
 
         {/* FAQ — light */}
         <section data-visual-state="6" className="relative overflow-hidden">
@@ -171,7 +163,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Final CTA — light, the route converges toward one action */}
+        {/* Final CTA — light */}
         <section data-visual-state="7" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
             <HomeCta />
