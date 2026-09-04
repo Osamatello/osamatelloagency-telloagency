@@ -65,7 +65,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col gap-9 border-t border-line pt-8 lg:mt-12 lg:flex-row lg:items-center lg:justify-between">
+          <div className="mt-7 flex flex-col gap-9 border-t border-line pt-6 sm:mt-12 sm:pt-8 lg:mt-12 lg:flex-row lg:items-center lg:justify-between">
             <div className={cn('reveal-up flex flex-col gap-3 sm:flex-row', shown && 'is-in')} style={rd(820)}>
               <Link href="/consult" className="btn-primary">
                 {home.hero.primaryCta}
