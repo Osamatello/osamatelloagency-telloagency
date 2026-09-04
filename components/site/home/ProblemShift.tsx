@@ -7,13 +7,6 @@ import { SectionHead } from './SectionHead';
 
 type Pair = { problem: string; automated: string };
 
-/**
- * The Shift — light. Two transformation rails (left + right) form one designed
- * two-column system: identical fixed row heights and a shared progress clock, so
- * both rails start and end together and matching rows line up exactly. On
- * desktop the grid stretches both columns to equal height; on mobile they stack.
- * Reduced-motion → everything shown resolved.
- */
 function Rail({
   pairs,
   resolved,
@@ -78,19 +71,30 @@ function Rail({
   );
 }
 
+function MobileRail({ pairs, rtl }: { pairs: Pair[]; rtl: boolean }) {
+  const { ref, progress } = useScrollProgress();
+  const n = pairs.length;
+  const railProgress = Math.min(1, Math.max(0, (progress - 0.18) / 0.48));
+  const resolved = Math.min(n - 1, Math.floor(railProgress * n));
+
+  return (
+    <div ref={ref}>
+      <Rail pairs={pairs} resolved={resolved} fill={railProgress * 100} rtl={rtl} />
+    </div>
+  );
+}
+
 export function ProblemShift() {
   const { dict, dir } = useI18n();
   const t = dict.home.shift;
   const { ref, progress } = useScrollProgress();
   const rtl = dir === 'rtl';
 
-  // Both rails run the same length — one synchronized two-column system.
   const n = Math.min(t.pairs.length, t.pairsRight.length);
   const left = t.pairs.slice(0, n);
   const right = t.pairsRight.slice(0, n);
 
-  // Keep the transformation concentrated in a shorter scroll window so the
-  // section does not sit for long in an awkward half-resolved state.
+  // Desktop keeps the approved synchronized two-column behavior unchanged.
   const shiftProgress = Math.min(1, Math.max(0, (progress - 0.16) / 0.34));
   const resolved = Math.min(n - 1, Math.floor(shiftProgress * n));
   const fill = shiftProgress * 100;
@@ -99,7 +103,14 @@ export function ProblemShift() {
     <div ref={ref}>
       <SectionHead label={t.eyebrow} title={t.title} lead={t.lead} />
 
-      <div className="mt-10 grid gap-x-10 gap-y-6 sm:mt-12 sm:grid-cols-2 sm:items-stretch lg:gap-x-16">
+      {/* Mobile: stacked rails each respond to their own position in the viewport. */}
+      <div className="mt-10 grid gap-y-6 sm:hidden">
+        <MobileRail pairs={left} rtl={rtl} />
+        <MobileRail pairs={right} rtl={rtl} />
+      </div>
+
+      {/* Desktop/tablet: preserve the existing synchronized side-by-side system. */}
+      <div className="mt-12 hidden gap-x-10 sm:grid sm:grid-cols-2 sm:items-stretch lg:gap-x-16">
         <Rail pairs={left} resolved={resolved} fill={fill} rtl={rtl} />
         <Rail pairs={right} resolved={resolved} fill={fill} rtl={rtl} />
       </div>
