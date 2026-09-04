@@ -355,34 +355,6 @@ const en: Dictionary = {
       positionTitle: 'The answer is not another tool. It is an operating architecture.',
       principles: ['Connect', 'Automate', 'Orchestrate', 'Optimize'],
     },
-    philosophy: {
-      eyebrow: 'Operating Philosophy',
-      title: 'Automation should remove complexity,\nnot create more of it.',
-      lead:
-        'Every system is judged by how clearly it improves the operation — not by how much technology it introduces.',
-      principles: [
-        {
-          index: '01',
-          title: 'Systems over tools',
-          description: 'We design around the operating outcome, then select the components that serve it.',
-        },
-        {
-          index: '02',
-          title: 'Integration over replacement',
-          description: 'Existing infrastructure becomes part of a stronger architecture instead of being discarded by default.',
-        },
-        {
-          index: '03',
-          title: 'Autonomy with control',
-          description: 'Automation executes independently while preserving visibility, governance and human authority where it matters.',
-        },
-        {
-          index: '04',
-          title: 'Built around the operation',
-          description: 'Every decision begins with how the business actually works — its constraints, exceptions and responsibilities.',
-        },
-      ],
-    },
     perspective: {
       eyebrow: 'Strategic Perspective',
       title: "We don’t start with AI.\nWe start with the operation.",

@@ -93,7 +93,6 @@ function ArchitectureScene({ content }: { content: Dictionary['about']['architec
               </div>
             );
           })}
-          <div className="absolute inset-[45%] translate-y-7 bg-brand shadow-[0_18px_45px_hsl(var(--brand)/0.2)] transition-transform duration-700" style={{ transform: `translateY(${28 - active * 5}px) rotate(-7deg)` }} />
           <span className="absolute end-[4%] top-[14%] text-[0.6rem] uppercase tracking-[0.18em] text-ink-faint">{String(active + 1).padStart(2, '0')} / 04</span>
         </div>
       </Reveal>
@@ -164,27 +163,6 @@ export default function AboutPage() {
                 ))}
               </ol>
             </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <section data-company-scene className="relative z-10 border-y border-line bg-paper-sunken/[0.78] py-24 sm:py-32 lg:py-40">
-        <div className="container-page grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
-          <Reveal className="lg:sticky lg:top-32 lg:self-start">
-            <span className="eyebrow">{about.philosophy.eyebrow}</span>
-            <h2 className="text-display mt-7 whitespace-pre-line text-[clamp(2.6rem,5vw,5rem)] rtl:leading-[1.16]">{about.philosophy.title}</h2>
-            <p className="mt-7 max-w-lg text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">{about.philosophy.lead}</p>
-          </Reveal>
-          <div className="border-t border-line-strong">
-            {about.philosophy.principles.map((principle, index) => (
-              <Reveal key={principle.index} delay={index * 60}>
-                <article className="grid gap-5 border-b border-line-strong py-8 sm:grid-cols-[3.5rem_0.85fr_1.15fr] sm:gap-7 sm:py-10">
-                  <span className="text-xs tabular-nums tracking-[0.16em] text-brand">{principle.index}</span>
-                  <h3 className="text-display text-2xl sm:text-[2rem]">{principle.title}</h3>
-                  <p className="max-w-lg text-sm leading-7 text-ink-muted sm:text-base">{principle.description}</p>
-                </article>
-              </Reveal>
-            ))}
           </div>
         </div>
       </section>

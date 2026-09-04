@@ -327,7 +327,7 @@ export function CompanyEnvironment({ rootRef }: { rootRef: RefObject<HTMLElement
       context.save();
       context.globalCompositeOperation = 'destination-out';
       context.filter = 'blur(9px)';
-      context.fillStyle = 'rgba(0, 0, 0, 0.56)';
+      context.fillStyle = 'rgba(0, 0, 0, 0.38)';
       for (const zone of protectedZones) {
         context.fillRect(zone.left, zone.top, zone.right - zone.left, zone.bottom - zone.top);
       }

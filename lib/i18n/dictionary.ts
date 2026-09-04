@@ -165,12 +165,6 @@ export interface Dictionary {
       positionTitle: string;
       principles: string[];
     };
-    philosophy: {
-      eyebrow: string;
-      title: string;
-      lead: string;
-      principles: { index: string; title: string; description: string }[];
-    };
     perspective: {
       eyebrow: string;
       title: string;
