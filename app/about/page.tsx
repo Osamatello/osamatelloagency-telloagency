@@ -116,7 +116,7 @@ export default function AboutPage() {
       <style jsx global>{`
         html,
         body {
-          background-color: hsl(var(--ds-paper));
+          background-color: hsl(var(--ds-paper)) !important;
           color-scheme: light;
         }
       `}</style>
