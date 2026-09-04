@@ -151,8 +151,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Before / After — overlap the handoff so the centered pinned scene enters without a blank viewport */}
-        <div data-visual-state="4" className="relative -mt-[18svh] sm:-mt-[20svh] lg:-mt-[22svh]">
+        {/* Before / After */}
+        <div data-visual-state="4" className="relative">
           <BeforeAfterAutomation />
         </div>
 
