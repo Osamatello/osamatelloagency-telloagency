@@ -62,7 +62,7 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav
-          className="hidden items-center gap-7 lg:flex xl:gap-9"
+          className="hidden min-w-0 items-center gap-4 lg:flex xl:gap-6 2xl:gap-8"
           aria-label="Primary"
         >
           {primaryNav.map((item) => {
@@ -73,7 +73,7 @@ export function Header() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'group relative py-1 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+                  'group relative whitespace-nowrap py-1 text-[0.8125rem] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand xl:text-sm',
                   active ? 'text-ink' : 'text-ink-muted hover:text-ink'
                 )}
               >
@@ -90,11 +90,11 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex shrink-0 items-center gap-3 xl:gap-4">
           <LanguageSwitcher className="hidden sm:inline-flex" />
           <Link
             href="/consult"
-            className="btn-primary hidden px-5 py-2.5 text-sm lg:inline-flex"
+            className="btn-primary hidden shrink-0 whitespace-nowrap px-4 py-2.5 text-sm lg:inline-flex xl:px-5"
           >
             {dict.actions.bookConsultation}
           </Link>
