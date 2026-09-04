@@ -341,37 +341,22 @@ const en: Dictionary = {
   },
   about: {
     hero: {
-      eyebrow: 'The Company',
-      title: 'We engineer businesses\nto operate differently.',
+      eyebrow: 'Who We Are',
+      title: 'We redesign how businesses work.',
       subtitle:
-        'DAMASAVERO is an AI Automation & Business Systems company designing intelligent operational infrastructure — systems that connect decisions, execution and continuous improvement.',
-    },
-    narrative: {
-      eyebrow: 'Why DAMASAVERO Exists',
-      title: 'More software rarely solves a structural problem.',
-      lead:
-        'Businesses accumulate platforms faster than they redesign the operations between them. The result is fragmented infrastructure, isolated data and human coordination carrying work the system should handle.',
-      problems: [
-        'Disconnected software',
-        'Repetitive manual execution',
-        'Isolated operational data',
-        'Coordination that compounds with scale',
-      ],
-      positionEyebrow: 'The DAMASAVERO Position',
-      positionTitle: 'The answer is not another tool. It is an operating architecture.',
-      principles: ['Connect', 'Automate', 'Orchestrate', 'Optimize'],
+        'We turn fragmented processes into connected, intelligent systems — helping teams operate faster, respond smarter and scale without adding unnecessary complexity.',
     },
     perspective: {
       eyebrow: 'Strategic Perspective',
       title: "We don’t start with AI.\nWe start with the operation.",
       lead: 'Technology enters only after the operation is understood.',
       steps: [
-        { index: '01', title: 'Understand the operation' },
-        { index: '02', title: 'Identify structural friction' },
-        { index: '03', title: 'Architect the system' },
-        { index: '04', title: 'Introduce intelligence' },
-        { index: '05', title: 'Connect execution' },
-        { index: '06', title: 'Continuously optimize' },
+        { title: 'Understand the operation' },
+        { title: 'Identify structural friction' },
+        { title: 'Architect the system' },
+        { title: 'Introduce intelligence' },
+        { title: 'Connect execution' },
+        { title: 'Continuously optimize' },
       ],
     },
     architecture: {
@@ -381,22 +366,18 @@ const en: Dictionary = {
         'Intelligence, automation, integration and operations are engineered as one coherent business architecture.',
       layers: [
         {
-          index: '01',
           title: 'Intelligence',
           description: 'Reasoning, decision systems and machine interpretation.',
         },
         {
-          index: '02',
           title: 'Automation',
           description: 'Workflow execution and autonomous operational processes.',
         },
         {
-          index: '03',
           title: 'Integration',
           description: 'APIs, platforms, data synchronization and existing infrastructure.',
         },
         {
-          index: '04',
           title: 'Operations',
           description: 'The real business processes the architecture is built to serve.',
         },
@@ -405,7 +386,7 @@ const en: Dictionary = {
     founder: {
       eyebrow: 'Leadership',
       title: 'Designing for how businesses will operate next.',
-      name: 'OSAMA TELLO',
+      name: 'Osama Tello',
       role: 'Founder — DAMASAVERO',
       perspectiveLabel: 'Founder Perspective',
       perspective:
