@@ -90,7 +90,7 @@ export default function AboutPage() {
           will-change: transform;
         }
         @keyframes company-rotate-a { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes company-rotate-b { from { transform: rotate(-7deg); } to { transform: rotate(353deg); } }
+        @keyframes company-rotate-b { from { transform: rotate(-7deg); } to { transform: rotate(-367deg); } }
         @keyframes company-rotate-c { from { transform: rotate(9deg); } to { transform: rotate(369deg); } }
         @keyframes company-rotate-d { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         .company-rotate-layer-a { animation: company-rotate-a 14s linear infinite; }
