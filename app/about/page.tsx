@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { type ReactNode, useEffect, useRef, useState } from 'react';
-import { CompanyEnvironment } from '@/components/site/company/CompanyEnvironment';
+import { type ReactNode, useEffect, useState } from 'react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { useInView } from '@/lib/useInView';
 import { cn } from '@/lib/utils';
@@ -73,7 +72,6 @@ function ArchitectureScene({ content }: { content: Dictionary['about']['architec
 export default function AboutPage() {
   const { dict } = useI18n();
   const about = dict.about;
-  const pageRef = useRef<HTMLElement>(null);
   const perspectiveOffsets = ['lg:col-start-1', 'lg:col-start-3 lg:mt-20', 'lg:col-start-2 lg:-mt-5', 'lg:col-start-1 lg:mt-10', 'lg:col-start-3 lg:-mt-3', 'lg:col-start-2 lg:mt-8'];
   const isArabic = dict.meta.htmlLang === 'ar';
   const heroTitle = isArabic ? 'نعيد تصميم طريقة عمل الشركات.' : 'We redesign how businesses work.';
@@ -82,7 +80,7 @@ export default function AboutPage() {
     : 'We turn fragmented processes into connected, intelligent systems — helping teams operate faster, respond smarter and scale without adding unnecessary complexity.';
 
   return (
-    <article id="company-page" ref={pageRef} className="relative isolate overflow-hidden bg-paper text-ink">
+    <article id="company-page" className="relative isolate overflow-hidden bg-paper text-ink">
       <style jsx global>{`
         html, body { background-color: hsl(var(--ds-paper)) !important; color-scheme: light; }
         .company-rotate-layer {
@@ -103,7 +101,6 @@ export default function AboutPage() {
           .company-rotate-layer-c { transform: rotate(9deg); }
         }
       `}</style>
-      <CompanyEnvironment rootRef={pageRef} />
 
       <section data-company-scene className="relative z-10 flex items-center border-b border-line py-12 sm:py-16 lg:min-h-[calc(100vh-4.5rem)] lg:py-20">
         <div className="container-page grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
