@@ -5,12 +5,12 @@ const en: Dictionary = {
   brand: { name: 'DAMASAVERO', tagline: 'AI Automation & Business Systems' },
   nav: [
     { label: 'Overview', href: '/' },
-    { label: 'The Company', href: '/about' },
+    { label: 'Company', href: '/about' },
     { label: 'Capabilities', href: '/services' },
     { label: 'Industries', href: '/industries' },
     { label: 'Deployments', href: '/case-studies' },
-    { label: 'Engagement Models', href: '/pricing' },
-    { label: 'Start a Conversation', href: '/contact' },
+    { label: 'Engagement', href: '/pricing' },
+    { label: 'Contact', href: '/contact' },
     { label: 'Book a Consultation', href: '/consult' },
   ],
   actions: {

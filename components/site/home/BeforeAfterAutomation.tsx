@@ -20,7 +20,7 @@ export function BeforeAfterAutomation() {
   const scene = ease(clamp((progress - 0.08) / 0.82));
 
   return (
-    <section ref={ref} className="relative min-h-[190svh] sm:min-h-[210svh] lg:min-h-[230svh]">
+    <section ref={ref} className="relative min-h-[170svh] sm:min-h-[180svh] lg:min-h-[200svh]">
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
         <div className="container-page relative z-10 border-t border-line py-6 sm:py-10 lg:py-12">
           <div className="grid gap-5 sm:grid-cols-12 sm:items-end">

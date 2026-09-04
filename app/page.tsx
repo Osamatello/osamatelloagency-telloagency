@@ -135,7 +135,7 @@ export default function HomePage() {
       <div className="relative bg-transparent text-ink">
         {/* Integrations — pipeline enters from the hero */}
         <section data-visual-state="1" className="relative overflow-hidden">
-          <div className="container-page relative z-10 py-20 pt-14 sm:py-24 lg:py-28 lg:pt-16">
+          <div className="container-page relative z-10 py-16 pt-12 sm:py-20 lg:py-24 lg:pt-14">
             <IntegrationRail />
           </div>
         </section>
@@ -147,7 +147,7 @@ export default function HomePage() {
 
         {/* The Shift — the route becomes the transformation rail (no bg network) */}
         <section data-visual-state="3" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
+          <div className="container-page relative z-10 border-t border-line py-16 sm:py-20 lg:py-24">
             <ProblemShift />
           </div>
         </section>
@@ -159,21 +159,21 @@ export default function HomePage() {
 
         {/* How It Works — the route becomes a structured implementation flow */}
         <section data-visual-state="5" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
+          <div className="container-page relative z-10 border-t border-line py-16 sm:py-20 lg:py-24">
             <MethodStages />
           </div>
         </section>
 
         {/* FAQ — light */}
         <section data-visual-state="6" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-24 lg:py-28">
+          <div className="container-page relative z-10 border-t border-line py-16 sm:py-20 lg:py-24">
             <HomeFaq />
           </div>
         </section>
 
         {/* Final CTA — light, the route converges toward one action */}
         <section data-visual-state="7" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-20 sm:py-28 lg:py-32">
+          <div className="container-page relative z-10 border-t border-line py-16 sm:py-20 lg:py-24">
             <HomeCta />
           </div>
         </section>
@@ -192,7 +192,7 @@ function HomeFaq() {
       <h2 className="text-display mt-5 max-w-2xl text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">
         {t.title}
       </h2>
-      <dl className="mt-10 border-t border-line sm:mt-12">
+      <dl className="mt-8 border-t border-line sm:mt-10">
         {t.items.map((item, index) => {
           const open = openIndex === index;
           const answerId = `home-faq-answer-${index}`;

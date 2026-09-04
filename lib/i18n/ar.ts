@@ -9,8 +9,8 @@ const ar: Dictionary = {
     { label: 'القدرات', href: '/services' },
     { label: 'القطاعات', href: '/industries' },
     { label: 'التطبيقات', href: '/case-studies' },
-    { label: 'نماذج التعاون', href: '/pricing' },
-    { label: 'ابدأ محادثة', href: '/contact' },
+    { label: 'التعاون', href: '/pricing' },
+    { label: 'تواصل', href: '/contact' },
     { label: 'احجز استشارة', href: '/consult' },
   ],
   actions: {

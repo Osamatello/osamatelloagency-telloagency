@@ -24,13 +24,13 @@ export function IntegrationRail() {
 
       <div
         ref={ref}
-        className={cn('reveal-fade mt-14 space-y-5', inView && 'is-in')}
+        className={cn('reveal-fade mt-10 space-y-4 sm:mt-12', inView && 'is-in')}
       >
         <MarqueeRow items={rowA} reverse={false} />
         <MarqueeRow items={rowB} reverse />
       </div>
 
-      <div className="mt-10 flex items-center gap-4 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-ink-faint">
+      <div className="mt-8 flex items-center gap-4 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-ink-faint">
         <span className="h-px flex-1 bg-line" />
         <span className="whitespace-nowrap text-brand">{t.operatingLayer}</span>
         <span className="h-px w-8 shrink-0 bg-brand" />

@@ -17,7 +17,7 @@ export function Capabilities() {
   const headingProgress = ease(clamp(progress / 0.1));
 
   return (
-    <section ref={ref} className="relative min-h-[210svh] sm:min-h-[225svh] lg:min-h-[250svh]">
+    <section ref={ref} className="relative min-h-[180svh] sm:min-h-[190svh] lg:min-h-[210svh]">
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
         <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
           <div

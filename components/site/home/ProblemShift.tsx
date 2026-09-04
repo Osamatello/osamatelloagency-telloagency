@@ -27,7 +27,7 @@ export function ProblemShift() {
     <div ref={ref}>
       <SectionHead label={t.eyebrow} title={t.title} lead={t.lead} />
 
-      <ol className="relative mt-14 sm:mt-16">
+      <ol className="relative mt-10 sm:mt-12">
         <span
           aria-hidden="true"
           className="absolute top-1 bottom-1 w-px bg-line"
@@ -43,7 +43,7 @@ export function ProblemShift() {
           const on = i <= resolved;
           const scatter = (i % 2 === 0 ? -1 : 1) * (rtl ? -1 : 1) * 1.4;
           return (
-            <li key={i} className="relative flex items-start gap-5 py-4 sm:py-5">
+            <li key={i} className="relative flex items-start gap-5 py-3.5 sm:py-4">
               <span
                 className={cn(
                   'relative z-10 mt-1.5 h-3 w-3 shrink-0 rounded-full border-2 transition-colors duration-500',

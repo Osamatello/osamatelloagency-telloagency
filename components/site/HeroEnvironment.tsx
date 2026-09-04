@@ -131,7 +131,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       const padding = width < 640 ? 7 : 10;
       protectedZones = Array.from(
         document.querySelectorAll<HTMLElement>(
-          '[data-visual-state] h1, [data-visual-state] h2, [data-visual-state] h3, [data-visual-state] p, [data-visual-state] a, [data-visual-state] button, [data-visual-state] dt, [data-visual-state] dd, [data-visual-state] .eyebrow, [data-visual-state] ol'
+          '[data-visual-state] h1, [data-visual-state] h2, [data-visual-state] h3, [data-visual-state] p, [data-visual-state] dt, [data-visual-state] dd, [data-visual-state] .eyebrow, [data-visual-state] .btn-primary, [data-visual-state] .btn-outline, [data-visual-state] button > span, [data-visual-state] a > span'
         )
       ).map((element) => {
         const rect = element.getBoundingClientRect();
@@ -155,23 +155,26 @@ export function HeroEnvironment({ className }: { className?: string }) {
     const readabilityAt = (x: number, y: number) => {
       let attenuation = 1;
       for (const zone of protectedZones) {
-        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.3;
+        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.62;
         const dx = Math.max(zone.left - x, 0, x - zone.right);
         const dy = Math.max(zone.top - y, 0, y - zone.bottom);
         const distance = Math.hypot(dx, dy);
-        if (distance < 28) attenuation = Math.min(attenuation, 0.62 + distance / 74);
+        if (distance < 32) attenuation = Math.min(attenuation, 0.76 + distance / 134);
       }
       return attenuation;
     };
 
-    const clipOutsideProtectedZones = () => {
+    const softenProtectedZones = () => {
       if (!protectedZones.length) return;
+      context.save();
+      context.filter = 'blur(12px)';
+      context.fillStyle = 'rgba(251, 250, 247, 0.2)';
       context.beginPath();
-      context.rect(0, 0, width, height);
       for (const zone of protectedZones) {
         context.rect(zone.left, zone.top, zone.right - zone.left, zone.bottom - zone.top);
       }
-      context.clip('evenodd');
+      context.fill();
+      context.restore();
     };
 
     const measure = () => {
@@ -217,7 +220,6 @@ export function HeroEnvironment({ className }: { className?: string }) {
       const idleX = reduced ? 0 : Math.sin(ambientTime * 0.00016) * width * 0.004;
       const idleY = reduced ? 0 : Math.cos(ambientTime * 0.00013) * height * 0.004;
       context.save();
-      clipOutsideProtectedZones();
       context.translate(width * 0.5 + idleX, height * 0.5 + idleY);
       context.rotate(reduced ? 0 : Math.sin(ambientTime * 0.00008) * 0.014);
       context.translate(-width * 0.5, -height * 0.5);
@@ -318,7 +320,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
         context.translate(x, y);
         context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : ambientTime * 0.000018 * fragment.speed * point.z));
         const depthPresence = 0.96 + clamp(point.z / 1.8) * 0.16;
-        context.globalAlpha = (quiet ? 0.035 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * depthPresence * readabilityAt(x, y);
+        context.globalAlpha = (quiet ? 0.065 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * depthPresence * readabilityAt(x, y);
         context.fillStyle = fragment.color;
         context.strokeStyle = fragment.color;
         context.lineWidth = 1;
@@ -359,6 +361,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
         }
         context.restore();
       });
+      softenProtectedZones();
     };
 
     const animate = (time: number) => {
