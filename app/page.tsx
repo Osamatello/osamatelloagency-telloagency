@@ -216,7 +216,7 @@ function HomeFaq() {
                     aria-hidden="true"
                     className={cn(
                       'h-5 w-5 shrink-0 transition-[color,transform] duration-500',
-                      open ? 'rotate-45 text-brand' : 'text-ink-faint group-hover:text-brand'
+                      open ? 'rotate-45 text-brand' : 'text-ink-muted group-hover:text-brand'
                     )}
                   >
                     <svg viewBox="0 0 20 20" fill="none" className="h-full w-full">
