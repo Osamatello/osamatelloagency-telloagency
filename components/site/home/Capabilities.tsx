@@ -4,16 +4,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 
-const placements = [
-  'lg:col-start-1 lg:col-span-5',
-  'lg:col-start-8 lg:col-span-5 lg:mt-14',
-  'lg:col-start-2 lg:col-span-5 lg:mt-4',
-  'lg:col-start-7 lg:col-span-5 lg:-mt-5',
-  'lg:col-start-1 lg:col-span-5 lg:mt-7',
-  'lg:col-start-8 lg:col-span-5 lg:mt-1',
-];
-
-/** Spatial capability field: six persistent points arranged around the visual environment. */
+/** Spatial capability field: six persistent points aligned into three paired rows. */
 export function Capabilities() {
   const { dict, dir } = useI18n();
   const t = dict.home.capabilities;
@@ -29,15 +20,15 @@ export function Capabilities() {
           </h2>
         </div>
 
-        <ol className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-12 lg:mt-16 lg:grid-cols-12 lg:gap-y-4">
-          {t.items.map((item, index) => (
-            <li key={item.index} className={placements[index] ?? 'lg:col-span-5'}>
+        <ol className="mt-12 grid gap-x-16 gap-y-10 sm:grid-cols-2 sm:gap-y-12 lg:mt-16 lg:gap-x-24 lg:gap-y-14">
+          {t.items.map((item) => (
+            <li key={item.index} className="min-w-0">
               <Link
                 href={item.href}
-                className="group block border-t border-line pt-4 transition-transform duration-300 hover:-translate-y-1 sm:pt-5"
+                className="group block h-full border-t border-line pt-4 transition-transform duration-300 hover:-translate-y-1 sm:pt-5"
               >
                 <div className="flex items-start gap-4">
-                  <span className="text-display mt-1 shrink-0 text-xs tabular-nums text-brand">
+                  <span className="text-display mt-1 w-4 shrink-0 text-xs tabular-nums text-brand">
                     {item.index}
                   </span>
                   <div className="min-w-0 flex-1">
