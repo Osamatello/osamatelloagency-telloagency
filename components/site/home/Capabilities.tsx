@@ -14,13 +14,12 @@ export function Capabilities() {
   const t = dict.home.capabilities;
   const { ref, progress } = usePinnedProgress<HTMLElement>();
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
-  const headingProgress = ease(clamp(progress / 0.1));
+  const headingProgress = ease(clamp((progress + 0.08) / 0.1));
 
   return (
     <section ref={ref} className="relative min-h-[165svh] sm:min-h-[175svh] lg:min-h-[190svh]">
-      <div aria-hidden="true" className="container-page absolute inset-x-0 top-0 z-10 border-t border-line" />
       <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-        <div className="container-page relative z-10 py-8 sm:py-10 lg:py-12">
+        <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
           <div
             className="max-w-3xl"
             style={{
@@ -36,7 +35,7 @@ export function Capabilities() {
 
           <ol className="mt-5 grid grid-cols-2 gap-x-4 gap-y-0 sm:mt-8 sm:gap-x-10 lg:mt-10 lg:gap-x-20">
             {t.items.map((item, index) => {
-              const start = 0.08 + index * 0.125;
+              const start = index * 0.125;
               const amount = ease(clamp((progress - start) / 0.13));
               const direction = (index % 2 === 0 ? -1 : 1) * (dir === 'rtl' ? -1 : 1);
               const finalOffset = index % 3 === 1 ? 12 : index % 3 === 2 ? -8 : 0;
