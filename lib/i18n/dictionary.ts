@@ -156,11 +156,41 @@ export interface Dictionary {
   };
   about: {
     hero: { eyebrow: string; title: string; subtitle: string };
-    story: { eyebrow: string; title: string; paragraphs: string[] };
-    mission: { eyebrow: string; title: string; body: string };
-    vision: { eyebrow: string; title: string; body: string };
-    why: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
-    founder: Dictionary['home']['founder'];
+    narrative: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      problems: string[];
+      positionEyebrow: string;
+      positionTitle: string;
+      principles: string[];
+    };
+    philosophy: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      principles: { index: string; title: string; description: string }[];
+    };
+    perspective: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      steps: { index: string; title: string }[];
+    };
+    architecture: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      layers: { index: string; title: string; description: string }[];
+    };
+    founder: {
+      eyebrow: string;
+      title: string;
+      name: string;
+      role: string;
+      perspectiveLabel: string;
+      perspective: string;
+    };
     cta: { eyebrow: string; title: string; subtitle: string; primaryCta: string; secondaryCta: string };
   };
   services: {
