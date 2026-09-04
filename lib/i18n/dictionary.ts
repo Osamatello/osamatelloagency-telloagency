@@ -157,17 +157,26 @@ export interface Dictionary {
   };
   about: {
     hero: { eyebrow: string; title: string; subtitle: string };
+    narrative: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      problems: string[];
+      positionEyebrow: string;
+      positionTitle: string;
+      principles: string[];
+    };
     perspective: {
       eyebrow: string;
       title: string;
       lead: string;
-      steps: { title: string }[];
+      steps: { index: string; title: string }[];
     };
     architecture: {
       eyebrow: string;
       title: string;
       lead: string;
-      layers: { title: string; description: string }[];
+      layers: { index: string; title: string; description: string }[];
     };
     founder: {
       eyebrow: string;
