@@ -29,13 +29,13 @@ function Rail({
     <ol className="relative h-full">
       <span
         aria-hidden="true"
-        className="absolute w-px bg-line"
-        style={{ insetInlineStart: '6px', top: '18px', bottom: '18px' }}
+        className="absolute top-6 bottom-[3.2rem] w-px bg-line sm:top-[26px] sm:bottom-[3.475rem]"
+        style={{ insetInlineStart: '6px' }}
       />
       <span
         aria-hidden="true"
-        className="absolute w-px bg-brand transition-[height] duration-300 ease-out"
-        style={{ insetInlineStart: '6px', top: '18px', height: `calc((100% - 36px) * ${fill / 100})` }}
+        className="absolute top-6 bottom-[3.2rem] w-px origin-top bg-brand transition-transform duration-300 ease-out sm:top-[26px] sm:bottom-[3.475rem]"
+        style={{ insetInlineStart: '6px', transform: `scaleY(${fill / 100})` }}
       />
 
       {pairs.map((p, i) => {
