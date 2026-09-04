@@ -33,7 +33,7 @@ export function IntegrationRail() {
       <div className="mt-8 flex items-center gap-4 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-ink-faint">
         <span className="h-px flex-1 bg-line" />
         <span className="whitespace-nowrap text-brand">{t.operatingLayer}</span>
-        <span className="h-px w-8 shrink-0 bg-brand" />
+        <span className="h-px flex-1 bg-line" />
       </div>
     </div>
   );
