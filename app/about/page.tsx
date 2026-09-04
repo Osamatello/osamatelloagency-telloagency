@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { type ReactNode, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { CompanyEnvironment } from '@/components/site/company/CompanyEnvironment';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { useInView } from '@/lib/useInView';
@@ -31,34 +31,75 @@ function ArchitecturalAssembly() {
   );
 }
 
+const ARCHITECTURE_OBSERVER_OPTIONS = { threshold: 0.46, rootMargin: '-8% 0px -24% 0px' };
+
+function ArchitectureLayerRow({
+  layer,
+  index,
+  active,
+  onActive,
+}: {
+  layer: Dictionary['about']['architecture']['layers'][number];
+  index: number;
+  active: boolean;
+  onActive: (index: number) => void;
+}) {
+  const { ref, inView } = useInView<HTMLLIElement>(ARCHITECTURE_OBSERVER_OPTIONS);
+
+  useEffect(() => {
+    if (inView) onActive(index);
+  }, [inView, index, onActive]);
+
+  return (
+    <li ref={ref} className="flex border-b border-line lg:min-h-[48vh] lg:items-center">
+      <button
+        type="button"
+        className="grid w-full grid-cols-[2.5rem_1fr] gap-3 py-7 text-start sm:grid-cols-[3.25rem_0.72fr_1fr] sm:gap-5 sm:py-9 lg:py-12"
+        onMouseEnter={() => onActive(index)}
+        onFocus={() => onActive(index)}
+        onClick={() => onActive(index)}
+        aria-pressed={active}
+      >
+        <span className="pt-1 text-[0.67rem] tabular-nums tracking-[0.18em] text-brand">{layer.index}</span>
+        <span className={cn('text-display text-xl transition-colors duration-300 sm:text-2xl lg:text-3xl', active ? 'text-brand' : 'text-ink')}>{layer.title}</span>
+        <span className="col-start-2 max-w-md text-sm leading-relaxed text-ink-muted sm:col-start-auto sm:text-base">{layer.description}</span>
+      </button>
+    </li>
+  );
+}
+
 function ArchitectureScene({ content }: { content: Dictionary['about']['architecture'] }) {
   const [active, setActive] = useState(0);
+  const layers = [...content.layers].reverse();
   return (
-    <div className="mt-14 grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
-      <Reveal className="relative mx-auto aspect-square w-full max-w-[34rem]">
-        <div aria-hidden="true" className="absolute inset-0">
-          {content.layers.map((layer, index) => {
-            const inset = 5 + index * 10;
+    <div className="mt-16 grid gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
+      <Reveal className="lg:sticky lg:top-24 lg:flex lg:h-[calc(100vh-8rem)] lg:items-center">
+        <div aria-hidden="true" className="relative mx-auto aspect-square w-full max-w-[38rem] overflow-visible">
+          {layers.map((layer, index) => {
+            const inset = 8 + index * 7.5;
+            const lift = active === index ? -24 : index * 8;
             return (
-              <div key={layer.index} className={cn('absolute border transition-[border-color,background-color,transform,opacity] duration-500', active === index ? 'border-brand bg-brand/[0.055] opacity-100' : 'border-brand/20 bg-paper/30 opacity-70')} style={{ inset: `${inset}%`, transform: `rotate(${index % 2 === 0 ? -1.6 : 1.6}deg)` }} />
+              <div
+                key={layer.index}
+                className={cn('absolute border bg-paper/25 transition-[border-color,background-color,transform,opacity] duration-700', active === index ? 'border-brand bg-brand/[0.075] opacity-100' : 'border-brand/25 opacity-65')}
+                style={{
+                  inset: `${inset}%`,
+                  backgroundImage: 'linear-gradient(hsl(var(--brand) / 0.08) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--brand) / 0.08) 1px, transparent 1px)',
+                  backgroundSize: '25% 25%',
+                  transform: `perspective(900px) rotateX(58deg) rotateZ(-7deg) translate3d(${index * 9}px, ${lift}px, ${index * 26}px)`,
+                }}
+              >
+                <span className="absolute -top-6 start-0 text-[0.6rem] font-medium uppercase tracking-[0.2em] text-brand">{layer.index} · {layer.title}</span>
+              </div>
             );
           })}
-          <div className="absolute inset-[44%] bg-brand" />
-          <span className="absolute start-[8%] top-1/2 h-px w-[24%] bg-brand/30" />
-          <span className="absolute end-[8%] top-1/2 h-px w-[24%] bg-brand/30" />
-          <span className="absolute start-1/2 top-[8%] h-[24%] w-px bg-brand/30" />
-          <span className="absolute bottom-[8%] start-1/2 h-[24%] w-px bg-brand/30" />
+          <div className="absolute inset-[45%] translate-y-7 bg-brand shadow-[0_18px_45px_hsl(var(--brand)/0.2)] transition-transform duration-700" style={{ transform: `translateY(${28 - active * 5}px) rotate(-7deg)` }} />
+          <span className="absolute end-[4%] top-[14%] text-[0.6rem] uppercase tracking-[0.18em] text-ink-faint">{String(active + 1).padStart(2, '0')} / 04</span>
         </div>
       </Reveal>
       <ol className="border-t border-line">
-        {content.layers.map((layer, index) => (
-          <li key={layer.index} className="border-b border-line">
-            <button type="button" className="group grid w-full grid-cols-[2.5rem_1fr] gap-3 py-5 text-start sm:grid-cols-[3.25rem_0.72fr_1fr] sm:gap-5 sm:py-6" onMouseEnter={() => setActive(index)} onFocus={() => setActive(index)} onClick={() => setActive(index)} aria-pressed={active === index}>
-              <span className="pt-1 text-[0.67rem] tabular-nums tracking-[0.18em] text-brand">{layer.index}</span>
-              <span className={cn('text-display text-xl transition-colors duration-300 sm:text-2xl', active === index ? 'text-brand' : 'text-ink')}>{layer.title}</span>
-              <span className="col-start-2 text-sm leading-relaxed text-ink-muted sm:col-start-auto">{layer.description}</span>
-            </button>
-          </li>
+        {layers.map((layer, index) => (
+          <ArchitectureLayerRow key={layer.index} layer={layer} index={index} active={active === index} onActive={setActive} />
         ))}
       </ol>
     </div>
@@ -75,7 +116,7 @@ export default function AboutPage() {
     <article ref={pageRef} className="relative isolate overflow-hidden bg-paper text-ink">
       <CompanyEnvironment rootRef={pageRef} />
 
-      <section className="relative z-10 flex min-h-[calc(100svh-4rem)] items-center border-b border-line py-20 sm:py-24 lg:min-h-[calc(100vh-4.5rem)] lg:py-28">
+      <section data-company-scene className="relative z-10 flex min-h-[calc(100svh-4rem)] items-center border-b border-line py-20 sm:py-24 lg:min-h-[calc(100vh-4.5rem)] lg:py-28">
         <div className="container-page grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
           <div className="relative">
             <span className="eyebrow animate-fade-up">{about.hero.eyebrow}</span>
@@ -90,7 +131,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="relative z-10 py-24 sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 min-h-[105vh] py-24 sm:py-32 lg:py-40">
         <div className="container-page">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <Reveal className="lg:col-span-7">
@@ -108,17 +149,17 @@ export default function AboutPage() {
               </ol>
             </Reveal>
           </div>
-          <div className="mt-24 border-y border-line bg-paper/75 py-10 backdrop-blur-[2px] sm:mt-32 sm:py-14">
-            <Reveal className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
+          <div className="mt-24 border-y border-line bg-paper/45 py-10 sm:mt-32 sm:py-14">
+            <Reveal className="grid gap-10 lg:grid-cols-[0.46fr_0.54fr] lg:items-start">
               <div>
                 <span className="eyebrow">{about.narrative.positionEyebrow}</span>
                 <h3 className="text-display mt-6 max-w-3xl text-[clamp(2rem,4.2vw,4rem)]">{about.narrative.positionTitle}</h3>
               </div>
-              <ol className="grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-4">
+              <ol className="space-y-0">
                 {about.narrative.principles.map((principle, index) => (
-                  <li key={principle} className="bg-paper px-4 py-6 sm:px-5 sm:py-8">
-                    <span className="block text-[0.62rem] tabular-nums text-brand">0{index + 1}</span>
-                    <span className="mt-8 block text-sm font-medium uppercase tracking-[0.1em] sm:text-base">{principle}</span>
+                  <li key={principle} className={cn('flex items-baseline gap-5 border-t border-line py-5 last:border-b sm:py-6', index % 2 ? 'sm:ms-[14%]' : 'sm:me-[14%]')}>
+                    <span className="text-[0.62rem] tabular-nums text-brand">0{index + 1}</span>
+                    <span className="text-display text-[clamp(1.45rem,3vw,2.8rem)]">{principle}</span>
                   </li>
                 ))}
               </ol>
@@ -127,7 +168,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="relative z-10 border-y border-line bg-paper-sunken/90 py-24 backdrop-blur-[2px] sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 border-y border-line bg-paper-sunken/[0.78] py-24 sm:py-32 lg:py-40">
         <div className="container-page grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
           <Reveal className="lg:sticky lg:top-32 lg:self-start">
             <span className="eyebrow">{about.philosophy.eyebrow}</span>
@@ -148,7 +189,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="relative z-10 py-24 sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 min-h-[115vh] py-24 sm:py-32 lg:py-40">
         <div className="container-page">
           <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
@@ -160,9 +201,10 @@ export default function AboutPage() {
           <ol className="mt-20 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-2">
             {about.perspective.steps.map((step, index) => (
               <Reveal key={step.index} className={perspectiveOffsets[index]} delay={index * 70}>
-                <li className="min-h-36 border-t border-line-strong bg-paper/65 pt-5 backdrop-blur-[2px] sm:min-h-44">
+                <li className="relative min-h-36 overflow-hidden border-t border-line-strong bg-paper/35 pt-5 sm:min-h-44">
                   <span className="text-[0.66rem] tabular-nums tracking-[0.18em] text-brand">{step.index}</span>
                   <h3 className="text-display mt-8 max-w-xs text-[clamp(1.4rem,2.5vw,2.25rem)]">{step.title}</h3>
+                  <span aria-hidden="true" className="pointer-events-none absolute -bottom-5 end-0 text-display text-[6rem] text-brand/[0.045] sm:text-[8rem]">{step.index}</span>
                 </li>
               </Reveal>
             ))}
@@ -170,7 +212,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="relative z-10 border-y border-line bg-[#eef2ec]/90 py-24 backdrop-blur-[2px] sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 border-y border-line bg-[#eef2ec]/[0.78] py-24 sm:py-32 lg:py-40">
         <div className="container-page">
           <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-7">
@@ -183,7 +225,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="relative z-10 py-24 sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 py-24 sm:py-32 lg:py-40">
         <div className="container-page">
           <div className="grid gap-14 border-y border-line py-12 sm:py-16 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24 lg:py-24">
             <Reveal>
@@ -203,7 +245,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="relative z-10 border-t border-line bg-paper py-20 sm:py-24 lg:py-28">
+      <section data-company-scene className="relative z-10 border-t border-line bg-paper/85 py-20 sm:py-24 lg:py-28">
         <div className="container-page">
           <Reveal className="grid gap-10 lg:grid-cols-[1fr_0.72fr] lg:items-end">
             <div><span className="eyebrow">{about.cta.eyebrow}</span><h2 className="text-display mt-7 whitespace-pre-line text-[clamp(2.75rem,5.8vw,6rem)] leading-[0.92] rtl:leading-[1.14]">{about.cta.title}</h2></div>

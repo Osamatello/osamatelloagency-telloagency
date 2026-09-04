@@ -128,7 +128,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
     let protectedZones: ProtectedZone[] = [];
 
     const measureProtection = () => {
-      const padding = width < 640 ? 8 : 14;
+      const padding = width < 640 ? 7 : 10;
       protectedZones = Array.from(
         document.querySelectorAll<HTMLElement>(
           '[data-visual-state] h1, [data-visual-state] h2, [data-visual-state] h3, [data-visual-state] p, [data-visual-state] a, [data-visual-state] button, [data-visual-state] dt, [data-visual-state] dd, [data-visual-state] .eyebrow, [data-visual-state] ol'
@@ -155,11 +155,11 @@ export function HeroEnvironment({ className }: { className?: string }) {
     const readabilityAt = (x: number, y: number) => {
       let attenuation = 1;
       for (const zone of protectedZones) {
-        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.1;
+        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.18;
         const dx = Math.max(zone.left - x, 0, x - zone.right);
         const dy = Math.max(zone.top - y, 0, y - zone.bottom);
         const distance = Math.hypot(dx, dy);
-        if (distance < 28) attenuation = Math.min(attenuation, 0.42 + distance / 48);
+        if (distance < 28) attenuation = Math.min(attenuation, 0.5 + distance / 56);
       }
       return attenuation;
     };
