@@ -25,7 +25,6 @@ export default function HomePage() {
 
   const titleLines = home.hero.title.split('\n');
 
-  // Load choreography
   const [shown, setShown] = useState(false);
   useEffect(() => {
     const r = requestAnimationFrame(() => setShown(true));
@@ -36,71 +35,38 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ===== HERO ===== */}
       <HeroEnvironment />
-      <section data-visual-state="0" className="relative isolate -mt-16 flex min-h-[100svh] items-center overflow-hidden bg-transparent text-ink lg:-mt-[72px]">
-
-        <div className="container-page relative z-10 w-full -translate-y-12 pb-14 pt-28 sm:translate-y-0 sm:pt-32 lg:pb-16 lg:pt-32">
-          {/* Row 1 — eyebrow + full-width editorial headline */}
-          <span
-            className={cn('eyebrow reveal-up', shown && 'is-in')}
-            style={rd(60)}
-          >
+      <section data-visual-state="0" className="relative isolate -mt-16 flex min-h-0 items-center overflow-hidden bg-transparent text-ink sm:min-h-[100svh] lg:-mt-[72px]">
+        <div className="container-page relative z-10 w-full pb-6 pt-28 sm:translate-y-0 sm:pb-14 sm:pt-32 lg:pb-16 lg:pt-32">
+          <span className={cn('eyebrow reveal-up', shown && 'is-in')} style={rd(60)}>
             {home.hero.eyebrow}
           </span>
 
           <h1 className="text-display mt-7 text-ink text-[clamp(2.35rem,5.6vw,4.5rem)]">
             {titleLines.map((line, i) => (
-              <span
-                key={i}
-                className={cn('reveal-line block', shown && 'is-in')}
-                style={rd(180 + i * 90)}
-              >
+              <span key={i} className={cn('reveal-line block', shown && 'is-in')} style={rd(180 + i * 90)}>
                 <span>{line}</span>
               </span>
             ))}
-            <span
-              className={cn('reveal-line block', shown && 'is-in')}
-              style={rd(180 + titleLines.length * 90)}
-            >
+            <span className={cn('reveal-line block', shown && 'is-in')} style={rd(180 + titleLines.length * 90)}>
               <span className="text-brand">{home.hero.titleAccent}</span>
             </span>
           </h1>
 
-          {/* Row 2 — asymmetric: supporting copy far left, sequence far right */}
           <div className="mt-12 grid gap-x-8 gap-y-12 lg:mt-16 lg:grid-cols-12">
             {home.hero.subtitle ? (
-              <p
-                className={cn(
-                  'reveal-up self-end text-[0.98rem] leading-relaxed text-ink-muted lg:col-span-4',
-                  shown && 'is-in'
-                )}
-                style={rd(560)}
-              >
+              <p className={cn('reveal-up self-end text-[0.98rem] leading-relaxed text-ink-muted lg:col-span-4', shown && 'is-in')} style={rd(560)}>
                 {home.hero.subtitle}
               </p>
             ) : null}
 
-            <div
-              className={cn(
-                'reveal-fade lg:col-span-5 lg:col-start-8',
-                shown && 'is-in'
-              )}
-              style={rd(680)}
-            >
+            <div className={cn('reveal-fade lg:col-span-5 lg:col-start-8', shown && 'is-in')} style={rd(680)}>
               <BusinessAutomationDemo />
             </div>
           </div>
 
-          {/* Row 3 — bottom rail */}
           <div className="mt-12 flex flex-col gap-9 border-t border-line pt-8 lg:mt-12 lg:flex-row lg:items-center lg:justify-between">
-            <div
-              className={cn(
-                'reveal-up flex flex-col gap-3 sm:flex-row',
-                shown && 'is-in'
-              )}
-              style={rd(820)}
-            >
+            <div className={cn('reveal-up flex flex-col gap-3 sm:flex-row', shown && 'is-in')} style={rd(820)}>
               <Link href="/consult" className="btn-primary">
                 {home.hero.primaryCta}
                 <Arrow className="h-4 w-4" />
@@ -110,19 +76,11 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <dl
-              className={cn(
-                'reveal-up flex flex-wrap gap-x-9 gap-y-4',
-                shown && 'is-in'
-              )}
-              style={rd(900)}
-            >
+            <dl className={cn('reveal-up flex flex-wrap gap-x-9 gap-y-4', shown && 'is-in')} style={rd(900)}>
               {stats.map((s) => (
                 <div key={s.label} className="flex items-baseline gap-2.5">
                   <dt className="text-display text-2xl text-brand">{s.value}</dt>
-                  <dd className="max-w-[9rem] text-xs font-medium leading-tight text-ink-faint">
-                    {s.label}
-                  </dd>
+                  <dd className="max-w-[9rem] text-xs font-medium leading-tight text-ink-faint">{s.label}</dd>
                 </div>
               ))}
             </dl>
@@ -130,40 +88,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============ HOMEPAGE CONTENT ============ */}
       <div className="relative bg-transparent text-ink">
-        {/* Integrations — pipeline enters from the hero */}
         <section data-visual-state="1" className="relative overflow-hidden">
-          <div className="container-page relative z-10 py-14 pt-10 sm:py-18 lg:py-20 lg:pt-12">
+          <div className="container-page relative z-10 pb-14 pt-4 sm:py-18 lg:py-20 lg:pt-12">
             <IntegrationRail />
           </div>
         </section>
 
-        {/* Capabilities */}
         <div data-visual-state="2" className="relative">
           <Capabilities />
         </div>
 
-        {/* The Shift */}
         <section data-visual-state="3" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line pt-14 pb-0 sm:pt-18 sm:pb-1 lg:pt-20 lg:pb-2">
             <ProblemShift />
           </div>
         </section>
 
-        {/* Before / After */}
         <div data-visual-state="4" className="relative">
           <BeforeAfterAutomation />
         </div>
 
-        {/* FAQ — pulled slightly upward to remove the empty handoff after the pinned scene */}
-        <section data-visual-state="6" className="relative -mt-[10svh] overflow-hidden sm:-mt-[12svh] lg:-mt-[14svh]">
+        {/* Mobile keeps a clean handoff after item 06; desktop retains the approved overlap. */}
+        <section data-visual-state="6" className="relative mt-0 overflow-hidden sm:-mt-[12svh] lg:-mt-[14svh]">
           <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
             <HomeFaq />
           </div>
         </section>
 
-        {/* Final CTA — light */}
         <section data-visual-state="7" className="relative overflow-hidden">
           <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
             <HomeCta />
@@ -181,63 +133,28 @@ function HomeFaq() {
   return (
     <div>
       <span className="eyebrow">{t.eyebrow}</span>
-      <h2 className="text-display mt-5 max-w-2xl text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">
-        {t.title}
-      </h2>
+      <h2 className="text-display mt-5 max-w-2xl text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">{t.title}</h2>
       <dl className="mt-8 border-t border-line sm:mt-10">
         {t.items.map((item, index) => {
           const open = openIndex === index;
           const answerId = `home-faq-answer-${index}`;
           return (
-            <div
-              key={item.q}
-              className={cn(
-                'border-b py-1 transition-colors duration-500',
-                open ? 'border-[hsl(var(--brand)/0.38)]' : 'border-line'
-              )}
-            >
+            <div key={item.q} className={cn('border-b py-1 transition-colors duration-500', open ? 'border-[hsl(var(--brand)/0.38)]' : 'border-line')}>
               <dt>
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(open ? null : index)}
-                  aria-expanded={open}
-                  aria-controls={answerId}
-                  className="group flex min-h-16 w-full items-center justify-between gap-6 py-4 text-start focus-visible:outline-none"
-                >
-                  <span
-                    className={cn(
-                      'text-display text-[clamp(1rem,2vw,1.2rem)] transition-[color,transform] duration-500',
-                      open ? 'translate-x-1 text-brand rtl:-translate-x-1' : 'text-ink group-hover:text-brand'
-                    )}
-                  >
+                <button type="button" onClick={() => setOpenIndex(open ? null : index)} aria-expanded={open} aria-controls={answerId} className="group flex min-h-16 w-full items-center justify-between gap-6 py-4 text-start focus-visible:outline-none">
+                  <span className={cn('text-display text-[clamp(1rem,2vw,1.2rem)] transition-[color,transform] duration-500', open ? 'translate-x-1 text-brand rtl:-translate-x-1' : 'text-ink group-hover:text-brand')}>
                     {item.q}
                   </span>
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      'h-5 w-5 shrink-0 transition-[color,transform] duration-500',
-                      open ? 'rotate-45 text-brand' : 'text-ink-muted group-hover:text-brand'
-                    )}
-                  >
+                  <span aria-hidden="true" className={cn('h-5 w-5 shrink-0 transition-[color,transform] duration-500', open ? 'rotate-45 text-brand' : 'text-ink-muted group-hover:text-brand')}>
                     <svg viewBox="0 0 20 20" fill="none" className="h-full w-full">
                       <path d="M10 3v14M3 10h14" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
                     </svg>
                   </span>
                 </button>
               </dt>
-              <dd
-                id={answerId}
-                aria-hidden={!open}
-                className={cn(
-                  'grid max-w-2xl transition-[grid-template-rows,opacity] duration-500 ease-out',
-                  open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                )}
-              >
+              <dd id={answerId} aria-hidden={!open} className={cn('grid max-w-2xl transition-[grid-template-rows,opacity] duration-500 ease-out', open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0')}>
                 <div className="overflow-hidden">
-                  <p
-                    className="pb-5 pe-10 text-sm leading-relaxed text-ink-muted transition-transform duration-500 ease-out"
-                    style={{ transform: open ? 'translateY(0)' : 'translateY(-0.45rem)' }}
-                  >
+                  <p className="pb-5 pe-10 text-sm leading-relaxed text-ink-muted transition-transform duration-500 ease-out" style={{ transform: open ? 'translateY(0)' : 'translateY(-0.45rem)' }}>
                     {item.a}
                   </p>
                 </div>
@@ -257,24 +174,14 @@ function HomeCta() {
   return (
     <div className="max-w-3xl">
       <span className="eyebrow">{t.eyebrow}</span>
-      <h2 className="text-display mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink">
-        {t.title}
-      </h2>
-      {t.subtitle ? (
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted">
-          {t.subtitle}
-        </p>
-      ) : null}
+      <h2 className="text-display mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink">{t.title}</h2>
+      {t.subtitle ? <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted">{t.subtitle}</p> : null}
       <div className="mt-9 flex flex-col gap-3 sm:flex-row">
         <Link href="/consult" className="btn-primary">
           {t.primaryCta}
           <Arrow className="h-4 w-4" />
         </Link>
-        {t.secondaryCta ? (
-          <Link href="/services" className="btn-outline">
-            {t.secondaryCta}
-          </Link>
-        ) : null}
+        {t.secondaryCta ? <Link href="/services" className="btn-outline">{t.secondaryCta}</Link> : null}
       </div>
     </div>
   );
