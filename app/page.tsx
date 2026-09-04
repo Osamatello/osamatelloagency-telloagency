@@ -40,7 +40,7 @@ export default function HomePage() {
       <HeroEnvironment />
       <section data-visual-state="0" className="relative isolate -mt-16 flex min-h-[100svh] items-center overflow-hidden bg-transparent text-ink lg:-mt-[72px]">
 
-        <div className="container-page relative z-10 w-full pb-14 pt-28 sm:pt-32 lg:pb-16 lg:pt-32">
+        <div className="container-page relative z-10 w-full -translate-y-12 pb-14 pt-28 sm:translate-y-0 sm:pt-32 lg:pb-16 lg:pt-32">
           {/* Row 1 — eyebrow + full-width editorial headline */}
           <span
             className={cn('eyebrow reveal-up', shown && 'is-in')}
