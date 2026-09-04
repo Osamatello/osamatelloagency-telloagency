@@ -146,7 +146,7 @@ export default function HomePage() {
 
         {/* The Shift */}
         <section data-visual-state="3" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
+          <div className="container-page relative z-10 border-t border-line pt-14 pb-5 sm:pt-18 sm:pb-6 lg:pt-20 lg:pb-8">
             <ProblemShift />
           </div>
         </section>
