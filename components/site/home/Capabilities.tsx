@@ -18,7 +18,7 @@ export function Capabilities() {
 
   return (
     <section ref={ref} className="relative min-h-[165svh] sm:min-h-[175svh] lg:min-h-[190svh]">
-      <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
+      <div className="sticky top-0 flex h-[100svh] items-start overflow-hidden">
         <div className="container-page relative z-10 border-t border-line py-8 sm:py-10 lg:py-12">
           <div
             className="grid gap-3 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] sm:items-end"
