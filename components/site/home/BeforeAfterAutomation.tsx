@@ -24,7 +24,7 @@ export function BeforeAfterAutomation() {
 
   return (
     <section ref={ref} className="relative min-h-[165svh] sm:min-h-[175svh] lg:min-h-[190svh]">
-      <div className="sticky top-0 flex h-[100svh] items-start overflow-hidden">
+      <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
         <div className="container-page relative z-10 border-t border-line pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-12 lg:pb-10">
           <div className="grid gap-5 sm:grid-cols-12 sm:items-end">
             <div className="sm:col-span-7">
