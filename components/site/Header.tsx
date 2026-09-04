@@ -45,7 +45,9 @@ export function Header() {
         'fixed inset-x-0 top-0 z-[70] transition-[background-color,border-color,backdrop-filter] duration-500',
         mobileOpen
           ? 'border-b border-line bg-paper'
-          : scrolled || forceLight
+          : forceLight
+          ? 'border-b border-line bg-paper'
+          : scrolled
           ? 'border-b border-line bg-paper/80 backdrop-blur-xl'
           : 'border-b border-transparent bg-transparent'
       )}
