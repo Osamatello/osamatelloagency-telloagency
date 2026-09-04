@@ -231,6 +231,8 @@ const en: Dictionary = {
         { before: 'Revenue Leakage', after: 'Revenue Capture' },
         { before: 'Fragmented Systems', after: 'Unified Infrastructure' },
         { before: 'Execution Bottlenecks', after: 'Accelerated Execution' },
+        { before: 'Coordination Overhead', after: 'Intelligent Coordination' },
+        { before: 'Static Processes', after: 'Continuous Optimization' },
       ],
     },
     benefits: {
