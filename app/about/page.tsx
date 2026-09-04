@@ -54,7 +54,7 @@ function ArchitectureLayerRow({
     <li ref={ref} className="flex border-b border-line lg:min-h-[48vh] lg:items-center">
       <button
         type="button"
-        className="grid w-full grid-cols-[2.5rem_1fr] gap-3 py-7 text-start sm:grid-cols-[3.25rem_0.72fr_1fr] sm:gap-5 sm:py-9 lg:py-12"
+        className="grid w-full grid-cols-[2.5rem_1fr] gap-3 py-5 text-start sm:grid-cols-[3.25rem_0.72fr_1fr] sm:gap-5 sm:py-7 lg:py-12"
         onMouseEnter={() => onActive(index)}
         onFocus={() => onActive(index)}
         onClick={() => onActive(index)}
@@ -72,7 +72,7 @@ function ArchitectureScene({ content }: { content: Dictionary['about']['architec
   const [active, setActive] = useState(0);
   const layers = [...content.layers].reverse();
   return (
-    <div className="mt-16 grid gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
+    <div className="mt-10 grid gap-8 sm:mt-14 sm:gap-10 lg:mt-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
       <Reveal className="lg:sticky lg:top-24 lg:flex lg:h-[calc(100vh-8rem)] lg:items-center">
         <div aria-hidden="true" className="relative mx-auto aspect-square w-full max-w-[38rem] overflow-visible">
           {layers.map((layer, index) => {
@@ -112,10 +112,17 @@ export default function AboutPage() {
   const perspectiveOffsets = ['lg:col-start-1', 'lg:col-start-3 lg:mt-20', 'lg:col-start-2 lg:-mt-5', 'lg:col-start-1 lg:mt-10', 'lg:col-start-3 lg:-mt-3', 'lg:col-start-2 lg:mt-8'];
 
   return (
-    <article ref={pageRef} className="relative isolate overflow-hidden bg-paper text-ink">
+    <article id="company-page" ref={pageRef} className="relative isolate overflow-hidden bg-paper text-ink">
+      <style jsx global>{`
+        html,
+        body {
+          background-color: hsl(var(--ds-paper));
+          color-scheme: light;
+        }
+      `}</style>
       <CompanyEnvironment rootRef={pageRef} />
 
-      <section data-company-scene className="relative z-10 flex min-h-[calc(100svh-4rem)] items-center border-b border-line py-20 sm:py-24 lg:min-h-[calc(100vh-4.5rem)] lg:py-28">
+      <section data-company-scene className="relative z-10 flex items-center border-b border-line py-14 sm:py-20 lg:min-h-[calc(100vh-4.5rem)] lg:py-28">
         <div className="container-page grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
           <div className="relative">
             <span className="eyebrow animate-fade-up">{about.hero.eyebrow}</span>
@@ -130,16 +137,16 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section data-company-scene className="relative z-10 min-h-[105vh] py-24 sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 py-16 sm:py-24 lg:min-h-[105vh] lg:py-40">
         <div className="container-page">
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-16">
             <Reveal className="lg:col-span-7">
               <span className="eyebrow">{about.narrative.eyebrow}</span>
               <h2 className="text-display mt-7 max-w-4xl text-[clamp(2.6rem,5.7vw,5.8rem)] leading-[0.93] rtl:leading-[1.14]">{about.narrative.title}</h2>
             </Reveal>
             <Reveal className="lg:col-span-5 lg:pt-24" delay={100}>
               <p className="max-w-xl text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">{about.narrative.lead}</p>
-              <ol className="mt-10 border-t border-line">
+              <ol className="mt-7 border-t border-line sm:mt-10">
                 {about.narrative.problems.map((problem, index) => (
                   <li key={problem} className="grid grid-cols-[2.5rem_1fr] items-center border-b border-line py-4 text-sm sm:text-base">
                     <span className="text-[0.65rem] tabular-nums text-brand">0{index + 1}</span><span>{problem}</span>
@@ -151,7 +158,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section data-company-scene className="relative z-10 min-h-[115vh] py-24 sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 py-16 sm:py-24 lg:min-h-[115vh] lg:py-40">
         <div className="container-page">
           <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
@@ -160,12 +167,12 @@ export default function AboutPage() {
             </div>
             <p className="max-w-md text-base leading-7 text-ink-muted sm:text-lg lg:col-span-4">{about.perspective.lead}</p>
           </Reveal>
-          <ol className="mt-20 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-2">
+          <ol className="mt-12 grid gap-x-8 sm:mt-16 sm:grid-cols-2 sm:gap-y-6 lg:mt-20 lg:grid-cols-3 lg:gap-y-2">
             {about.perspective.steps.map((step, index) => (
               <Reveal key={step.index} className={perspectiveOffsets[index]} delay={index * 70}>
-                <li className="relative min-h-36 overflow-hidden border-t border-line-strong bg-paper/35 pt-5 sm:min-h-44">
+                <li className="relative overflow-hidden border-t border-line-strong bg-paper/35 py-4 sm:min-h-36 sm:pt-5 lg:min-h-44">
                   <span className="text-[0.66rem] tabular-nums tracking-[0.18em] text-brand">{step.index}</span>
-                  <h3 className="text-display mt-8 max-w-xs text-[clamp(1.4rem,2.5vw,2.25rem)]">{step.title}</h3>
+                  <h3 className="text-display mt-3 max-w-xs text-[clamp(1.3rem,2.5vw,2.25rem)] sm:mt-6 lg:mt-8">{step.title}</h3>
                   <span aria-hidden="true" className="pointer-events-none absolute -bottom-5 end-0 text-display text-[6rem] text-brand/[0.045] sm:text-[8rem]">{step.index}</span>
                 </li>
               </Reveal>
@@ -174,7 +181,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section data-company-scene className="relative z-10 border-y border-line bg-[#eef2ec]/[0.78] py-24 sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 border-y border-line bg-[#eef2ec]/[0.78] py-16 sm:py-24 lg:py-40">
         <div className="container-page">
           <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-7">
@@ -187,9 +194,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section data-company-scene className="relative z-10 py-24 sm:py-32 lg:py-40">
+      <section data-company-scene className="relative z-10 pb-10 pt-16 sm:py-24 lg:py-40">
         <div className="container-page">
-          <div className="grid gap-14 border-y border-line py-12 sm:py-16 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24 lg:py-24">
+          <div className="grid gap-10 border-y border-line py-10 sm:gap-12 sm:py-16 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24 lg:py-24">
             <Reveal>
               <span className="eyebrow">{about.founder.eyebrow}</span>
               <h2 className="text-display mt-7 text-[clamp(2.5rem,4.8vw,4.8rem)]">{about.founder.title}</h2>
@@ -207,7 +214,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section data-company-scene className="relative z-10 border-t border-line bg-paper/85 py-20 sm:py-24 lg:py-28">
+      <section data-company-scene className="relative z-10 border-t border-line bg-paper/85 py-14 sm:py-20 lg:py-28">
         <div className="container-page">
           <Reveal className="grid gap-10 lg:grid-cols-[1fr_0.72fr] lg:items-end">
             <div><span className="eyebrow">{about.cta.eyebrow}</span><h2 className="text-display mt-7 whitespace-pre-line text-[clamp(2.75rem,5.8vw,6rem)] leading-[0.92] rtl:leading-[1.14]">{about.cta.title}</h2></div>
