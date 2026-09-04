@@ -89,7 +89,7 @@ export function BusinessAutomationDemo({ className }: { className?: string }) {
       )}
     >
       {/* status line */}
-      <div className="flex items-center gap-3 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-ink-faint">
+      <div className="flex items-center gap-3 text-[0.68rem] font-medium uppercase tracking-[0.2em] text-ink-muted">
         <span
           className={cn(
             'h-1.5 w-1.5 rounded-full transition-colors duration-300',
@@ -100,7 +100,7 @@ export function BusinessAutomationDemo({ className }: { className?: string }) {
         <span className={cn(done && 'text-brand')}>{status}</span>
         <span className="ms-auto tabular-nums text-ink">
           {count}/{total}{' '}
-          <span className="text-ink-faint">{t.automated}</span>
+          <span className="text-ink-muted">{t.automated}</span>
         </span>
       </div>
 
@@ -143,7 +143,7 @@ export function BusinessAutomationDemo({ className }: { className?: string }) {
               <span
                 className={cn(
                   'flex-1 text-[0.7rem] font-medium uppercase tracking-[0.16em] transition-colors duration-300',
-                  on ? 'text-ink' : 'text-ink-faint'
+                  on ? 'text-ink' : 'text-ink-muted'
                 )}
               >
                 {label}
