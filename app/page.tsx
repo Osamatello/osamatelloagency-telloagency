@@ -156,8 +156,8 @@ export default function HomePage() {
           <BeforeAfterAutomation />
         </div>
 
-        {/* FAQ — light */}
-        <section data-visual-state="6" className="relative overflow-hidden">
+        {/* FAQ — pulled slightly upward to remove the empty handoff after the pinned scene */}
+        <section data-visual-state="6" className="relative -mt-[10svh] overflow-hidden sm:-mt-[12svh] lg:-mt-[14svh]">
           <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
             <HomeFaq />
           </div>
