@@ -88,8 +88,12 @@ export function ProblemShift() {
   const n = Math.min(t.pairs.length, t.pairsRight.length);
   const left = t.pairs.slice(0, n);
   const right = t.pairsRight.slice(0, n);
-  const resolved = Math.round(progress * (n + 1) - 0.6);
-  const fill = Math.min(100, Math.max(0, (progress - 0.06) / 0.82) * 100);
+
+  // Keep the transformation concentrated in a shorter scroll window so the
+  // section does not sit for long in an awkward half-resolved state.
+  const shiftProgress = Math.min(1, Math.max(0, (progress - 0.16) / 0.34));
+  const resolved = Math.min(n - 1, Math.floor(shiftProgress * n));
+  const fill = shiftProgress * 100;
 
   return (
     <div ref={ref}>
