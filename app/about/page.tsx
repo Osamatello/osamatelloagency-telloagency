@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
-import { useState, type CSSProperties } from 'react';
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import type { CompanyEditorial } from '@/lib/i18n/company';
@@ -22,15 +22,15 @@ const LENS_RIBS = Array.from({ length: 40 }, (_, i) => {
   return `M ${ox} ${oy} Q ${(ox + ix) / 2} ${(oy + iy) / 2 - 33} ${ix} ${iy} L ${jx} ${jy} Q ${(bx + jx) / 2} ${(by + jy) / 2 - 33} ${bx} ${by} Z`;
 });
 
-function DecisionLens({ centre, mode = 'hero' }: { centre: [string, string]; mode?: string }) {
+function DecisionLens({ centre }: { centre: [string, string] }) {
   return (
-    <div className={styles.lens} data-mode={mode}>
+    <div className={styles.lens}>
       <div className={styles.lensGeometry} aria-hidden="true">
         <svg viewBox="0 0 560 550" fill="none" focusable="false">
           <path className={styles.datum} d="M25 275H535M280 25V525M25 265V285M535 265V285M270 25H290M270 525H290" />
           <ellipse className={styles.guide} cx="280" cy="260" rx="230" ry="208" strokeDasharray="2 8" />
           <g className={styles.ribs}>
-            {LENS_RIBS.map((path, i) => <path key={i} d={path} style={{ '--rib': i } as CSSProperties} />)}
+            {LENS_RIBS.map((path, i) => <path key={i} d={path} />)}
           </g>
           <path className={styles.cutLine} d="M280 55V148M280 372V485" />
         </svg>
@@ -60,13 +60,19 @@ function Convictions({ copy, dir }: { copy: CompanyEditorial['convictions']; dir
             <TabsContent className={styles.panel} key={item.key} value={item.key}>
               <h3 className="text-display">{item.title}</h3>
               <p>{item.body}</p>
+              {item.aside ? <p className={styles.principleAside}>{item.aside}</p> : null}
               <div className={styles.question}><span aria-hidden="true">↳</span><p>{item.question}</p></div>
             </TabsContent>
           ))}
         </div>
-        <figure className={styles.readerFigure} aria-hidden="true">
-          <DecisionLens mode={selected.key} centre={selected.centre} />
-          <figcaption><span className={styles.mark} />{selected.annotation}</figcaption>
+        <figure className={styles.study} data-principle={active}>
+          <div className={styles.studyHeader}><span>{copy.studyLabel}</span><span aria-hidden="true">0{copy.items.indexOf(selected) + 1} / 03</span></div>
+          <div className={styles.studyComposition}>
+            <div className={styles.studyTerm}><span>{selected.captions[0]}</span><strong className="text-display">{selected.terms[0]}</strong></div>
+            <div className={styles.studyRule} aria-hidden="true"><span /><span /><span /></div>
+            <div className={styles.studyTerm}><span>{selected.captions[1]}</span><strong className="text-display">{selected.terms[1]}</strong></div>
+          </div>
+          <figcaption>{selected.annotation}</figcaption>
         </figure>
       </div>
     </Tabs>
@@ -110,16 +116,6 @@ export default function AboutPage() {
         <div className="container-page">
           <div className={styles.sectionHeading}><div><span className="eyebrow">{c.convictions.label}</span><h2 id="convictions-title" className="text-display">{c.convictions.title}</h2></div><p>{c.convictions.instruction}</p></div>
           <Convictions copy={c.convictions} dir={dir} />
-        </div>
-      </section>
-
-      <section className={styles.restraint} aria-labelledby="restraint-title">
-        <div className="container-page">
-          <span className="eyebrow">{c.restraint.label}</span>
-          <h2 id="restraint-title" className={`text-display ${styles.restraintTitle}`}>
-            <span>{c.restraint.before}</span><span className={styles.measuredPhrase}>{c.restraint.emphasis}</span><span>{c.restraint.after}</span>
-          </h2>
-          <div className={styles.restraintFoot}><p className={styles.restraintNote}>{c.restraint.note}</p><p>{c.restraint.body}</p></div>
         </div>
       </section>
 

@@ -9,9 +9,9 @@ export interface CompanyEditorial {
     label: string;
     title: string;
     instruction: string;
-    items: { key: string; label: string; title: string; body: string; question: string; annotation: string; centre: [string, string] }[];
+    studyLabel: string;
+    items: { key: string; label: string; title: string; body: string; question: string; annotation: string; terms: [string, string]; captions: [string, string]; aside?: string }[];
   };
-  restraint: { label: string; before: string; emphasis: string; after: string; body: string; note: string };
   founder: { label: string; name: string; role: string; title: string; body: string; direction: string };
   closing: { label: string; title: string; body: string; action: string };
 }
@@ -19,7 +19,7 @@ export interface CompanyEditorial {
 export const companyEn: CompanyEditorial = {
   eyebrow: 'Who We Are / DAMASAVERO',
   title: ['Intelligence.', 'With intention.'],
-  introduction: 'We are an AI Automation & Business Systems company. Our starting point is a conviction: the people who depend on a system should be able to understand it, question it and shape what comes next.',
+  introduction: 'DAMASAVERO designs and builds intelligent business systems. We bring the logic of a business and the craft of engineering into the same conversation — with a clear purpose for every technical choice.',
   readOn: 'Our point of view',
   lens: {
     label: 'The human frame',
@@ -28,46 +28,41 @@ export const companyEn: CompanyEditorial = {
   },
   premise: {
     label: 'The reason behind the company',
-    title: 'Greater possibility demands better judgement.',
+    title: 'A business has a logic of its own.',
     paragraphs: [
-      'AI makes it possible to delegate more. That does not make every act of delegation a good decision. Someone still has to ask what matters, what is acceptable and who remains responsible.',
-      'DAMASAVERO exists to bring that thinking into the design of business systems. We see technology as a design material, not a direction in itself. The purpose comes from the business. The responsibility stays with people.',
+      'Its priorities, promises and exceptions are rarely captured in a neat specification. They live in how people make decisions. Designing a system means taking that context seriously, including the parts that are difficult to put into words.',
+      'DAMASAVERO exists at the meeting point of operational thinking and technical craft. We believe the quality of a system begins with how faithfully its design expresses the business it belongs to. Intelligence is one material in that design, not a substitute for it.',
     ],
-    marginal: 'A point of view, before a point of solution.',
+    marginal: 'Business logic gives technology its meaning.',
   },
   convictions: {
     label: 'Our convictions',
-    title: 'Different lenses.\nThe same standard.',
-    instruction: 'Choose a lens to explore our thinking.',
+    title: 'The choices behind\nthe system.',
+    instruction: 'Explore the principles that shape our design decisions.',
+    studyLabel: 'Design notes',
     items: [
       {
+        key: 'precision', label: 'Precision', title: 'The exception belongs in the design.',
+        body: 'A rule that works only when everything goes to plan is an unfinished idea. We think in conditions: what must be true, what could contradict it and what should happen when information is missing. Precision means making those assumptions explicit.',
+        question: 'Under what conditions is this the right action?', annotation: 'A rule and its exception are designed together.', terms: ['IF', 'UNLESS'], captions: ['The condition', 'The exception'],
+      },
+      {
         key: 'responsibility', label: 'Responsibility', title: 'Capability is not permission.',
-        body: 'A system being able to make a decision is not the same as that decision being its to make. Our position is that authority should be deliberate: defined by people, proportionate to the consequences and open to challenge.',
-        question: 'Who should have the final say?', annotation: 'A defined boundary for machine authority.', centre: ['Human', 'judgement.'],
+        body: 'What a system may do should be a deliberate business decision. We believe authority needs a clear boundary, proportionate to the consequences. People should be able to understand that boundary and retain the judgement that belongs to them.',
+        question: 'Where does the system’s authority end?', annotation: 'Permission includes an explicit limit.', terms: ['MAY', 'MUST NOT'], captions: ['Delegated authority', 'A reserved decision'], aside: 'Not everything that can be automated should be.',
       },
       {
-        key: 'legibility', label: 'Legibility', title: 'Understanding is part of ownership.',
-        body: 'We believe a business should not need to take its own systems on faith. The logic, assumptions and limits should be understandable to the people relying on them. Complexity is sometimes necessary. Opacity is not a virtue.',
-        question: 'Can the thinking be explained?', annotation: 'The reasoning should remain visible.', centre: ['Visible', 'reasoning.'],
-      },
-      {
-        key: 'independence', label: 'Independence', title: 'Build conviction. Leave room for change.',
-        body: 'No model, platform or design decision deserves permanent loyalty. We believe systems should leave a business free to change direction. The enduring commitment is to the purpose, not to the technology chosen to serve it.',
-        question: 'What if the right choice changes?', annotation: 'An open edge for the next decision.', centre: ['Room', 'to change.'],
+        key: 'adaptability', label: 'Adaptability', title: 'Keep the intent. Reconsider the implementation.',
+        body: 'A business rule should not become inseparable from a particular platform or AI model. We favour clear boundaries between purpose and implementation, so a technical choice can be revisited without redefining what the business means.',
+        question: 'What should endure when the technology changes?', annotation: 'The purpose anchors the choice. The choice can change.', terms: ['INTENT', 'METHOD'], captions: ['What the business means', 'How technology serves it'],
       },
     ],
   },
-  restraint: {
-    label: 'The value of restraint',
-    before: 'Not everything', emphasis: 'that can be automated', after: 'should be.',
-    body: 'Knowing where technology belongs also means knowing where it does not. Relationships, sensitive decisions and questions of purpose deserve more than a default setting.',
-    note: 'Knowing what to leave human is a design decision.',
-  },
   founder: {
     label: 'The thinking behind DAMASAVERO', name: 'Osama Tello', role: 'Founder — DAMASAVERO',
-    title: 'A clear direction.\nAn open mind.',
-    body: 'Founded by Osama Tello, DAMASAVERO is shaped by a practical interest in the relationship between business, technology and human judgement. That perspective gives the company its direction; the work must stand on its own reasoning.',
-    direction: 'Our ambition is to help shape a future in which businesses can adopt intelligence without surrendering understanding or control.',
+    title: 'Thinking and making.\nOne responsibility.',
+    body: 'The direction set by founder Osama Tello is clear: bring systems thinking and hands-on implementation together. A design should be judged by what happens when people use it, not only by how convincing it sounds in a presentation.',
+    direction: 'The ambition for DAMASAVERO is to build a company where the quality of the thinking and the care of the implementation are inseparable. The technology will evolve. That standard should endure.',
   },
   closing: {
     label: 'An open conversation', title: 'Start with what matters.',
@@ -78,47 +73,42 @@ export const companyEn: CompanyEditorial = {
 export const companyAr: CompanyEditorial = {
   eyebrow: 'من نحن / DAMASAVERO',
   title: ['ذكاء.', 'تحكمه غاية.'],
-  introduction: 'نحن شركة لأتمتة الذكاء الاصطناعي وأنظمة الأعمال. ننطلق من قناعة: من يعتمد على نظام، يجب أن يكون قادرًا على فهمه، ومساءلته، وتحديد اتجاهه.',
+  introduction: 'تصمّم DAMASAVERO أنظمة أعمال ذكية وتبنيها. نجمع بين منطق العمل ودقّة الهندسة في حوار واحد، لتكون وراء كل اختيار تقني غاية واضحة.',
   readOn: 'وجهة نظرنا',
   lens: { label: 'الإطار الإنساني', centre: ['الغاية', 'الإنسانية.'], caption: 'التقنية هي الإطار. وتبقى الغاية الإنسانية في المركز.' },
   premise: {
-    label: 'الفكرة وراء الشركة', title: 'كلما اتسعت الإمكانات، ازدادت أهمية حسن التقدير.',
+    label: 'الفكرة وراء الشركة', title: 'لكل شركة منطقها الخاص.',
     paragraphs: [
-      'يتيح الذكاء الاصطناعي تفويض المزيد من المهام والقرارات. لكن القدرة على التفويض لا تجعله دائمًا الخيار الصحيح. يبقى علينا أن نسأل: ما المهم؟ ما المقبول؟ ومن يتحمّل المسؤولية؟',
-      'وُجدت DAMASAVERO لتجعل هذا التفكير جزءًا من تصميم أنظمة الأعمال. نرى التقنية وسيلة قابلة للتشكيل، لا اتجاهًا مفروضًا. الغاية تحدّدها الشركة، والمسؤولية تبقى لدى الإنسان.',
+      'أولويات الشركة ووعودها واستثناءاتها نادرًا ما تكون موثّقة بالكامل. تظهر في طريقة اتخاذ الناس للقرارات. تصميم النظام يعني فهم هذا السياق بجدّية، بما فيه التفاصيل التي يصعب التعبير عنها.',
+      'تعمل DAMASAVERO عند نقطة التقاء التفكير في العمليات ودقّة التنفيذ التقني. نؤمن بأن جودة النظام تبدأ من مدى تعبير تصميمه عن الشركة التي ينتمي إليها. الذكاء الاصطناعي عنصر في هذا التصميم، وليس بديلًا عنه.',
     ],
-    marginal: 'نحدّد موقفنا قبل أن نقترح الحل.',
+    marginal: 'منطق العمل هو ما يمنح التقنية معناها.',
   },
   convictions: {
-    label: 'قناعاتنا', title: 'زوايا نظر مختلفة.\nومعيار واحد.', instruction: 'اختر زاوية لتتعرّف على طريقة تفكيرنا.',
+    label: 'قناعاتنا', title: 'الاختيارات التي\nتشكّل النظام.', instruction: 'تعرّف على المبادئ التي توجّه قراراتنا في التصميم.', studyLabel: 'ملاحظات تصميمية',
     items: [
       {
+        key: 'precision', label: 'الدقّة', title: 'الاستثناء جزء من التصميم.',
+        body: 'القاعدة التي تعمل فقط عندما يسير كل شيء كما خُطّط له، فكرة غير مكتملة. نفكّر بالشروط: ما الذي يجب أن يتحقّق؟ وما الذي قد يناقضه؟ وماذا يحدث حين تنقص المعلومات؟ الدقّة تعني جعل هذه الافتراضات صريحة.',
+        question: 'متى يكون هذا هو التصرّف الصحيح؟', annotation: 'نصمّم القاعدة واستثناءها معًا.', terms: ['إذا', 'إلا إذا'], captions: ['الشرط', 'الاستثناء'],
+      },
+      {
         key: 'responsibility', label: 'المسؤولية', title: 'القدرة لا تعني الصلاحية.',
-        body: 'قدرة النظام على اتخاذ قرار لا تعني أن من حقّه اتخاذه. نرى أن الصلاحيات يجب أن تكون مقصودة: يحدّدها الإنسان، وتتناسب مع تبعات القرار، وتبقى قابلة للمساءلة.',
-        question: 'لمن يجب أن تكون الكلمة الأخيرة؟', annotation: 'حدود واضحة لصلاحيات الآلة.', centre: ['التقدير', 'البشري.'],
+        body: 'ما يُسمح للنظام بفعله يجب أن يكون قرارًا واعيًا من الشركة. نرى أن الصلاحيات تحتاج حدودًا واضحة تتناسب مع تبعات القرار. ويجب أن يستطيع الناس فهم تلك الحدود والاحتفاظ بالتقدير الذي يخصّهم.',
+        question: 'أين تنتهي صلاحية النظام؟', annotation: 'الصلاحية تتضمّن حدًّا صريحًا.', terms: ['مسموح', 'غير مسموح'], captions: ['صلاحية مفوّضة', 'قرار محفوظ للإنسان'], aside: 'ليس كل ما يمكن أتمتته ينبغي أتمتته.',
       },
       {
-        key: 'legibility', label: 'الوضوح', title: 'الفهم جزء من امتلاك النظام.',
-        body: 'لا ينبغي أن تضطر الشركة إلى الوثوق بأنظمتها دون أن تفهمها. يجب أن يكون منطقها وافتراضاتها وحدودها مفهومة لمن يعتمد عليها. قد يكون التعقيد ضروريًا أحيانًا، لكن الغموض ليس ميزة.',
-        question: 'هل يمكن تفسير المنطق وراء القرار؟', annotation: 'منطق يمكن فهمه ومراجعته.', centre: ['منطق', 'واضح.'],
-      },
-      {
-        key: 'independence', label: 'الاستقلالية', title: 'قناعات ثابتة. ومساحة للتغيير.',
-        body: 'لا نموذج ولا منصّة ولا قرار تصميم يستحق ولاءً دائمًا. نؤمن بأن الأنظمة يجب أن تترك للشركة حرية تغيير اتجاهها. التزامنا المستمر بالغاية، لا بالتقنية التي اخترناها لتحقيقها.',
-        question: 'ماذا لو تغيّر الخيار الأنسب؟', annotation: 'مساحة مفتوحة للقرار القادم.', centre: ['مساحة', 'للتغيير.'],
+        key: 'adaptability', label: 'قابلية التكيّف', title: 'نحافظ على الغاية. ونراجع طريقة التنفيذ.',
+        body: 'لا ينبغي أن تصبح قاعدة العمل مرتبطة بمنصّة أو نموذج ذكاء اصطناعي لا يمكن الاستغناء عنه. نفضّل حدودًا واضحة بين الغاية والتنفيذ، ليبقى الاختيار التقني قابلًا للمراجعة دون إعادة تعريف منطق الشركة.',
+        question: 'ما الذي يجب أن يستمرّ حين تتغيّر التقنية؟', annotation: 'الغاية توجّه الاختيار. والاختيار قابل للتغيير.', terms: ['الغاية', 'الوسيلة'], captions: ['ما يقصده العمل', 'كيف تخدمه التقنية'],
       },
     ],
-  },
-  restraint: {
-    label: 'قيمة الاختيار الواعي', before: 'ليس كل ما', emphasis: 'يمكن أتمتته', after: 'ينبغي أتمتته.',
-    body: 'معرفة مكان التقنية تعني أيضًا معرفة أين لا تنتمي. العلاقات والقرارات الحساسة والأسئلة المتعلّقة بالغاية، تستحق أكثر من إعداد افتراضي.',
-    note: 'تحديد ما يبقى بيد الإنسان قرار تصميمي.',
   },
   founder: {
     label: 'الفكر وراء DAMASAVERO', name: 'Osama Tello', role: 'المؤسس — DAMASAVERO',
-    title: 'اتجاه واضح.\nوفكر منفتح.',
-    body: 'أسّس Osama Tello شركة DAMASAVERO باهتمام عملي بالعلاقة بين الأعمال والتقنية والتقدير البشري. هذا المنظور يمنح الشركة اتجاهها، لكن قيمة العمل يجب أن تثبتها وجاهة قراراته.',
-    direction: 'طموحنا أن نساهم في مستقبل تتبنّى فيه الشركات الذكاء الاصطناعي دون أن تتنازل عن الفهم أو التحكّم.',
+    title: 'التفكير والتنفيذ.\nمسؤولية واحدة.',
+    body: 'الاتجاه الذي يحدّده المؤسس Osama Tello واضح: الجمع بين التفكير في الأنظمة والتنفيذ العملي. قيمة التصميم تُقاس بما يحدث حين يستخدمه الناس، لا بمدى إقناعه في عرض تقديمي فقط.',
+    direction: 'طموح DAMASAVERO هو بناء شركة لا تنفصل فيها جودة التفكير عن العناية بالتنفيذ. ستتطوّر التقنية، لكن هذا المعيار يجب أن يبقى.',
   },
   closing: { label: 'حوار مفتوح', title: 'لنبدأ بما يهمّك.', body: 'أخبرنا كيف تتصوّر مستقبل شركتك. من هنا يبدأ حوار يستحقّ الوقت.', action: 'احجز استشارة مجانية' },
 };
