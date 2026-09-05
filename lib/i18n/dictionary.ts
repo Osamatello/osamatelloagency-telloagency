@@ -1,3 +1,5 @@
+import type { CompanyEditorial } from './company';
+
 export type Locale = 'en' | 'ar';
 
 export const locales: Locale[] = ['en', 'ar'];
@@ -155,39 +157,7 @@ export interface Dictionary {
     faqPreview: { eyebrow: string; title: string; subtitle: string; items: FaqItem[] };
     cta: { eyebrow: string; title: string; subtitle: string; primaryCta: string; secondaryCta: string };
   };
-  about: {
-    hero: { eyebrow: string; title: string; subtitle: string };
-    narrative: {
-      eyebrow: string;
-      title: string;
-      lead: string;
-      problems: string[];
-      positionEyebrow: string;
-      positionTitle: string;
-      principles: string[];
-    };
-    perspective: {
-      eyebrow: string;
-      title: string;
-      lead: string;
-      steps: { index: string; title: string }[];
-    };
-    architecture: {
-      eyebrow: string;
-      title: string;
-      lead: string;
-      layers: { index: string; title: string; description: string }[];
-    };
-    founder: {
-      eyebrow: string;
-      title: string;
-      name: string;
-      role: string;
-      perspectiveLabel: string;
-      perspective: string;
-    };
-    cta: { eyebrow: string; title: string; subtitle: string; primaryCta: string; secondaryCta: string };
-  };
+  about: CompanyEditorial;
   services: {
     hero: { eyebrow: string; title: string; subtitle: string };
     detail: {
