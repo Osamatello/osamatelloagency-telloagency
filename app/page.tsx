@@ -37,12 +37,12 @@ export default function HomePage() {
     <>
       <HeroEnvironment />
       <section data-visual-state="0" className="relative isolate -mt-16 flex min-h-0 items-center overflow-hidden bg-transparent text-ink sm:min-h-[100svh] lg:-mt-[72px]">
-        <div className="container-page relative z-10 w-full pb-6 pt-28 sm:translate-y-0 sm:pb-14 sm:pt-32 lg:pb-16 lg:pt-32">
+        <div className="container-page relative z-10 w-full pb-6 pt-28 sm:translate-y-0 sm:pb-[clamp(1.75rem,6.6svh,3.5rem)] sm:pt-[clamp(4.5rem,12.2svh,7.5rem)]">
           <span className={cn('eyebrow reveal-up', shown && 'is-in')} style={rd(60)}>
             {home.hero.eyebrow}
           </span>
 
-          <h1 className="text-display mt-7 text-ink text-[clamp(2.35rem,5.6vw,4.5rem)]">
+          <h1 className="text-display mt-[clamp(1rem,3.1svh,1.75rem)] text-ink text-[clamp(2.35rem,5.6vw,min(4.5rem,9.2svh))]">
             {titleLines.map((line, i) => (
               <span key={i} className={cn('reveal-line block', shown && 'is-in')} style={rd(180 + i * 90)}>
                 <span>{line}</span>
@@ -53,7 +53,7 @@ export default function HomePage() {
             </span>
           </h1>
 
-          <div className="mt-12 grid gap-x-8 gap-y-12 lg:mt-16 lg:grid-cols-12">
+          <div className="mt-12 grid gap-x-8 gap-y-12 lg:mt-[clamp(1.75rem,6.6svh,4rem)] lg:grid-cols-12">
             {home.hero.subtitle ? (
               <p className={cn('reveal-up self-end text-[0.98rem] leading-relaxed text-ink-muted lg:col-span-4', shown && 'is-in')} style={rd(560)}>
                 {home.hero.subtitle}
@@ -65,7 +65,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-7 flex flex-col gap-9 border-t border-line pt-6 sm:mt-12 sm:pt-8 lg:mt-12 lg:flex-row lg:items-center lg:justify-between">
+          <div className="mt-7 flex flex-col gap-9 border-t border-line pt-6 sm:mt-[clamp(1.4rem,5svh,3rem)] sm:pt-[clamp(1rem,3.2svh,2rem)] lg:flex-row lg:items-center lg:justify-between">
             <div className={cn('reveal-up flex flex-col gap-3 sm:flex-row', shown && 'is-in')} style={rd(820)}>
               <Link href="/consult" className="btn-primary">
                 {home.hero.primaryCta}

@@ -178,3 +178,18 @@
 @media (prefers-reduced-motion: reduce) {
   .ribs path { transform: none; transition: none; }
 }
+
+/* Large desktops: below 1600px the approved composition is untouched. Above it,
+   every value starts from exactly its current size (the vw preferred term
+   equals the old value at 1600px) and grows fluidly to a tasteful cap, so the
+   page fills the extra room instead of floating in the middle of the screen. */
+@media (min-width: 1600px) {
+  .page :global(.container-page) { max-width: clamp(86rem, 86vw, 104rem); }
+  .lens { max-width: clamp(27rem, 27vw, 36rem); }
+  .heroCopy h1 { font-size: clamp(5.65rem, 5.65vw, 6.6rem); }
+  .introduction { max-width: 34rem; }
+  .premise { padding-block: clamp(6.5rem, 6.5vw, 8.5rem); }
+  .working, .founder { padding-block: clamp(5rem, 5vw, 6.5rem); }
+  .closing { padding-block: clamp(4rem, 4vw, 5.5rem) clamp(4.5rem, 4.5vw, 6rem); }
+  .page[dir='rtl'] .heroCopy h1 { font-size: clamp(4.75rem, 4.75vw, 5.6rem); }
+}

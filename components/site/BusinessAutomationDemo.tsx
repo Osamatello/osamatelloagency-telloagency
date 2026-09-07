@@ -105,7 +105,7 @@ export function BusinessAutomationDemo({ className }: { className?: string }) {
       </div>
 
       {/* transforming enquiry line */}
-      <p className="mt-6 min-h-[3.25rem] text-[0.95rem] leading-relaxed sm:text-base">
+      <p className="mt-[clamp(0.85rem,2.66svh,1.5rem)] min-h-[3.25rem] text-[0.95rem] leading-relaxed sm:text-base">
         {done ? (
           <span className="inline-flex items-start gap-2 text-ink">
             <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
@@ -117,7 +117,7 @@ export function BusinessAutomationDemo({ className }: { className?: string }) {
       </p>
 
       {/* the sequence */}
-      <ol className="relative mt-7">
+      <ol className="relative mt-[clamp(1rem,3.1svh,1.75rem)]">
         <span
           aria-hidden="true"
           className="absolute top-2 bottom-2 w-px bg-line"
@@ -131,7 +131,7 @@ export function BusinessAutomationDemo({ className }: { className?: string }) {
         {t.steps.map((label, i) => {
           const on = i <= active || done;
           return (
-            <li key={label} className="relative flex items-center gap-4 py-[0.6rem]">
+            <li key={label} className="relative flex items-center gap-4 py-[clamp(0.3rem,0.66svh,0.6rem)]">
               <span
                 className={cn(
                   'relative z-10 h-[11px] w-[11px] shrink-0 rounded-full border-2 transition-colors duration-300',
