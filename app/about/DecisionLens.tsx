@@ -11,6 +11,8 @@ import styles from './about.module.css';
 // free body and outer edge respond to a nearby magnetic force. The Lens itself
 // never rotates or moves.
 const FIXED_ANGLE = -22 * Math.PI / 180;
+const COS_A = Math.cos(FIXED_ANGLE);
+const SIN_A = Math.sin(FIXED_ANGLE);
 const clamp = (v: number, a: number, z: number) => Math.max(a, Math.min(z, v));
 const RIBS = Array.from({ length: 40 }, (_, i) => {
   const angle = ((i * 8.4 - 76) * Math.PI) / 180;
@@ -20,7 +22,13 @@ const RIBS = Array.from({ length: 40 }, (_, i) => {
   ];
   const [ox, oy] = point(205, 0), [ix, iy] = point(112, 0);
   const [bx, by] = point(205, 35), [jx, jy] = point(112, 35);
-  return { path: `M ${ox} ${oy} Q ${(ox + ix) / 2} ${(oy + iy) / 2 - 33} ${ix} ${iy} L ${jx} ${jy} Q ${(bx + jx) / 2} ${(by + jy) / 2 - 33} ${bx} ${by} Z`, anchorX: ix, anchorY: (iy + jy) / 2, edgeX: (ox + bx) / 2, edgeY: (oy + by) / 2 };
+  const edgeX = (ox + bx) / 2;
+  const anchorX = ix;
+  return {
+    path: `M ${ox} ${oy} Q ${(ox + ix) / 2} ${(oy + iy) / 2 - 33} ${ix} ${iy} L ${jx} ${jy} Q ${(bx + jx) / 2} ${(by + jy) / 2 - 33} ${bx} ${by} Z`,
+    anchorX, anchorY: (iy + jy) / 2, edgeX, edgeY: (oy + by) / 2,
+    side: Math.sign(edgeX - anchorX) || 1,
+  };
 });
 
 export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
@@ -32,52 +40,106 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
   const id = useId();
   const insight = active === null ? null : copy.insights[active];
 
+  // Physics state lives in refs — no React re-render on pointer movement.
+  const reducedRef = useRef(false);
+  const pointer = useRef<{ cx: number; cy: number } | null>(null);
+  const fan = useRef<Float32Array>(new Float32Array(40).fill(1));
+  const tilt = useRef<Float32Array>(new Float32Array(40));
+  const raf = useRef(0);
+  const last = useRef(0);
+  const settle = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const preference = () => setReduced(media.matches);
+    const preference = () => { setReduced(media.matches); reducedRef.current = media.matches; };
     preference();
     media.addEventListener('change', preference);
     return () => media.removeEventListener('change', preference);
   }, []);
+  useEffect(() => () => { cancelAnimationFrame(raf.current); clearTimeout(settle.current); }, []);
 
-  function resetPages() {
-    ribRefs.current.forEach(page => {
-      if (!page) return;
-      page.style.setProperty('--fan', '1');
-      page.style.setProperty('--tilt', '0');
-    });
+  // Single rAF loop: reads the latest pointer once per frame, eases every page
+  // toward its target with a direct transform write, and stops itself once the
+  // pages have settled and the pointer is gone.
+  function tick(now: number) {
+    raf.current = 0;
+    const dt = last.current ? Math.min(now - last.current, 50) : 16.7;
+    last.current = now;
+    const k = 1 - Math.pow(1 - 0.42, dt / 16.667); // faster catch-up, still eased
+
+    const b = bounds.current;
+    const p = pointer.current;
+    let has = false, px = 0, py = 0;
+    if (p && b && !reducedRef.current) {
+      const x = (p.cx - b.left) * 560 / b.width - 280;
+      const y = (p.cy - b.top) * 550 / b.height - 275;
+      px = 280 + x * COS_A + y * SIN_A;
+      py = 275 - x * SIN_A + y * COS_A;
+      has = true;
+    }
+
+    const cf = fan.current, ct = tilt.current;
+    let active = false;
+    for (let i = 0; i < 40; i++) {
+      let tf = 1, tt = 0;
+      if (has) {
+        const rib = RIBS[i];
+        const dx = px - rib.edgeX, dy = py - rib.edgeY;
+        const dist = Math.hypot(dx, dy);
+        const w = 1 - dist / 210;
+        if (w > 0) {
+          const weight = w * Math.sqrt(w); // gentle falloff, neighbours fan less
+          const inv = 1 / Math.max(dist, 1), s = rib.side;
+          tf = clamp(1 + dx * inv * .26 * s * weight, .78, 1.24);
+          tt = clamp((dy * inv * .36 - .06) * s * weight, -.34, .34);
+        }
+      }
+      let nf = cf[i] + (tf - cf[i]) * k;
+      let nt = ct[i] + (tt - ct[i]) * k;
+      if (Math.abs(nf - tf) < 1.2e-3 && Math.abs(nt - tt) < 1.2e-3) { nf = tf; nt = tt; }
+      else active = true;
+      if (nf !== cf[i] || nt !== ct[i]) {
+        cf[i] = nf; ct[i] = nt;
+        const el = ribRefs.current[i];
+        if (el) el.style.transform = `matrix(${nf.toFixed(4)},${nt.toFixed(4)},0,1,0,0)`;
+      }
+    }
+
+    if (has || active) raf.current = requestAnimationFrame(tick);
+    else last.current = 0;
   }
+  function ensureLoop() {
+    if (reducedRef.current) return;
+    clearTimeout(settle.current);
+    if (!raf.current) { last.current = 0; raf.current = requestAnimationFrame(tick); }
+  }
+  // Safety net: if rAF ever stalls mid-return (e.g. a backgrounded tab), snap
+  // the pages back to rest so nothing is left transformed.
+  function forceRest() {
+    if (pointer.current) return;
+    cancelAnimationFrame(raf.current); raf.current = 0; last.current = 0;
+    const cf = fan.current, ct = tilt.current;
+    for (let i = 0; i < 40; i++) {
+      cf[i] = 1; ct[i] = 0;
+      if (ribRefs.current[i]) ribRefs.current[i]!.style.transform = 'matrix(1,0,0,1,0,0)';
+    }
+  }
+
   function measure(event: PointerEvent<HTMLDivElement>) {
     bounds.current = event.currentTarget.getBoundingClientRect();
   }
   function attract(event: PointerEvent<HTMLDivElement>) {
     if (!event.isPrimary) return;
     gesture.current.move(event.pointerId, event.clientX, event.clientY);
-    if (reduced || !bounds.current) return;
-    const b = bounds.current;
-    const x = (event.clientX - b.left) * 560 / b.width - 280;
-    const y = (event.clientY - b.top) * 550 / b.height - 275;
-    // Undo the fixed architectural angle to work in the SVG's coordinates.
-    const px = 280 + x * Math.cos(FIXED_ANGLE) + y * Math.sin(FIXED_ANGLE);
-    const py = 275 - x * Math.sin(FIXED_ANGLE) + y * Math.cos(FIXED_ANGLE);
-    RIBS.forEach((rib, i) => {
-      const dx = px - rib.edgeX, dy = py - rib.edgeY;
-      const distance = Math.hypot(dx, dy);
-      // Wide reach + gentle falloff = the closest page reacts most, neighbours
-      // fan progressively less.
-      const weight = Math.max(0, 1 - distance / 210) ** 1.5;
-      const nx = dx / Math.max(distance, 1), ny = dy / Math.max(distance, 1);
-      const side = Math.sign(rib.edgeX - rib.anchorX) || 1;
-      // X scale + Y shear pivot about the binding: the inner edge stays fixed,
-      // the free body lifts and the outer edge moves most.
-      const fan = clamp(1 + nx * .26 * side * weight, .78, 1.24);
-      const tilt = clamp((ny * .36 - .06) * side * weight, -.34, .34);
-      const page = ribRefs.current[i];
-      if (page) {
-        page.style.setProperty('--fan', fan.toFixed(4));
-        page.style.setProperty('--tilt', tilt.toFixed(4));
-      }
-    });
+    if (reducedRef.current) return;
+    pointer.current = { cx: event.clientX, cy: event.clientY };
+    ensureLoop();
+  }
+  function release() {
+    pointer.current = null;
+    ensureLoop();
+    clearTimeout(settle.current);
+    settle.current = setTimeout(forceRest, 650);
   }
   function dismiss() {
     if (active !== null) ribRefs.current[active]?.focus({ preventScroll: true });
@@ -93,7 +155,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       <div className={styles.lens} data-lens=""
         onPointerEnter={measure}
         onPointerDown={event => {
-          if (!event.isPrimary) { gesture.current.cancel(); resetPages(); return; }
+          if (!event.isPrimary) { gesture.current.cancel(); release(); return; }
           if (event.button !== 0) return;
           measure(event);
           gesture.current.start(event.pointerId, event.clientX, event.clientY);
@@ -102,10 +164,10 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
         onPointerMove={attract}
         onPointerUp={event => {
           gesture.current.end(event.pointerId, event.clientX, event.clientY);
-          resetPages();
+          release();
         }}
-        onPointerCancel={() => { gesture.current.cancel(); resetPages(); }}
-        onPointerLeave={() => { gesture.current.leave(); bounds.current = null; resetPages(); }}
+        onPointerCancel={() => { gesture.current.cancel(); release(); }}
+        onPointerLeave={() => { gesture.current.leave(); bounds.current = null; release(); }}
         onClickCapture={event => {
           if (!gesture.current.allowsClick(event.detail)) { event.preventDefault(); event.stopPropagation(); }
         }}>
