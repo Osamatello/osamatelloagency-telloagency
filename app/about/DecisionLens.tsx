@@ -7,9 +7,11 @@ import type { CompanyEditorial } from '@/lib/i18n/company';
 import { createLensGesture } from './lens-gesture';
 import styles from './about.module.css';
 
-// Original ribs become the controls; their inner vertical edges are the binding.
-const SELECTABLE = [6, 16, 26, 36];
+// Every rib is a physical page: its inner vertical edge is the binding, the
+// free body and outer edge respond to a nearby magnetic force. The Lens itself
+// never rotates or moves.
 const FIXED_ANGLE = -22 * Math.PI / 180;
+const clamp = (v: number, a: number, z: number) => Math.max(a, Math.min(z, v));
 const RIBS = Array.from({ length: 40 }, (_, i) => {
   const angle = ((i * 8.4 - 76) * Math.PI) / 180;
   const point = (radius: number, lift: number) => [
@@ -46,7 +48,6 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     });
   }
   function measure(event: PointerEvent<HTMLDivElement>) {
-    // Cache the fixed frame once per entry/press, not per moving page.
     bounds.current = event.currentTarget.getBoundingClientRect();
   }
   function attract(event: PointerEvent<HTMLDivElement>) {
@@ -62,13 +63,15 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     RIBS.forEach((rib, i) => {
       const dx = px - rib.edgeX, dy = py - rib.edgeY;
       const distance = Math.hypot(dx, dy);
-      const influence = Math.max(0, 1 - distance / 110) ** 2;
-      const weight = influence * (SELECTABLE.includes(i) ? 1 : .72);
-      const side = Math.sign(rib.edgeX - rib.anchorX);
-      // X scaling and Y shear pivot about the binding. Both endpoints of
-      // the inner vertical edge stay fixed; only the free edge fans/lifts.
-      const fan = 1 + dx / Math.max(distance, 1) * .09 * side * weight;
-      const tilt = (dy / Math.max(distance, 1) * .13 - .045) * side * weight;
+      // Wide reach + gentle falloff = the closest page reacts most, neighbours
+      // fan progressively less.
+      const weight = Math.max(0, 1 - distance / 210) ** 1.5;
+      const nx = dx / Math.max(distance, 1), ny = dy / Math.max(distance, 1);
+      const side = Math.sign(rib.edgeX - rib.anchorX) || 1;
+      // X scale + Y shear pivot about the binding: the inner edge stays fixed,
+      // the free body lifts and the outer edge moves most.
+      const fan = clamp(1 + nx * .26 * side * weight, .78, 1.24);
+      const tilt = clamp((ny * .36 - .06) * side * weight, -.34, .34);
       const page = ribRefs.current[i];
       if (page) {
         page.style.setProperty('--fan', fan.toFixed(4));
@@ -77,7 +80,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     });
   }
   function dismiss() {
-    if (active !== null) ribRefs.current[SELECTABLE[active]]?.focus({ preventScroll: true });
+    if (active !== null) ribRefs.current[active]?.focus({ preventScroll: true });
     setActive(null);
   }
 
@@ -111,27 +114,23 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
             <path aria-hidden="true" className={styles.datum} d="M25 275H535M280 25V525M25 265V285M535 265V285M270 25H290M270 525H290" />
             <ellipse aria-hidden="true" className={styles.guide} cx="280" cy="260" rx="230" ry="208" strokeDasharray="2 8" />
             <g className={styles.ribs}>
-              {RIBS.map((_, i) => i).filter(i => !SELECTABLE.includes(i)).concat(SELECTABLE).map(i => {
-                const rib = RIBS[i];
-                const choice = SELECTABLE.indexOf(i);
-                const interactive = choice !== -1;
-                return <path key={i} ref={el => { ribRefs.current[i] = el; }}
+              {RIBS.map((rib, i) => (
+                <path key={i} ref={el => { ribRefs.current[i] = el; }}
                   d={rib.path} data-rib={i} data-tone={i >= 28 ? 'deep' : i % 3 === 2 ? 'soft' : 'paper'}
-                  className={interactive ? styles.selectablePage : undefined}
+                  className={styles.selectablePage}
                   style={{ transformOrigin: `${rib.anchorX}px ${rib.anchorY}px` } as CSSProperties}
-                  role={interactive ? 'button' : undefined} tabIndex={interactive ? 0 : undefined}
-                  aria-hidden={interactive ? undefined : true}
-                  aria-label={interactive ? copy.insights[choice].title : undefined}
-                  aria-expanded={interactive ? active === choice : undefined}
-                  aria-controls={interactive ? id : undefined}
-                  onClick={interactive ? () => setActive(active === choice ? null : choice) : undefined}
-                  onKeyDown={interactive ? event => {
+                  role="button" tabIndex={0}
+                  aria-label={copy.insights[i].title}
+                  aria-expanded={active === i}
+                  aria-controls={id}
+                  onClick={() => setActive(active === i ? null : i)}
+                  onKeyDown={event => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
-                      if (!event.repeat) setActive(active === choice ? null : choice);
+                      if (!event.repeat) setActive(active === i ? null : i);
                     }
-                  } : undefined} />;
-              })}
+                  }} />
+              ))}
             </g>
           </svg>
         </div>
@@ -143,7 +142,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       </figcaption>
       <div className={styles.lensNote}>
         <div id={id} aria-live="polite" aria-atomic="true">
-          <span className={styles.insightIndex} aria-hidden="true">{active === null ? 'D / S' : `0${active + 1} / 04`}</span>
+          <span className={styles.insightIndex} aria-hidden="true">{active === null ? 'D / S' : `${String(active + 1).padStart(2, '0')} / ${RIBS.length}`}</span>
           <h3>{insight?.title ?? copy.idleTitle}</h3>
           <p>{insight?.body ?? copy.idleBody}</p>
         </div>
