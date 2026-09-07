@@ -36,8 +36,8 @@ const RIBS = Array.from({ length: 40 }, (_, i) => {
 // Autonomous life: a continuous drifting field (never repeats — the wave
 // frequencies are incommensurate) plus short overlapping "gusts" that lift a
 // local group of pages. Both are pure maths inside the one physics loop.
-const BASE_FAN = 0.05, BASE_TILT = 0.085;
-const GUST_FAN = 0.07, GUST_TILT = 0.125;
+const BASE_FAN = 0.085, BASE_TILT = 0.14;
+const GUST_FAN = 0.13, GUST_TILT = 0.2;
 type Gust = { c: number; drift: number; wid: number; amp: number; dir: number; t0: number; dur: number; cNow: number; env: number };
 
 export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
@@ -65,7 +65,6 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
   const raf = useRef(0);
   const last = useRef(0);
   const origin = useRef(0);
-  const half = useRef(false);
   const settle = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -93,13 +92,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     raf.current = 0;
     if (!origin.current) origin.current = now;
     const p = pointer.current;
-    const busy = !!p && now - lastMove.current < 520;
-
-    // Halve the work when nothing but the ambient field is moving.
-    if (!busy && grip.current < 0.01) {
-      half.current = !half.current;
-      if (half.current) { raf.current = requestAnimationFrame(tick); return; }
-    }
+    const busy = !!p && now - lastMove.current < 420;
 
     const dt = last.current ? Math.min(now - last.current, 50) : 16.7;
     last.current = now;
@@ -107,10 +100,10 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
 
     // The pointer takes the pages quickly and gives them back slowly, so a
     // resting cursor lets the Lens breathe again without a jolt.
-    grip.current += ((busy ? 1 : 0) - grip.current) * step(busy ? 0.4 : 0.055);
+    grip.current += ((busy ? 1 : 0) - grip.current) * step(busy ? 0.4 : 0.07);
     gate.current += ((idleAllowed() ? 1 : 0) - gate.current) * step(0.09);
     const w = grip.current, g = gate.current;
-    const k = step(0.56 * w + 0.15 * (1 - w));
+    const k = step(0.56 * w + 0.3 * (1 - w));
     const t = (now - origin.current) / 1000;
 
     const b = bounds.current;
@@ -155,11 +148,11 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       let af = 0, at = 0;
       if (g > 0.002) {
         const ph = i * 0.41, s = rib.side;
-        const s1 = Math.sin(t * 0.85 + ph);
-        const s2 = Math.sin(t * 1.43 + ph * 1.7 + 2.1);
-        const s3 = Math.sin(t * 1.13 + ph * 0.83 + 4.2);
-        // A slow travelling envelope leaves pockets of the ring almost calm.
-        const env = 0.18 + 0.82 * (0.5 + 0.5 * Math.sin(t * 0.21 + i * 0.13));
+        const s1 = Math.sin(t * 1.5 + ph);
+        const s2 = Math.sin(t * 2.5 + ph * 1.7 + 2.1);
+        const s3 = Math.sin(t * 1.95 + ph * 0.83 + 4.2);
+        // A travelling envelope leaves pockets of the ring almost calm.
+        const env = 0.18 + 0.82 * (0.5 + 0.5 * Math.sin(t * 0.34 + i * 0.13));
         let gf = 0;
         for (let j = 0; j < gs.length; j++) {
           const gu = gs[j];
@@ -223,20 +216,20 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       if (stop) return;
       if (idleAllowed()) {
         const gs = gusts.current;
-        if (gs.length > 3) gs.shift();
+        if (gs.length > 5) gs.shift();
         gs.push({
           c: 1 + Math.random() * 37,
-          drift: (Math.random() - 0.5) * 3.4,
+          drift: (Math.random() - 0.5) * 7.2,
           wid: 1.8 + Math.random() * 3.4,
-          amp: 0.55 + Math.random() * 0.8,
+          amp: 0.7 + Math.random() * 0.9,
           dir: Math.random() < 0.5 ? -1 : 1,
           t0: performance.now(),
-          dur: 850 + Math.random() * 1250,
+          dur: 520 + Math.random() * 780,
           cNow: 0, env: 0,
         });
         ensureLoop();
       }
-      idleTimer.current = setTimeout(spawn, 460 + Math.random() * 900);
+      idleTimer.current = setTimeout(spawn, 240 + Math.random() * 520);
     };
     ensureLoop();
     idleTimer.current = setTimeout(spawn, 300 + Math.random() * 500);
