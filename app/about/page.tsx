@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { DecisionLens } from './DecisionLens';
+import { EngineAtmosphere } from './EngineAtmosphere';
 import styles from './about.module.css';
 
 export default function AboutPage() {
@@ -11,6 +12,7 @@ export default function AboutPage() {
   const c = dict.about;
   return (
     <article className={styles.page} dir={dir} id="company-page">
+      <EngineAtmosphere />
       <section className={styles.hero} aria-labelledby="company-title">
         <div className="container-page">
           <div className={styles.heroMeta}><span className="eyebrow">{c.eyebrow}</span><span className={styles.edition}>{dict.brand.tagline}</span></div>

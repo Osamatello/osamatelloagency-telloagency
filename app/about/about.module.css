@@ -6,30 +6,15 @@
   overflow: clip;
   color-scheme: light;
 }
-/* Architectural background field — oversized cropped contour arcs rising from
-   below the fold, plus a faint forest atmosphere kept away from the Lens, plus
-   a barely-there grain so the warm paper is not digitally flat. Fixed (a free,
-   cheap parallax), behind all content, non-interactive. */
-.page::before,
+/* The Engine Atmosphere canvas is this page's secondary visual language, so
+   the old contour arcs are gone — two atmospheres would only compete. The
+   grain stays: it still keeps the warm paper from reading as digitally flat. */
 .page::after {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-}
-.page::before {
-  background:
-    radial-gradient(125vmax 125vmax at 50% 132%,
-      #0000 calc(56vmax - 1px), hsl(var(--brand) / .06) 56vmax, #0000 calc(56vmax + 1px),
-      #0000 calc(72vmax - 1px), hsl(var(--brand) / .05) 72vmax, #0000 calc(72vmax + 1px),
-      #0000 calc(90vmax - 1px), hsl(var(--brand) / .038) 90vmax, #0000 calc(90vmax + 1px),
-      #0000 calc(108vmax - 1px), hsl(var(--brand) / .03) 108vmax, #0000 calc(108vmax + 1px)),
-    radial-gradient(72vmax 48vmax at 12% 90%, hsl(var(--brand) / .045), #0000 66%);
-  -webkit-mask: linear-gradient(180deg, #0000 0 30%, #000 60%);
-  mask: linear-gradient(180deg, #0000 0 30%, #000 60%);
-}
-.page::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   background-size: 140px 140px;
   opacity: .028;
