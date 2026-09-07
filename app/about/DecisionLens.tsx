@@ -36,8 +36,15 @@ const RIBS = Array.from({ length: 40 }, (_, i) => {
 // Autonomous life: a continuous drifting field (never repeats — the wave
 // frequencies are incommensurate) plus short overlapping "gusts" that lift a
 // local group of pages. Both are pure maths inside the one physics loop.
-const BASE_FAN = 0.085, BASE_TILT = 0.14;
-const GUST_FAN = 0.13, GUST_TILT = 0.2;
+const BASE_FAN = 0.13, BASE_TILT = 0.2;
+const GUST_FAN = 0.2, GUST_TILT = 0.3;
+// The scale/shear pair alone barely moves a page whose long axis is vertical,
+// because both act on the horizontal distance from the binding. A swing about
+// the bound inner edge lifts the free edge by the same amount whichever way
+// the page points, so it carries most of the visible presence. Degrees per
+// unit of tilt: the pointer swings harder than the field, so a hand on the
+// Lens always reads as the stronger force.
+const FIELD_SWING = 32, POINTER_SWING = 54;
 type Gust = { c: number; drift: number; wid: number; amp: number; dir: number; t0: number; dur: number; cNow: number; env: number };
 
 export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
@@ -58,8 +65,10 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
   const gate = useRef(0);   // idle life fades in/out with visibility
   const fan = useRef<Float32Array>(new Float32Array(40).fill(1));
   const tilt = useRef<Float32Array>(new Float32Array(40));
+  const swing = useRef<Float32Array>(new Float32Array(40));
   const wroteF = useRef<Float32Array>(new Float32Array(40).fill(1));
   const wroteT = useRef<Float32Array>(new Float32Array(40));
+  const wroteS = useRef<Float32Array>(new Float32Array(40));
   const gusts = useRef<Gust[]>([]);
   const visible = useRef(true);
   const raf = useRef(0);
@@ -129,7 +138,8 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       }
     } else if (gs.length) gs.length = 0;
 
-    const cf = fan.current, ct = tilt.current, wf = wroteF.current, wt = wroteT.current;
+    const cf = fan.current, ct = tilt.current, cs = swing.current;
+    const wf = wroteF.current, wt = wroteT.current, ws = wroteS.current;
     let alive = false;
     for (let i = 0; i < 40; i++) {
       const rib = RIBS[i];
@@ -141,8 +151,8 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
         if (wgt > 0) {
           const weight = wgt * Math.sqrt(wgt); // gentle falloff, neighbours fan less
           const inv = 1 / Math.max(dist, 1), s = rib.side;
-          pf = clamp(1 + dx * inv * .26 * s * weight, .78, 1.24) - 1;
-          pt = clamp((dy * inv * .36 - .06) * s * weight, -.34, .34);
+          pf = clamp(1 + dx * inv * .3 * s * weight, .74, 1.28) - 1;
+          pt = clamp((dy * inv * .42 - .07) * s * weight, -.4, .4);
         }
       }
       let af = 0, at = 0;
@@ -159,23 +169,34 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
           const d = (i - gu.cNow) / gu.wid;
           if (d > -1 && d < 1) { const q = 1 - d * d; gf += gu.env * q * q; }
         }
-        af = ((s1 * 0.6 + s2 * 0.4) * BASE_FAN * env + gf * GUST_FAN * 0.8) * s * g;
-        at = ((s3 * 0.62 + s2 * 0.38) * BASE_TILT * env + gf * GUST_TILT) * s * g;
+        // Overlapping gusts add up; cap the stack so a rare pile-up never
+        // out-muscles a hand on the Lens. Single gusts pass through untouched.
+        gf = clamp(gf, -1.2, 1.2);
+        // Bounded a little under the pointer's own clamps (0.28 / 0.4), so the
+        // field can throw a page a long way but never as far as a hand can.
+        af = clamp(((s1 * 0.6 + s2 * 0.4) * BASE_FAN * env + gf * GUST_FAN * 0.8) * s, -.2, .2) * g;
+        at = clamp(((s3 * 0.62 + s2 * 0.38) * BASE_TILT * env + gf * GUST_TILT) * s, -.28, .28) * g;
       }
 
       const tf = 1 + pf * w + af * (1 - w);
       const tt = pt * w + at * (1 - w);
+      // The swing follows the same lift, so scale, shear and rotation stay one
+      // coherent paper movement about the binding.
+      const ts = pt * POINTER_SWING * w + at * FIELD_SWING * (1 - w);
       let nf = cf[i] + (tf - cf[i]) * k;
       let nt = ct[i] + (tt - ct[i]) * k;
-      if (Math.abs(nf - tf) < 1.2e-3 && Math.abs(nt - tt) < 1.2e-3) { nf = tf; nt = tt; }
-      else alive = true;
-      cf[i] = nf; ct[i] = nt;
+      let ns = cs[i] + (ts - cs[i]) * k;
+      if (Math.abs(nf - tf) < 1.2e-3 && Math.abs(nt - tt) < 1.2e-3 && Math.abs(ns - ts) < 0.02) {
+        nf = tf; nt = tt; ns = ts;
+      } else alive = true;
+      cf[i] = nf; ct[i] = nt; cs[i] = ns;
       // Quantise before writing so slow pages skip most frames entirely.
       const qf = Math.round(nf * 1000) / 1000, qt = Math.round(nt * 1000) / 1000;
-      if (qf !== wf[i] || qt !== wt[i]) {
-        wf[i] = qf; wt[i] = qt;
+      const qs = Math.round(ns * 100) / 100;
+      if (qf !== wf[i] || qt !== wt[i] || qs !== ws[i]) {
+        wf[i] = qf; wt[i] = qt; ws[i] = qs;
         const el = ribRefs.current[i];
-        if (el) el.style.transform = `matrix(${qf},${qt},0,1,0,0)`;
+        if (el) el.style.transform = `rotate(${qs}deg) matrix(${qf},${qt},0,1,0,0)`;
       }
     }
 
@@ -192,10 +213,11 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     if (pointer.current || idleAllowed()) return;
     cancelAnimationFrame(raf.current); raf.current = 0; last.current = 0; origin.current = 0;
     gusts.current.length = 0; grip.current = 0; gate.current = 0;
-    const cf = fan.current, ct = tilt.current, wf = wroteF.current, wt = wroteT.current;
+    const cf = fan.current, ct = tilt.current, cs = swing.current;
+    const wf = wroteF.current, wt = wroteT.current, ws = wroteS.current;
     for (let i = 0; i < 40; i++) {
-      cf[i] = 1; ct[i] = 0; wf[i] = 1; wt[i] = 0;
-      if (ribRefs.current[i]) ribRefs.current[i]!.style.transform = 'matrix(1,0,0,1,0,0)';
+      cf[i] = 1; ct[i] = 0; cs[i] = 0; wf[i] = 1; wt[i] = 0; ws[i] = 0;
+      if (ribRefs.current[i]) ribRefs.current[i]!.style.transform = 'rotate(0deg) matrix(1,0,0,1,0,0)';
     }
   }
 
