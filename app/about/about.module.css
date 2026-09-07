@@ -21,17 +21,16 @@
 .readOn:hover svg { transform: translateY(4px); }
 .heroFigure { min-width: 0; margin: 0; }
 .figureLabel { display: flex; align-items: center; gap: .75rem; font-size: .75rem; color: hsl(var(--ds-ink-muted)); }
-.figureLabel > span:last-child { margin-inline-start: auto; letter-spacing: .15em; }
 .mark { width: .4rem; height: .4rem; background: hsl(var(--brand)); display: inline-block; flex-shrink: 0; }
 .heroFigure figcaption { border-top: 1px solid hsl(var(--ds-line)); padding-top: 1rem; font-size: .8125rem; color: hsl(var(--ds-ink-muted)); line-height: 1.6; }
 .lens { position: relative; width: 100%; max-width: 27rem; margin-inline: auto; aspect-ratio: 560 / 550; isolation: isolate; touch-action: pinch-zoom; user-select: none; }
-.lensGeometry { width: 100%; height: 100%; pointer-events: none; animation: lensOrbit 110s linear infinite; animation-play-state: paused; }
+.lensGeometry { width: 100%; height: 100%; transform: rotate(-22deg); }
 .lensGeometry svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .datum { stroke: hsl(var(--ds-line-strong)); stroke-width: .65; }
 .guide { stroke: hsl(var(--brand) / .25); stroke-width: .7; }
-.ribs path { fill: hsl(var(--ds-paper)); stroke: hsl(var(--brand) / .65); stroke-width: .85; transition: fill 650ms ease, opacity 650ms ease; }
-.ribs path:nth-child(3n) { fill: hsl(var(--brand) / .055); }
-.ribs path:nth-child(n+29) { fill: hsl(var(--brand) / .16); }
+.ribs path { fill: hsl(var(--ds-paper)); stroke: hsl(var(--brand) / .65); stroke-width: .85; pointer-events: none; transform-box: view-box; transform: matrix(var(--fan, 1), var(--tilt, 0), 0, 1, 0, 0); transition: transform 420ms cubic-bezier(.2,.65,.3,1), fill 250ms ease, stroke 250ms ease; }
+.ribs path[data-tone='soft'] { fill: hsl(var(--brand) / .055); }
+.ribs path[data-tone='deep'] { fill: hsl(var(--brand) / .16); }
 .lensCentre { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 46%; pointer-events: none; text-align: center; font-family: var(--font-display), var(--font-sans), sans-serif; font-size: clamp(1.05rem, 1.9vw, 1.65rem); font-weight: 500; line-height: 1.15; letter-spacing: -.035em; }
 .lensCentre span { display: block; }
 .lensCentre span:last-child { color: hsl(var(--brand)); }
@@ -101,19 +100,13 @@
   .page *, .page *::before, .page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-/* The ring moves continuously; four stable surfaces keep selection deliberate. */
-@keyframes lensOrbit { from { transform: rotate(-22deg); } to { transform: rotate(338deg); } }
-.heroFigure[data-running='true'] .lensGeometry { animation-play-state: running; }
-.motionToggle { margin-inline-start: auto; width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid hsl(var(--ds-line)); border-radius: 50%; color: hsl(var(--brand)); }
-.lensSurface { position: absolute; z-index: 2; width: 18%; height: 13%; min-width: 48px; min-height: 44px; transform: translate(calc(-50% + var(--mx, 0px)), calc(-50% + var(--my, 0px))); transition: transform 180ms ease-out; color: hsl(var(--brand)); cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.lensSurface::before { content: ''; position: absolute; inset: 0; border: 1px solid hsl(var(--brand) / .7); border-radius: 75% 12% 65% 12%; background: hsl(var(--ds-paper)); transform: rotate(var(--angle)); transition: background .25s ease, border-color .25s ease; }
-.lensSurface::after { content: ''; position: absolute; inset: 4px -3px -4px 3px; border: 1px solid hsl(var(--brand) / .23); border-radius: 75% 12% 65% 12%; transform: rotate(var(--angle)); z-index: -1; }
-.lensSurface span { position: relative; font-size: .8125rem; font-variant-numeric: tabular-nums; font-weight: 500; }
-.lensSurface:hover::before { background: hsl(var(--ds-paper-sunken)); }
-.lensSurface[aria-expanded='true'] { color: hsl(var(--ds-paper)); }
-.lensSurface[aria-expanded='true']::before { background: hsl(var(--brand)); border-color: hsl(var(--brand)); }
-.lensSurface:focus-visible { outline: 2px solid hsl(var(--brand)); outline-offset: 5px; border-radius: 4px; }
-.closeInsight:focus-visible, .motionToggle:focus-visible { outline: 2px solid hsl(var(--brand)); outline-offset: 3px; }
+/* Every page bends about its original inner edge; the complete Lens is fixed. */
+.figureLabel { min-height: 44px; }
+.ribs .selectablePage { pointer-events: visiblePainted; cursor: pointer; fill: hsl(var(--brand) / .19); stroke: hsl(var(--brand)); stroke-width: 1.25; }
+.ribs .selectablePage:hover, .ribs .selectablePage:focus-visible { fill: hsl(var(--brand) / .29); stroke-width: 2; outline: none; }
+.ribs .selectablePage:focus-visible { stroke-dasharray: 4 2; }
+.ribs .selectablePage[aria-expanded='true'] { fill: hsl(var(--brand) / .38); stroke-width: 1.75; }
+.closeInsight:focus-visible { outline: 2px solid hsl(var(--brand)); outline-offset: 3px; }
 .lensHint { margin-top: .5rem; }
 .touchHint { display: none; }
 .lensNote { position: relative; min-height: 11.5rem; padding: 1.15rem 0 .5rem; padding-inline-end: 2.75rem; }
@@ -146,7 +139,5 @@
 }
 @media (pointer: coarse) { .mouseHint { display: none; } .touchHint { display: inline; } }
 @media (prefers-reduced-motion: reduce) {
-  .lensGeometry { animation: none; transform: rotate(-22deg); }
-  .lensSurface { transform: translate(-50%,-50%); transition: none; }
-  .motionToggle { display: none; }
+  .ribs path { transform: none; transition: none; }
 }

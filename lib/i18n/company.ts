@@ -21,8 +21,8 @@ export const companyEn: CompanyEditorial = {
   readOn: 'Our point of view',
   lens: {
     label: 'Inside our thinking', centre: ['Your business.', 'At the centre.'],
-    caption: 'Select a numbered surface to discover how we think.',
-    touchHint: 'Drag to explore. Tap a number to read.',
+    caption: 'Select a shaded page to discover how we think.',
+    touchHint: 'Brush across the pages. Tap a shaded page to read.',
     idleTitle: 'Four ideas behind our work.',
     idleBody: 'A closer look at the decisions that guide what we build.',
     close: 'Close insight', pause: 'Pause motion', resume: 'Resume motion',
@@ -68,7 +68,7 @@ export const companyAr: CompanyEditorial = {
   readOn: 'وجهة نظرنا',
   lens: {
     label: 'كيف نفكّر', centre: ['شركتك.', 'في المركز.'],
-    caption: 'اختر سطحًا مرقّمًا لتكتشف فكرة توجّه عملنا.', touchHint: 'اسحب للاستكشاف. اضغط على رقم للقراءة.',
+    caption: 'اختر صفحة مظلّلة لتكتشف فكرة توجّه عملنا.', touchHint: 'مرّر إصبعك على الصفحات. اضغط على صفحة مظلّلة للقراءة.',
     idleTitle: 'أربع أفكار توجّه عملنا.', idleBody: 'نظرة أقرب إلى القرارات التي تقف وراء الأنظمة التي نبنيها.',
     close: 'إغلاق الفكرة', pause: 'إيقاف الحركة', resume: 'تشغيل الحركة',
     insights: [
