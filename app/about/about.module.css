@@ -1,8 +1,39 @@
 .page {
+  position: relative;
+  z-index: 0;
   background: hsl(var(--ds-paper));
   color: hsl(var(--ds-ink));
   overflow: clip;
   color-scheme: light;
+}
+/* Architectural background field — oversized cropped contour arcs rising from
+   below the fold, plus a faint forest atmosphere kept away from the Lens, plus
+   a barely-there grain so the warm paper is not digitally flat. Fixed (a free,
+   cheap parallax), behind all content, non-interactive. */
+.page::before,
+.page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.page::before {
+  background:
+    radial-gradient(125vmax 125vmax at 50% 132%,
+      #0000 calc(56vmax - 1px), hsl(var(--brand) / .06) 56vmax, #0000 calc(56vmax + 1px),
+      #0000 calc(72vmax - 1px), hsl(var(--brand) / .05) 72vmax, #0000 calc(72vmax + 1px),
+      #0000 calc(90vmax - 1px), hsl(var(--brand) / .038) 90vmax, #0000 calc(90vmax + 1px),
+      #0000 calc(108vmax - 1px), hsl(var(--brand) / .03) 108vmax, #0000 calc(108vmax + 1px)),
+    radial-gradient(72vmax 48vmax at 12% 90%, hsl(var(--brand) / .045), #0000 66%);
+  -webkit-mask: linear-gradient(180deg, #0000 0 30%, #000 60%);
+  mask: linear-gradient(180deg, #0000 0 30%, #000 60%);
+}
+.page::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  opacity: .028;
+  mix-blend-mode: soft-light;
 }
 .page :where(section[id]) { scroll-margin-top: 7rem; }
 .page :where(p) { font-size: 1rem; line-height: 1.8; }
@@ -23,11 +54,11 @@
 .figureLabel { display: flex; align-items: center; gap: .75rem; font-size: .75rem; color: hsl(var(--ds-ink-muted)); }
 .mark { width: .4rem; height: .4rem; background: hsl(var(--brand)); display: inline-block; flex-shrink: 0; }
 .heroFigure figcaption { border-top: 1px solid hsl(var(--ds-line)); padding-top: 1rem; font-size: .8125rem; color: hsl(var(--ds-ink-muted)); line-height: 1.6; }
-.lens { position: relative; width: 100%; max-width: 27rem; margin-inline: auto; aspect-ratio: 560 / 550; isolation: isolate; touch-action: pinch-zoom; user-select: none; }
+.lens { position: relative; width: 100%; max-width: 27rem; margin-inline: auto; aspect-ratio: 560 / 550; isolation: isolate; touch-action: pinch-zoom; user-select: none; cursor: pointer; }
 .lensGeometry { width: 100%; height: 100%; transform: rotate(-22deg); }
 .lensGeometry svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.datum { stroke: hsl(var(--ds-line-strong)); stroke-width: .65; }
-.guide { stroke: hsl(var(--brand) / .25); stroke-width: .7; }
+.datum { stroke: hsl(var(--ds-line-strong)); stroke-width: .65; pointer-events: none; }
+.guide { stroke: hsl(var(--brand) / .25); stroke-width: .7; pointer-events: none; }
 /* Physics is written straight to `transform` from one rAF loop (no per-element
    CSS transition on transform — that was the mobile bottleneck). */
 .ribs path { fill: hsl(var(--ds-paper)); stroke: hsl(var(--brand) / .65); stroke-width: .85; pointer-events: none; transform-box: view-box; transform: matrix(1, 0, 0, 1, 0, 0); transition: fill 200ms ease, stroke 200ms ease; }
@@ -106,7 +137,9 @@
 .figureLabel { min-height: 44px; }
 /* Every rib is an interactive page. No rectangular focus/selection box: the
    affordance is a soft tint on the page shape itself. */
-.ribs .selectablePage { pointer-events: visiblePainted; cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent; }
+/* Selection is resolved by proximity on the Lens surface, so the thin visible
+   pages need no pointer target of their own — the whole Lens area is forgiving. */
+.ribs .selectablePage { pointer-events: none; outline: none; -webkit-tap-highlight-color: transparent; }
 .ribs .selectablePage:focus { outline: none; }
 .ribs .selectablePage:hover, .ribs .selectablePage:focus-visible { outline: none; fill: hsl(var(--brand) / .16); stroke-width: 1.6; }
 .ribs .selectablePage[aria-expanded='true'] { fill: hsl(var(--brand) / .32); stroke-width: 1.9; }

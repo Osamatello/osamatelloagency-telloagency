@@ -14,6 +14,7 @@ const FIXED_ANGLE = -22 * Math.PI / 180;
 const COS_A = Math.cos(FIXED_ANGLE);
 const SIN_A = Math.sin(FIXED_ANGLE);
 const clamp = (v: number, a: number, z: number) => Math.max(a, Math.min(z, v));
+const HIT2 = 112 * 112; // squared forgiveness radius for proximity page selection
 const RIBS = Array.from({ length: 40 }, (_, i) => {
   const angle = ((i * 8.4 - 76) * Math.PI) / 180;
   const point = (radius: number, lift: number) => [
@@ -22,11 +23,12 @@ const RIBS = Array.from({ length: 40 }, (_, i) => {
   ];
   const [ox, oy] = point(205, 0), [ix, iy] = point(112, 0);
   const [bx, by] = point(205, 35), [jx, jy] = point(112, 35);
-  const edgeX = (ox + bx) / 2;
-  const anchorX = ix;
+  const edgeX = (ox + bx) / 2, edgeY = (oy + by) / 2;
+  const anchorX = ix, anchorY = (iy + jy) / 2;
   return {
     path: `M ${ox} ${oy} Q ${(ox + ix) / 2} ${(oy + iy) / 2 - 33} ${ix} ${iy} L ${jx} ${jy} Q ${(bx + jx) / 2} ${(by + jy) / 2 - 33} ${bx} ${by} Z`,
-    anchorX, anchorY: (iy + jy) / 2, edgeX, edgeY: (oy + by) / 2,
+    anchorX, anchorY, edgeX, edgeY,
+    midX: (anchorX + edgeX) / 2, midY: (anchorY + edgeY) / 2, // page-body centre, used for hit-testing
     side: Math.sign(edgeX - anchorX) || 1,
   };
 });
@@ -35,19 +37,25 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
   const [active, setActive] = useState<number | null>(null);
   const [reduced, setReduced] = useState(false);
   const ribRefs = useRef<(SVGPathElement | null)[]>([]);
+  const lensRef = useRef<HTMLDivElement | null>(null);
   const bounds = useRef<DOMRect | null>(null);
   const gesture = useRef(createLensGesture());
   const id = useId();
   const insight = active === null ? null : copy.insights[active];
 
-  // Physics state lives in refs — no React re-render on pointer movement.
+  // Physics + idle state lives in refs — no React re-render on pointer movement.
   const reducedRef = useRef(false);
   const pointer = useRef<{ cx: number; cy: number } | null>(null);
   const fan = useRef<Float32Array>(new Float32Array(40).fill(1));
   const tilt = useRef<Float32Array>(new Float32Array(40));
+  const idleFan = useRef<Float32Array>(new Float32Array(40));
+  const idleTilt = useRef<Float32Array>(new Float32Array(40));
+  const idleOn = useRef(false);
+  const visible = useRef(true);
   const raf = useRef(0);
   const last = useRef(0);
   const settle = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -56,7 +64,12 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     media.addEventListener('change', preference);
     return () => media.removeEventListener('change', preference);
   }, []);
-  useEffect(() => () => { cancelAnimationFrame(raf.current); clearTimeout(settle.current); }, []);
+
+  useEffect(() => () => {
+    cancelAnimationFrame(raf.current);
+    clearTimeout(settle.current);
+    clearTimeout(idleTimer.current);
+  }, []);
 
   // Single rAF loop: reads the latest pointer once per frame, eases every page
   // toward its target with a direct transform write, and stops itself once the
@@ -65,7 +78,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     raf.current = 0;
     const dt = last.current ? Math.min(now - last.current, 50) : 16.7;
     last.current = now;
-    const k = 1 - Math.pow(1 - 0.42, dt / 16.667); // faster catch-up, still eased
+    const k = 1 - Math.pow(1 - 0.56, dt / 16.667); // fast, still eased — not a rigid follow
 
     const b = bounds.current;
     const p = pointer.current;
@@ -78,10 +91,10 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       has = true;
     }
 
-    const cf = fan.current, ct = tilt.current;
-    let active = false;
+    const cf = fan.current, ct = tilt.current, idf = idleFan.current, idt = idleTilt.current;
+    let alive = false;
     for (let i = 0; i < 40; i++) {
-      let tf = 1, tt = 0;
+      let tf: number, tt: number;
       if (has) {
         const rib = RIBS[i];
         const dx = px - rib.edgeX, dy = py - rib.edgeY;
@@ -92,12 +105,14 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
           const inv = 1 / Math.max(dist, 1), s = rib.side;
           tf = clamp(1 + dx * inv * .26 * s * weight, .78, 1.24);
           tt = clamp((dy * inv * .36 - .06) * s * weight, -.34, .34);
-        }
+        } else { tf = 1; tt = 0; }
+      } else {
+        tf = 1 + idf[i]; tt = idt[i]; // idle offsets (0 when nothing is stirring)
       }
       let nf = cf[i] + (tf - cf[i]) * k;
       let nt = ct[i] + (tt - ct[i]) * k;
       if (Math.abs(nf - tf) < 1.2e-3 && Math.abs(nt - tt) < 1.2e-3) { nf = tf; nt = tt; }
-      else active = true;
+      else alive = true;
       if (nf !== cf[i] || nt !== ct[i]) {
         cf[i] = nf; ct[i] = nt;
         const el = ribRefs.current[i];
@@ -105,7 +120,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       }
     }
 
-    if (has || active) raf.current = requestAnimationFrame(tick);
+    if (has || alive) raf.current = requestAnimationFrame(tick);
     else last.current = 0;
   }
   function ensureLoop() {
@@ -113,17 +128,59 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     clearTimeout(settle.current);
     if (!raf.current) { last.current = 0; raf.current = requestAnimationFrame(tick); }
   }
-  // Safety net: if rAF ever stalls mid-return (e.g. a backgrounded tab), snap
-  // the pages back to rest so nothing is left transformed.
+  // Safety net: if rAF ever stalls mid-return, snap the pages back to rest.
   function forceRest() {
     if (pointer.current) return;
     cancelAnimationFrame(raf.current); raf.current = 0; last.current = 0;
+    idleFan.current.fill(0); idleTilt.current.fill(0); idleOn.current = false;
     const cf = fan.current, ct = tilt.current;
     for (let i = 0; i < 40; i++) {
       cf[i] = 1; ct[i] = 0;
       if (ribRefs.current[i]) ribRefs.current[i]!.style.transform = 'matrix(1,0,0,1,0,0)';
     }
   }
+
+  // Idle life: occasionally lift / fan a random page or a tiny nearby cluster.
+  // Uses the same easing loop; setTimeout-paced so calm periods cost nothing.
+  useEffect(() => {
+    if (reducedRef.current) return;
+    let stop = false;
+    let io: IntersectionObserver | undefined;
+    const el = lensRef.current;
+    if (el && 'IntersectionObserver' in window) {
+      io = new IntersectionObserver(([e]) => { visible.current = e.isIntersecting; });
+      io.observe(el);
+    }
+    const beat = () => {
+      if (stop) return;
+      if (!pointer.current && !reducedRef.current && visible.current && !document.hidden) {
+        const idf = idleFan.current, idt = idleTilt.current;
+        const start = 2 + Math.floor(Math.random() * 36);
+        const span = Math.random() < 0.55 ? 1 : Math.random() < 0.82 ? 2 : 3;
+        const dir = Math.random() < 0.5 ? -1 : 1;
+        for (let j = 0; j < span && start + j < 40; j++) {
+          const f = 1 - j * 0.42;
+          idf[start + j] = dir * (0.016 + Math.random() * 0.03) * f;
+          idt[start + j] = dir * (0.028 + Math.random() * 0.05) * f;
+        }
+        idleOn.current = true;
+        ensureLoop();
+        setTimeout(() => {
+          for (let j = 0; j < span && start + j < 40; j++) { idf[start + j] = 0; idt[start + j] = 0; }
+          idleOn.current = false;
+          if (!pointer.current) {
+            ensureLoop();
+            clearTimeout(settle.current);
+            settle.current = setTimeout(forceRest, 520); // guarantee the page returns to rest
+          }
+        }, 460 + Math.random() * 520);
+      }
+      idleTimer.current = setTimeout(beat, 2600 + Math.random() * 4800);
+    };
+    idleTimer.current = setTimeout(beat, 1600 + Math.random() * 2200);
+    return () => { stop = true; io?.disconnect(); clearTimeout(idleTimer.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduced]);
 
   function measure(event: PointerEvent<HTMLDivElement>) {
     bounds.current = event.currentTarget.getBoundingClientRect();
@@ -132,6 +189,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     if (!event.isPrimary) return;
     gesture.current.move(event.pointerId, event.clientX, event.clientY);
     if (reducedRef.current) return;
+    if (idleOn.current) { idleFan.current.fill(0); idleTilt.current.fill(0); idleOn.current = false; }
     pointer.current = { cx: event.clientX, cy: event.clientY };
     ensureLoop();
   }
@@ -140,6 +198,23 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
     ensureLoop();
     clearTimeout(settle.current);
     settle.current = setTimeout(forceRest, 650);
+  }
+  // Proximity target: the page whose free edge is nearest the point is the one
+  // that visibly responded, so it is the one that opens. Larger, invisible.
+  function resolveNearest(cx: number, cy: number, rect?: DOMRect): number | null {
+    const b = bounds.current ?? rect;
+    if (!b || b.width === 0) return null;
+    const x = (cx - b.left) * 560 / b.width - 280;
+    const y = (cy - b.top) * 550 / b.height - 275;
+    const px = 280 + x * COS_A + y * SIN_A;
+    const py = 275 - x * SIN_A + y * COS_A;
+    let best = -1, bd = Infinity;
+    for (let i = 0; i < 40; i++) {
+      const dx = px - RIBS[i].midX, dy = py - RIBS[i].midY;
+      const d = dx * dx + dy * dy;
+      if (d < bd) { bd = d; best = i; }
+    }
+    return bd < HIT2 ? best : null;
   }
   function dismiss() {
     if (active !== null) ribRefs.current[active]?.focus({ preventScroll: true });
@@ -152,7 +227,7 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       <div className={styles.figureLabel}>
         <span className={styles.mark} />{copy.label}
       </div>
-      <div className={styles.lens} data-lens=""
+      <div ref={lensRef} className={styles.lens} data-lens=""
         onPointerEnter={measure}
         onPointerDown={event => {
           if (!event.isPrimary) { gesture.current.cancel(); release(); return; }
@@ -170,6 +245,11 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
         onPointerLeave={() => { gesture.current.leave(); bounds.current = null; release(); }}
         onClickCapture={event => {
           if (!gesture.current.allowsClick(event.detail)) { event.preventDefault(); event.stopPropagation(); }
+        }}
+        onClick={event => {
+          if (event.detail === 0) return; // keyboard activation handled on the page itself
+          const n = resolveNearest(event.clientX, event.clientY, event.currentTarget.getBoundingClientRect());
+          if (n !== null) setActive(active === n ? null : n);
         }}>
         <div className={styles.lensGeometry}>
           <svg viewBox="0 0 560 550" fill="none" focusable="false">
@@ -185,7 +265,6 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
                   aria-label={copy.insights[i].title}
                   aria-expanded={active === i}
                   aria-controls={id}
-                  onClick={() => setActive(active === i ? null : i)}
                   onKeyDown={event => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
