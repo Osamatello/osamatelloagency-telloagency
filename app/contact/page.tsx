@@ -19,7 +19,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <>
+    <div id="contact-page">
       <PageHero
         eyebrow={contact.hero.eyebrow}
         title={contact.hero.title}
@@ -54,6 +54,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
