@@ -120,7 +120,7 @@ export default function ServicesPage() {
           <div className={styles.closingAction}>
             <p>{s.cta.subtitle}</p>
             <div>
-              <Link href="/consult" className="btn-primary">
+              <Link href="/contact" className="btn-primary">
                 {s.cta.primaryCta}
                 <ArrowUpRight size={18} className={styles.ctaArrow} aria-hidden="true" />
               </Link>

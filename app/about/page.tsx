@@ -68,7 +68,7 @@ export default function AboutPage() {
       <section className={styles.closing} aria-labelledby="closing-title">
         <div className={`container-page ${styles.closingGrid}`}>
           <div><span className="eyebrow">{c.closing.label}</span><h2 id="closing-title" className="text-display">{c.closing.title}</h2></div>
-          <div className={styles.closingAction}><p>{c.closing.body}</p><Link href="/consult" className="btn-primary">{c.closing.action}<ArrowUpRight size={18} className={styles.ctaArrow} aria-hidden="true" /></Link></div>
+          <div className={styles.closingAction}><p>{c.closing.body}</p><Link href="/contact" className="btn-primary">{c.closing.action}<ArrowUpRight size={18} className={styles.ctaArrow} aria-hidden="true" /></Link></div>
         </div>
       </section>
     </article>

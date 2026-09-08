@@ -52,7 +52,7 @@ export default function CaseStudiesPage() {
         subtitle={cs.cta.subtitle}
         primaryCta={cs.cta.primaryCta}
         secondaryCta={cs.cta.secondaryCta}
-        primaryHref="/consult"
+        primaryHref="/contact"
         secondaryHref="/services"
       />
     </>

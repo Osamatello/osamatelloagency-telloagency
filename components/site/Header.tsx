@@ -98,7 +98,7 @@ export function Header() {
         <div className="flex shrink-0 items-center gap-3 xl:gap-4">
           <LanguageSwitcher className="hidden sm:inline-flex" />
           <Link
-            href="/consult"
+            href="/contact"
             className="btn-primary hidden shrink-0 whitespace-nowrap px-4 py-2.5 text-sm lg:inline-flex xl:px-5"
           >
             {dict.actions.bookConsultation}
@@ -161,7 +161,7 @@ export function Header() {
           <div className="container-page grid shrink-0 gap-3 border-t border-line pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-5 sm:grid-cols-[auto_1fr] sm:items-center">
             <LanguageSwitcher className="justify-self-start" />
             <Link
-              href="/consult"
+              href="/contact"
               className="btn-primary w-full"
               onClick={() => setMobileOpen(false)}
             >

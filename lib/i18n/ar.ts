@@ -9,7 +9,7 @@ const ar: Dictionary = {
     { label: 'الشركة', href: '/about' },
     { label: 'القدرات', href: '/services' },
     { label: 'تواصل', href: '/contact' },
-    { label: 'احجز استشارة', href: '/consult' },
+    { label: 'احجز استشارة', href: '/contact' },
   ],
   actions: {
     bookConsultation: 'احجز استشارة مجانية',
@@ -295,7 +295,7 @@ const ar: Dictionary = {
           description: 'نظام أتمتة بالذكاء الاصطناعي مخصص',
           features: ['برمجيات أو لوحة تحكم مخصصة', 'أنظمة عمل متعددة', 'تكامل إدارة العلاقات', 'إعداد متقدم'],
           cta: 'احجز استشارة',
-          href: '/consult',
+          href: '/contact',
           popular: false,
         },
       ],

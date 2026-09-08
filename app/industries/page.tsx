@@ -42,7 +42,7 @@ export default function IndustriesPage() {
         subtitle={ind.cta.subtitle}
         primaryCta={ind.cta.primaryCta}
         secondaryCta={ind.cta.secondaryCta}
-        primaryHref="/consult"
+        primaryHref="/contact"
         secondaryHref="/contact"
       />
     </>

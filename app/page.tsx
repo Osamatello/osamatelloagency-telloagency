@@ -67,7 +67,7 @@ export default function HomePage() {
 
           <div className="mt-7 flex flex-col gap-9 border-t border-line pt-6 sm:mt-[clamp(1.4rem,5svh,3rem)] sm:pt-[clamp(1rem,3.2svh,2rem)] lg:flex-row lg:items-center lg:justify-between">
             <div className={cn('reveal-up flex flex-col gap-3 sm:flex-row', shown && 'is-in')} style={rd(820)}>
-              <Link href="/consult" className="btn-primary">
+              <Link href="/contact" className="btn-primary">
                 {home.hero.primaryCta}
                 <Arrow className="h-4 w-4" />
               </Link>
@@ -177,7 +177,7 @@ function HomeCta() {
       <h2 className="text-display mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink">{t.title}</h2>
       {t.subtitle ? <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted">{t.subtitle}</p> : null}
       <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-        <Link href="/consult" className="btn-primary">
+        <Link href="/contact" className="btn-primary">
           {t.primaryCta}
           <Arrow className="h-4 w-4" />
         </Link>

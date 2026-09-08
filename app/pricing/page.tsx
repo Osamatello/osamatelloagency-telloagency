@@ -52,7 +52,7 @@ export default function PricingPage() {
         subtitle={pricing.cta.subtitle}
         primaryCta={pricing.cta.primaryCta}
         secondaryCta={pricing.cta.secondaryCta}
-        primaryHref="/consult"
+        primaryHref="/contact"
         secondaryHref="/contact"
       />
     </>

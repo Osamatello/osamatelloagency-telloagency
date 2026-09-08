@@ -9,7 +9,7 @@ const en: Dictionary = {
     { label: 'Company', href: '/about' },
     { label: 'Capabilities', href: '/services' },
     { label: 'Contact', href: '/contact' },
-    { label: 'Book a Consultation', href: '/consult' },
+    { label: 'Book a Consultation', href: '/contact' },
   ],
   actions: {
     bookConsultation: 'Book a Free Consultation',
@@ -297,7 +297,7 @@ const en: Dictionary = {
           description: 'Custom AI automation system',
           features: ['Custom software or dashboard', 'Multiple workflows', 'CRM integration', 'Advanced setup'],
           cta: 'Book a Consultation',
-          href: '/consult',
+          href: '/contact',
           popular: false,
         },
       ],

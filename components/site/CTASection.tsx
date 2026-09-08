@@ -21,7 +21,7 @@ export function CTASection({
   subtitle,
   primaryCta,
   secondaryCta,
-  primaryHref = '/consult',
+  primaryHref = '/contact',
   secondaryHref = '/services',
   className,
 }: CTASectionProps) {
