@@ -35,6 +35,19 @@ const invalid = 'border-[hsl(var(--destructive))] focus:border-[hsl(var(--destru
 export function ContactForm() {
   const { dict, locale } = useI18n();
   const f = dict.contact.form;
+  const contactCopy = locale === 'ar'
+    ? {
+        emailPlaceholder: 'name@company.com',
+        companyLabel: 'اسم الشركة',
+        companyPlaceholder: 'اسم شركتك',
+        budgetOptions: ['أقل من 500 دولار', '500–1,000 دولار', '1,000–2,000 دولار', 'أكثر من 2,000 دولار'],
+      }
+    : {
+        emailPlaceholder: 'name@company.com',
+        companyLabel: 'Company name',
+        companyPlaceholder: 'Your company',
+        budgetOptions: ['Below $500', '$500–$1,000', '$1,000–$2,000', 'Above $2,000'],
+      };
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -150,7 +163,7 @@ export function ContactForm() {
             type="email"
             value={form.email}
             onChange={(e) => update('email', e.target.value)}
-            placeholder={f.emailPlaceholder}
+            placeholder={contactCopy.emailPlaceholder}
             className={cn(field, errors.email && invalid)}
             aria-invalid={!!errors.email}
           />
@@ -169,12 +182,12 @@ export function ContactForm() {
           />
         </Field>
 
-        <Field id="company" label={f.company} error={undefined}>
+        <Field id="company" label={contactCopy.companyLabel} error={undefined}>
           <input
             id="company"
             value={form.company}
             onChange={(e) => update('company', e.target.value)}
-            placeholder={f.companyPlaceholder}
+            placeholder={contactCopy.companyPlaceholder}
             className={field}
           />
         </Field>
@@ -196,7 +209,7 @@ export function ContactForm() {
             value={form.budget}
             onChange={(v) => update('budget', v)}
             placeholder={f.budgetPlaceholder}
-            options={f.budgetOptions}
+            options={contactCopy.budgetOptions}
             invalid={!!errors.budget}
           />
         </Field>
