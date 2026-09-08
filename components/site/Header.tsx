@@ -42,7 +42,7 @@ export function Header() {
   };
 
   const primaryNav = dict.nav.slice(0, 4);
-  const forceLight = pathname.startsWith('/about') || pathname.startsWith('/services');
+  const forceLight = pathname.startsWith('/about') || pathname.startsWith('/services') || pathname.startsWith('/contact');
 
   return (
     <header
