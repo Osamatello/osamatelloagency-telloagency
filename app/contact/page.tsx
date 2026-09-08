@@ -18,7 +18,7 @@ export default function ContactPage() {
         phoneLabel: 'الهاتف',
         locationLabel: 'الموقع',
         emailLabel: 'البريد الإلكتروني',
-        locationValue: 'دبي · بر دبي · شارع الرولة',
+        locationValue: 'دبي - بر دبي',
         note: 'كل مشروع يبدأ بفهم المتطلّب، لا ببيع خدمة جاهزة.',
       }
     : {
@@ -30,7 +30,7 @@ export default function ContactPage() {
         phoneLabel: 'Phone',
         locationLabel: 'Location',
         emailLabel: 'Email',
-        locationValue: 'Dubai · Bur Dubai · Rolla St',
+        locationValue: 'Dubai - Bur Dubai',
         note: 'Every engagement starts with understanding the requirement, not selling a predefined service.',
       };
 
