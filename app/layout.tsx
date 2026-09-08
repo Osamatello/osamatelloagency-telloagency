@@ -114,6 +114,16 @@ export default function RootLayout({
 
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
+      <head>
+        <style>{`
+          html:has(#company-page),
+          html:has(#capabilities-page),
+          body:has(#company-page),
+          body:has(#capabilities-page) {
+            background-color: hsl(var(--ds-paper));
+          }
+        `}</style>
+      </head>
       <body
         className={`${dmSans.variable} ${spaceGrotesk.variable} ${cairo.variable} font-sans`}
       >
