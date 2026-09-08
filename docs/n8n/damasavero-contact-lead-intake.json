@@ -1,0 +1,151 @@
+{
+  "name": "DAMASAVERO – Website Contact Lead Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "damasavero-contact",
+        "responseMode": "responseNode",
+        "options": { "rawBody": false }
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-260, 0],
+      "webhookId": "damasavero-contact"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "version": 2 },
+          "conditions": [
+            {
+              "id": "signature",
+              "operator": { "type": "string", "operation": "equals" },
+              "leftValue": "={{ $json.headers['x-damasavero-signature'] }}",
+              "rightValue": "={{ $env.DAMASAVERO_WEBHOOK_SECRET }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "verify",
+      "name": "Verify signature",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-40, 0]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            { "id": "a1", "name": "full_name", "value": "={{ $json.body.full_name }}", "type": "string" },
+            { "id": "a2", "name": "email", "value": "={{ $json.body.email }}", "type": "string" },
+            { "id": "a3", "name": "phone", "value": "={{ $json.body.phone }}", "type": "string" },
+            { "id": "a4", "name": "company_name", "value": "={{ $json.body.company_name }}", "type": "string" },
+            { "id": "a5", "name": "source", "value": "={{ $json.body.source }}", "type": "string" },
+            { "id": "a6", "name": "source_detail", "value": "={{ $json.body.source_detail }}", "type": "string" },
+            { "id": "a7", "name": "notes", "value": "={{ $json.body.notes }}", "type": "string" }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      },
+      "id": "map",
+      "name": "Build CRM payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [200, -100]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CRM_BASE_URL }}/api/integrations/n8n/leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.N8N_CRM_API_KEY }}" },
+            { "name": "Idempotency-Key", "value": "={{ $('Webhook').item.json.headers['idempotency-key'] }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "response": { "response": { "neverError": false } },
+          "timeout": 15000
+        }
+      },
+      "id": "ingest",
+      "name": "CRM ingest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, -100],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 200,
+        "responseBody": "={{ JSON.stringify({ ok: true, action: $json.action, lead_id: $json.lead_id }) }}",
+        "options": {}
+      },
+      "id": "ok",
+      "name": "Respond success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [700, -180]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 502,
+        "responseBody": "={{ JSON.stringify({ ok: false, error: 'CRM_INGEST_FAILED' }) }}",
+        "options": {}
+      },
+      "id": "fail",
+      "name": "Respond CRM failure",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [700, -20]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 401,
+        "responseBody": "={{ JSON.stringify({ ok: false, error: 'UNAUTHORIZED' }) }}",
+        "options": {}
+      },
+      "id": "unauthorized",
+      "name": "Respond unauthorized",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [200, 140]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Verify signature", "type": "main", "index": 0 }]] },
+    "Verify signature": {
+      "main": [
+        [{ "node": "Build CRM payload", "type": "main", "index": 0 }],
+        [{ "node": "Respond unauthorized", "type": "main", "index": 0 }]
+      ]
+    },
+    "Build CRM payload": { "main": [[{ "node": "CRM ingest", "type": "main", "index": 0 }]] },
+    "CRM ingest": {
+      "main": [
+        [{ "node": "Respond success", "type": "main", "index": 0 }],
+        [{ "node": "Respond CRM failure", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

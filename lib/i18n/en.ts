@@ -639,6 +639,7 @@ const en: Dictionary = {
       successTitle: 'Message sent successfully',
       successMessage: 'Thank you for reaching out. We’ll get back to you within one business day.',
       sendAnother: 'Send another message',
+      submitError: 'We could not send your message. Please try again, or reach us directly by phone or email.',
       required: 'Required',
       errors: {
         fullName: 'Please enter your full name.',

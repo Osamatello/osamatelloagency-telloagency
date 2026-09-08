@@ -248,6 +248,7 @@ export interface Dictionary {
       successTitle: string;
       successMessage: string;
       sendAnother: string;
+      submitError: string;
       required: string;
       errors: {
         fullName: string;

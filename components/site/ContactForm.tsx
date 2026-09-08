@@ -33,15 +33,18 @@ const field =
 const invalid = 'border-[hsl(var(--destructive))] focus:border-[hsl(var(--destructive))] focus:ring-[hsl(var(--destructive))]';
 
 export function ContactForm() {
-  const { dict } = useI18n();
+  const { dict, locale } = useI18n();
   const f = dict.contact.form;
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [trap, setTrap] = useState('');
 
   const update = (key: keyof FormState, value: string | boolean) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+    if (failed) setFailed(false);
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
@@ -63,11 +66,44 @@ export function ContactForm() {
     e.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
-    // Frontend-only: simulated submit. The n8n / CRM delivery lands separately.
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setSuccess(true);
-    setForm(initialState);
+    setFailed(false);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ ...form, website: trap, language: locale }),
+      });
+      const result = (await response.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        fields?: string[];
+      };
+
+      // The server re-validates; surface anything it rejected on the field.
+      if (response.status === 400 && Array.isArray(result.fields)) {
+        const next: Partial<Record<keyof FormState, string>> = {};
+        for (const key of result.fields) {
+          const messages = f.errors as Record<string, string | undefined>;
+          if (key in initialState) next[key as keyof FormState] = messages[key] ?? f.submitError;
+        }
+        setErrors(next);
+        return;
+      }
+
+      // Success is only ever shown after the CRM has actually accepted the lead.
+      if (!response.ok || !result.ok) {
+        setFailed(true);
+        return;
+      }
+
+      setSuccess(true);
+      setForm(initialState);
+      setTrap('');
+    } catch {
+      setFailed(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (success) {
@@ -180,6 +216,20 @@ export function ContactForm() {
         </Field>
       </div>
 
+      {/* Honeypot — hidden from people, catches naive bots. */}
+      <div aria-hidden="true" className="absolute h-px w-px overflow-hidden opacity-0" style={{ left: '-9999px' }}>
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={trap}
+          onChange={(e) => setTrap(e.target.value)}
+        />
+      </div>
+
       <div className="mt-6 border-t border-line pt-6">
         <label htmlFor="consent" className="flex cursor-pointer items-start gap-3">
           <input
@@ -193,6 +243,16 @@ export function ContactForm() {
           <span className="text-[0.85rem] leading-relaxed text-ink-muted">{f.consent}</span>
         </label>
         {errors.consent && <FieldError msg={errors.consent} />}
+
+        {failed && (
+          <p
+            className="mt-5 flex items-start gap-2 border border-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.06)] px-3.5 py-3 text-[0.85rem] leading-relaxed text-[hsl(var(--destructive))]"
+            role="alert"
+          >
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+            {f.submitError}
+          </p>
+        )}
 
         <button type="submit" disabled={submitting} className="btn-primary mt-7 w-full disabled:opacity-60">
           {submitting ? f.sending : f.submit}
