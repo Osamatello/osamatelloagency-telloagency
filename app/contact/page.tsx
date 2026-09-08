@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowUpRight, Globe2, MapPin, Phone } from 'lucide-react';
+import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { ContactForm } from '@/components/site/ContactForm';
 import { EngineAtmosphere } from './EngineAtmosphere';
@@ -17,7 +17,7 @@ export default function ContactPage() {
         detailsLabel: 'معلومات التواصل',
         phoneLabel: 'الهاتف',
         locationLabel: 'الموقع',
-        websiteLabel: 'الموقع الإلكتروني',
+        emailLabel: 'البريد الإلكتروني',
         locationValue: 'دبي · بر دبي · شارع الرولة',
         note: 'كل مشروع يبدأ بفهم المتطلّب، لا ببيع خدمة جاهزة.',
       }
@@ -29,7 +29,7 @@ export default function ContactPage() {
         detailsLabel: 'Contact details',
         phoneLabel: 'Phone',
         locationLabel: 'Location',
-        websiteLabel: 'Website',
+        emailLabel: 'Email',
         locationValue: 'Dubai · Bur Dubai · Rolla St',
         note: 'Every engagement starts with understanding the requirement, not selling a predefined service.',
       };
@@ -37,7 +37,7 @@ export default function ContactPage() {
   const details = [
     { Icon: Phone, label: copy.phoneLabel, value: '+971 50 160 7600', href: 'tel:+971501607600', ltr: true },
     { Icon: MapPin, label: copy.locationLabel, value: copy.locationValue },
-    { Icon: Globe2, label: copy.websiteLabel, value: 'www.damasavero.com', href: 'https://www.damasavero.com', ltr: true },
+    { Icon: Mail, label: copy.emailLabel, value: 'Founder@damasavero.com', href: 'mailto:Founder@damasavero.com', ltr: true },
   ];
 
   return (

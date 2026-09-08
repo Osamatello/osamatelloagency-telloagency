@@ -124,7 +124,6 @@ export default function ServicesPage() {
                 {s.cta.primaryCta}
                 <ArrowUpRight size={18} className={styles.ctaArrow} aria-hidden="true" />
               </Link>
-              <Link href="/contact" className="btn-outline">{s.cta.secondaryCta}</Link>
             </div>
           </div>
         </div>

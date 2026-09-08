@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Globe2, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { Logo } from './Logo';
 
@@ -44,8 +44,8 @@ export function Footer() {
                 <span>Dubai · Bur Dubai · Rolla St</span>
               </li>
               <li className="flex items-center gap-2">
-                <Globe2 className="h-4 w-4 text-brand" />
-                <a href="https://www.damasavero.com" className="transition-colors hover:text-brand">www.damasavero.com</a>
+                <Mail className="h-4 w-4 text-brand" />
+                <a href="mailto:Founder@damasavero.com" className="transition-colors hover:text-brand">Founder@damasavero.com</a>
               </li>
             </ul>
           </div>
