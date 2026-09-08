@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
+import { EngineAtmosphere } from './EngineAtmosphere';
 import { SystemAssembly } from './SystemAssembly';
 import styles from './services.module.css';
 
@@ -17,6 +18,7 @@ export default function ServicesPage() {
 
   return (
     <article className={styles.page} dir={dir} id="capabilities-page">
+      <EngineAtmosphere />
       <section className={styles.hero} aria-labelledby="capabilities-title">
         <div className="container-page">
           <span className="eyebrow">{s.hero.eyebrow}</span>

@@ -33,6 +33,7 @@ export function SystemAssembly({ count, active }: { count: number; active: numbe
   return (
     <svg
       className={styles.assembly}
+      data-assembly=""
       viewBox="0 0 560 520"
       fill="none"
       aria-hidden="true"

@@ -2,6 +2,7 @@
    architecture. Local to /services so shared components stay untouched. */
 .page {
   position: relative;
+  z-index: 0;
   background: hsl(var(--ds-paper));
   color: hsl(var(--ds-ink));
   color-scheme: light;
