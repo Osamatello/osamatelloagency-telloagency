@@ -118,8 +118,10 @@ export default function RootLayout({
         <style>{`
           html:has(#company-page),
           html:has(#capabilities-page),
+          html:has(#contact-page),
           body:has(#company-page),
-          body:has(#capabilities-page) {
+          body:has(#capabilities-page),
+          body:has(#contact-page) {
             background-color: hsl(var(--ds-paper));
           }
         `}</style>
