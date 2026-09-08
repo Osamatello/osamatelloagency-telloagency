@@ -160,6 +160,16 @@ export interface Dictionary {
   about: CompanyEditorial;
   services: {
     hero: { eyebrow: string; title: string; subtitle: string };
+    assembly: { label: string; caption: string };
+    domains: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      note: string;
+      componentsLabel: string;
+      items: { index: string; title: string; summary: string; components: string[] }[];
+    };
+    approach: { eyebrow: string; title: string; lead: string };
     detail: {
       includes: string;
       process: string;

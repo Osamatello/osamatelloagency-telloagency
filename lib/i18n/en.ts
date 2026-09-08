@@ -343,27 +343,91 @@ const en: Dictionary = {
   about: companyEn,
   services: {
     hero: {
-      eyebrow: 'Our Services',
-      title: 'AI automation, websites, and leads — built for clinics',
+      eyebrow: 'Capabilities',
+      title: 'Systems built around the requirement.',
       subtitle:
-        'Three core services, each designed to solve a specific problem and deliver measurable value.',
+        'DAMASAVERO designs, engineers and integrates the operational systems a business actually needs. We start from the requirement rather than from a product, and deliver the architecture that meets it.',
+    },
+    assembly: {
+      label: 'A system, in layers',
+      caption:
+        'Every system we build is assembled from layers like these. Move through the domains to see where each one sits.',
+    },
+    domains: {
+      eyebrow: 'Where our systems apply',
+      title: 'Six domains of one engineering capability.',
+      lead:
+        'These are the kinds of systems we architect. Each one is a stratum of a larger operational architecture, not a product on a shelf.',
+      note:
+        'These are domains, not a catalogue. Most engagements cross several of them, and the shape of the system is decided by your requirement rather than by a menu.',
+      componentsLabel: 'Typical building blocks',
+      items: [
+        {
+          index: '01',
+          title: 'Intelligent Operations Infrastructure',
+          summary:
+            'The operational backbone: the services, data flows and business rules that keep critical work moving without someone pushing it along.',
+          components: ['Workflow engines', 'Business rules', 'Service integrations', 'Internal tools', 'Monitoring'],
+        },
+        {
+          index: '02',
+          title: 'Autonomous Customer Operations',
+          summary:
+            'Everything between a first enquiry and a resolved customer, designed to run on its own and to know when a person should take over.',
+          components: ['Voice and messaging agents', 'Qualification', 'Routing', 'Scheduling', 'Escalation paths'],
+        },
+        {
+          index: '03',
+          title: 'Revenue Operations Architecture',
+          summary:
+            'The path revenue actually travels, from capture and qualification through routing, follow-through and recovery, engineered as one connected system.',
+          components: ['Lead capture', 'Enrichment', 'Assignment rules', 'Follow-up sequences', 'Pipeline reporting'],
+        },
+        {
+          index: '04',
+          title: 'Unified Business Intelligence',
+          summary:
+            'One reliable account of what is happening, assembled from systems that were never designed to agree with each other.',
+          components: ['Data consolidation', 'Transformation', 'Reporting surfaces', 'Alerting', 'Decision rules'],
+        },
+        {
+          index: '05',
+          title: 'Enterprise Workflow Orchestration',
+          summary:
+            'Coordination across departments, software and AI: sequencing, hand-offs, approvals and exceptions held together in one architecture.',
+          components: ['Multi-step processes', 'Approvals', 'Hand-offs', 'Exception handling', 'Audit trails'],
+        },
+        {
+          index: '06',
+          title: 'Systems Integration & Modernization',
+          summary:
+            'Connecting and extending what a business already runs, so it gains capability without a rebuild it cannot afford.',
+          components: ['API integration', 'Legacy interfaces', 'Data migration', 'Incremental replacement', 'Documentation'],
+        },
+      ],
+    },
+    approach: {
+      eyebrow: 'How the work runs',
+      title: 'The requirement decides the system.',
+      lead:
+        'Every engagement starts with the operational problem and ends with something running in production. What we build follows from what the business needs it to do.',
     },
     detail: {
-      includes: 'What this service includes',
-      process: 'How we build it',
+      includes: 'What this includes',
+      process: 'How the work runs',
       processSteps: [
-        { step: '01', title: 'Discovery call', description: 'We learn your workflow, tools, and the exact problem you want to solve.' },
-        { step: '02', title: 'Plan & proposal', description: 'You receive a clear scope, timeline, and fixed price with no surprises.' },
-        { step: '03', title: 'Build & test', description: 'We build and test your system, connecting it to your existing tools.' },
-        { step: '04', title: 'Launch & handover', description: 'Your system goes live with documentation and a support handover.' },
+        { step: '01', title: 'Understand the requirement', description: 'We map how the work is done today: the decisions, the exceptions, the systems already in use and where the real cost sits.' },
+        { step: '02', title: 'Architect the system', description: 'We design the whole thing before building it: what runs automatically, what a person owns, where information lives and how the parts talk to each other.' },
+        { step: '03', title: 'Build and integrate', description: 'We build what is missing and connect what already works, so the business gains capability without replacing everything it depends on.' },
+        { step: '04', title: 'Deploy and improve', description: 'The system goes live with documentation and a handover, then keeps being adjusted as the operation changes.' },
       ],
     },
     cta: {
-      eyebrow: 'Ready to Start',
-      title: 'Let’s build this for your clinic',
-      subtitle: 'Book a free consultation to discuss your project.',
+      eyebrow: 'Start with the requirement',
+      title: 'Tell us what the system has to do.',
+      subtitle: 'Bring the operational problem. We will tell you what it would take to build the system around it.',
       primaryCta: 'Book a Free Consultation',
-      secondaryCta: 'See Full Pricing',
+      secondaryCta: 'Talk to us',
     },
   },
   industries: {
