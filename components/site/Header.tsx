@@ -138,7 +138,7 @@ export function Header() {
             className="container-page grid flex-1 content-center py-6"
             aria-label="Mobile"
           >
-            {dict.nav.map((item, i) => {
+            {primaryNav.map((item, i) => {
               const active = isActive(item.href);
               return (
                 <Link
