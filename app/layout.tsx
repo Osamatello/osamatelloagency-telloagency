@@ -91,13 +91,8 @@ export const metadata: Metadata = {
   // public/brand/damasavero-logo.png. The ?v= token busts any cached
   // (previously white-background) version. No other icon reference exists.
   icons: {
-    // SVG first for crisp tabs at any density; the PNG stays as the fallback
-    // for clients that do not take SVG favicons.
-    icon: [
-      { url: '/brand/damasavero-favicon.svg?v=4', type: 'image/svg+xml' },
-      { url: '/brand/damasavero-logo.png?v=4', type: 'image/png' },
-    ],
-    apple: '/brand/damasavero-logo.png?v=4',
+    icon: [{ url: '/brand/damasavero-logo.png?v=5', type: 'image/png' }],
+    apple: '/brand/damasavero-logo.png?v=5',
   },
 };
 
