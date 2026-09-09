@@ -138,9 +138,11 @@ export interface Dictionary {
     beforeAfter: {
       eyebrow: string;
       title: string;
+      lead: string;
       beforeLabel: string;
       afterLabel: string;
-      pairs: { before: string; after: string }[];
+      coreLabel: string;
+      pairs: { before: string; beforeNote: string; after: string }[];
     };
     benefits: { eyebrow: string; title: string; subtitle: string; items: FeatureItem[] };
     howItWorks: { eyebrow: string; title: string; subtitle: string; steps: StepItem[] };

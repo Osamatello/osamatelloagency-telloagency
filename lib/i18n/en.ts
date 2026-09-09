@@ -227,17 +227,17 @@ const en: Dictionary = {
       ],
     },
     beforeAfter: {
-      eyebrow: 'Before / After Automation',
-      title: 'From operational friction to flow.',
-      beforeLabel: 'Before Automation',
-      afterLabel: 'After Automation',
+      eyebrow: 'Operations, rewired',
+      title: 'Work should move without being chased.',
+      lead:
+        'We connect the steps between people, tools and decisions so the business keeps moving without constant manual follow-up.',
+      beforeLabel: 'Manual mode',
+      afterLabel: 'System mode',
+      coreLabel: 'Automation layer',
       pairs: [
-        { before: 'Operational Friction', after: 'Operational Autonomy' },
-        { before: 'Revenue Leakage', after: 'Revenue Capture' },
-        { before: 'Fragmented Systems', after: 'Unified Infrastructure' },
-        { before: 'Execution Bottlenecks', after: 'Accelerated Execution' },
-        { before: 'Coordination Overhead', after: 'Intelligent Coordination' },
-        { before: 'Static Processes', after: 'Continuous Optimization' },
+        { before: 'Enquiry received', beforeNote: 'Waiting for action', after: 'Lead qualified and routed' },
+        { before: 'Job updated', beforeNote: 'Team not informed', after: 'Everyone stays in sync' },
+        { before: 'Follow-up due', beforeNote: 'Depends on memory', after: 'Follow-up sent automatically' },
       ],
     },
     benefits: {

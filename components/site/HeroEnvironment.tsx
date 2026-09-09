@@ -217,7 +217,13 @@ export function HeroEnvironment({ className }: { className?: string }) {
         const quiet = width < 640 ? point.x > 0.1 && point.x < 0.9 && point.y > 0.08 && point.y < 0.45 : point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
         const base = width < 640 ? 3.2 : 3.6, foregroundBoost = fragment.kind === 6 && point.z > 1.15 ? 1.7 : 1, size = (base + point.z * (width < 640 ? 4.4 : 9.4)) * point.scale * foregroundBoost * breath;
         context.save(); context.translate(x, y); context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : ambientTime * 0.000018 * fragment.speed * point.z));
-        const depthPresence = 0.96 + clamp(point.z / 1.8) * 0.16; context.globalAlpha = (quiet ? 0.09 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * depthPresence * readabilityAt(x, y); context.fillStyle = fragment.color; context.strokeStyle = fragment.color; context.lineWidth = 1;
+        const depthPresence = 0.96 + clamp(point.z / 1.8) * 0.16;
+        // The hero carries far more protected copy than the closing CTA, which
+        // left it reading weaker at the same canvas opacity. Lift it back to
+        // match, but only in the open space — anything near text keeps exactly
+        // the attenuation it had.
+        const readability = readabilityAt(x, y), heroGain = readability > 0.999 ? 1 + 0.5 * heroLead() : 1;
+        context.globalAlpha = (quiet ? 0.09 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * depthPresence * readability * heroGain; context.fillStyle = fragment.color; context.strokeStyle = fragment.color; context.lineWidth = 1;
         if (fragment.kind === 4) context.fillRect(-size, -size * 0.22, size * 2, size * 0.44);
         else if (fragment.kind === 5) { context.beginPath(); context.moveTo(-size * 1.45, -size * 0.13); context.lineTo(size * 1.25, -size * 0.42); context.lineTo(size * 0.8, size * 0.18); context.lineTo(-size * 1.2, size * 0.38); context.closePath(); context.fill(); }
         else if (fragment.kind === 6) { const inset = size * 0.55; context.beginPath(); context.moveTo(0, -size); context.lineTo(size, -size * 0.35); context.lineTo(size, size * 0.7); context.lineTo(0, size); context.lineTo(-size, size * 0.35); context.lineTo(-size, -size * 0.7); context.closePath(); context.moveTo(0, -size); context.lineTo(0, size); context.moveTo(-size, -size * 0.7); context.lineTo(inset, -size * 0.12); context.lineTo(size, -size * 0.35); context.stroke(); }
