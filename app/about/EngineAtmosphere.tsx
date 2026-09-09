@@ -78,7 +78,9 @@ export function EngineAtmosphere() {
         if (r.bottom < -pad || r.top > height + pad || r.width === 0) return;
         out.push({ left: r.left - pad, top: r.top - pad, right: r.right + pad, bottom: r.bottom + pad, soft, fade });
       };
-      page.querySelectorAll('h1, h2, h3, p, li, dt, dd, .eyebrow, a, button').forEach(el => push(el, 8, 0.5, 26));
+      // Below the hero the page is for reading: text holds much more air so the
+      // atmosphere never competes with a paragraph in view.
+      page.querySelectorAll('h1, h2, h3, p, li, dt, dd, .eyebrow, a, button').forEach(el => push(el, 12, 0.17, 58));
       const lens = page.querySelector('[data-lens]');
       // The Decision Lens is the primary visual: keep its surroundings clear.
       if (lens) push(lens, Math.max(36, Math.min(84, width * 0.045)), 0.06, 90);

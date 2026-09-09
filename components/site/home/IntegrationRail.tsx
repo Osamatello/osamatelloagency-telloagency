@@ -54,10 +54,10 @@ function MarqueeRow({ items, reverse }: { items: string[]; reverse: boolean }) {
           <li
             key={`${name}-${i}`}
             aria-label={name}
-            className="flex items-center gap-x-10 text-brand/75"
+            className="flex items-center gap-x-10 text-brand-soft"
           >
             <PlatformMark name={name} />
-            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-line" />
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-line-strong" />
           </li>
         ))}
       </ul>

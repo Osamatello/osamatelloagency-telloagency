@@ -122,9 +122,9 @@ export function HeroEnvironment({ className }: { className?: string }) {
       const x = mirrored ? width - drawX : drawX;
       let attenuation = 1;
       for (const zone of protectedZones) {
-        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.78 * textQuiet;
+        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.52 * textQuiet;
         const dx = Math.max(zone.left - x, 0, x - zone.right), dy = Math.max(zone.top - y, 0, y - zone.bottom), distance = Math.hypot(dx, dy);
-        if (distance < 22) attenuation = Math.min(attenuation, 0.86 + distance / 157);
+        if (distance < 46) attenuation = Math.min(attenuation, 0.6 + distance / 115);
       }
       return attenuation;
     };

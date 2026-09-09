@@ -72,8 +72,8 @@ export const companyEn: CompanyEditorial = {
   premise: {
     label: 'Why DAMASAVERO exists', title: 'The details of a business deserve better systems.',
     paragraphs: [
-      'Every company develops its own way of working. Some of it is written down. Much of it lives in everyday decisions: who knows the answer, when a request needs extra care, and why one job is handled differently from another.',
-      'DAMASAVERO exists to bring that understanding into the systems a business uses. Our interest is in the whole design: how information, decisions and people fit together, and where intelligent automation belongs within it.',
+      'Every company develops its own way of working. Some of it is written down. Much of it lives in everyday decisions — who knows the answer, and why one job is handled differently from another.',
+      'DAMASAVERO exists to bring that understanding into the systems a business uses — how information, decisions and people fit together, and where automation belongs within it.',
     ],
     marginal: 'A company is more than a list of tasks.',
   },
@@ -81,9 +81,9 @@ export const companyEn: CompanyEditorial = {
     label: 'Working with us', title: 'Your knowledge belongs\nat the drawing table.',
     introduction: 'You know the business. We bring the design and engineering. Good work needs both.',
     items: [
-      { title: 'There is room for questions.', body: 'You should be able to ask why we recommend something and get an answer in plain language. Costs, limitations and alternatives belong in that conversation.' },
-      { title: 'The people doing the work matter.', body: 'We want to hear from the people who will use the system. Their experience helps us challenge assumptions before those assumptions become part of the design.' },
-      { title: 'Disagreement can improve the work.', body: 'We believe in being direct when an idea needs rethinking, and listening when you challenge ours. A useful recommendation needs an honest conversation.' },
+      { title: 'There is room for questions.', body: 'Ask why we recommend something and get an answer in plain language. Costs, limits and alternatives belong in that conversation.' },
+      { title: 'The people doing the work matter.', body: 'We want to hear from the people who will use the system — their experience challenges assumptions before those assumptions reach the design.' },
+      { title: 'Disagreement can improve the work.', body: 'We are direct when an idea needs rethinking, and we listen when you challenge ours. A useful recommendation needs an honest conversation.' },
     ],
   },
   founder: {
@@ -153,8 +153,8 @@ export const companyAr: CompanyEditorial = {
   premise: {
     label: 'الفكرة وراء DAMASAVERO', title: 'تفاصيل العمل تستحقّ أنظمة تفهمها.',
     paragraphs: [
-      'لكل شركة طريقتها في العمل. جزء منها موثّق، وجزء كبير يظهر في القرارات اليومية: من يعرف الإجابة؟ متى يحتاج الطلب إلى اهتمام إضافي؟ ولماذا تُعالج مهمّة بطريقة مختلفة عن غيرها؟',
-      'تتمثّل غاية DAMASAVERO في ترجمة هذا الفهم إلى الأنظمة التي تستخدمها الشركة. نهتمّ بالتصميم الكامل: كيف تتكامل المعلومات والقرارات وأدوار الناس، وأين تكون الأتمتة الذكية مفيدة ضمنه.',
+      'لكل شركة طريقتها في العمل. جزء منها موثّق، وجزء كبير يظهر في القرارات اليومية — من يعرف الإجابة، ولماذا تُعالج مهمّة بطريقة مختلفة عن غيرها.',
+      'تتمثّل غاية DAMASAVERO في ترجمة هذا الفهم إلى أنظمة الشركة — كيف تتكامل المعلومات والقرارات وأدوار الناس، وأين تكون الأتمتة ضمنه.',
     ],
     marginal: 'الشركة أكثر من قائمة مهام.',
   },
@@ -162,9 +162,9 @@ export const companyAr: CompanyEditorial = {
     label: 'العمل معنا', title: 'معرفتك بشركتك\nجزء من التصميم.',
     introduction: 'أنت تعرف العمل. ونحن نأتي بالتصميم والهندسة. والنتيجة الجيدة تحتاج الاثنين.',
     items: [
-      { title: 'لك مساحة للسؤال.', body: 'من حقّك أن تسأل لماذا نوصي بحلّ معيّن، وأن تحصل على إجابة بلغة واضحة. التكاليف والحدود والبدائل جزء من هذا الحوار.' },
-      { title: 'رأي من يستخدم النظام مهمّ.', body: 'نريد أن نسمع من الأشخاص الذين سيستخدمون النظام. خبرتهم تساعدنا على مراجعة افتراضاتنا قبل أن تصبح جزءًا من التصميم.' },
-      { title: 'الاختلاف قد يحسّن العمل.', body: 'نؤمن بالصراحة عندما تحتاج فكرة إلى مراجعة، وبالإنصات عندما تناقش أفكارنا. التوصية المفيدة تحتاج إلى حوار صادق.' },
+      { title: 'لك مساحة للسؤال.', body: 'اسأل لماذا نوصي بحلّ معيّن، واحصل على إجابة بلغة واضحة. التكاليف والحدود والبدائل جزء من الحوار.' },
+      { title: 'رأي من يستخدم النظام مهمّ.', body: 'نريد أن نسمع ممّن سيستخدمون النظام — خبرتهم تراجع افتراضاتنا قبل أن تصل إلى التصميم.' },
+      { title: 'الاختلاف قد يحسّن العمل.', body: 'نصارحك عندما تحتاج فكرة إلى مراجعة، وننصت عندما تناقش أفكارنا. التوصية المفيدة تحتاج حوارًا صادقًا.' },
     ],
   },
   founder: {
