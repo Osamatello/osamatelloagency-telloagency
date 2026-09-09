@@ -4,6 +4,7 @@ import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { useScrollProgress } from '@/lib/useScrollProgress';
 import { cn } from '@/lib/utils';
 import { SectionHead } from './SectionHead';
+import { ConvergenceField } from './HomeVisuals';
 
 type Pair = { problem: string; automated: string };
 
@@ -103,14 +104,17 @@ export function ProblemShift() {
     <div ref={ref}>
       <SectionHead label={t.eyebrow} title={t.title} lead={t.lead} />
 
+      {/* The picture carries the argument before any of the copy does. */}
+      <ConvergenceField progress={progress} className="mt-9 h-[104px] sm:mt-11 sm:h-[130px]" />
+
       {/* Mobile: stacked rails each respond to their own position in the viewport. */}
-      <div className="mt-10 grid gap-y-6 sm:hidden">
+      <div className="mt-8 grid gap-y-6 sm:hidden">
         <MobileRail pairs={left} rtl={rtl} />
         <MobileRail pairs={right} rtl={rtl} />
       </div>
 
       {/* Desktop/tablet: preserve the existing synchronized side-by-side system. */}
-      <div className="mt-12 hidden gap-x-10 sm:grid sm:grid-cols-2 sm:items-stretch lg:gap-x-16">
+      <div className="mt-10 hidden gap-x-10 sm:grid sm:grid-cols-2 sm:items-stretch lg:gap-x-16">
         <Rail pairs={left} resolved={resolved} fill={fill} rtl={rtl} />
         <Rail pairs={right} resolved={resolved} fill={fill} rtl={rtl} />
       </div>

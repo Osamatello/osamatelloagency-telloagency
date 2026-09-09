@@ -7,8 +7,10 @@ type Point = { x: number; y: number; scale: number; rotation: number; z: number 
 type Fragment = { depth: number; kind: number; color: string; phase: number; speed: number; states: Point[] };
 type ProtectedZone = { left: number; top: number; right: number; bottom: number };
 
-const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
-const VISIBILITY_BOOST = 1.85;
+const COLORS = ['#2f6f55', '#3f8a68', '#6fae8d', '#96b8a5', '#c4d4c9'];
+const VISIBILITY_BOOST = 2.15;
+/** Page ground behind the hero — matches `--ds-paper` in the homepage dark beat. */
+const GROUND = '#101412';
 const AMBIENT_SPEED = 2.30;
 const STATE_COUNT = 8;
 const rand = (seed: number) => {
@@ -92,6 +94,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let fragments: Fragment[] = [], anchors: number[] = [], width = 0, height = 0, target = 0, progress = target, frame = 0, elapsed = 0, protectionFrame = 0;
     let protectedZones: ProtectedZone[] = [];
+    let lastPresence = -1;
     const measureProtection = () => {
       const padding = width < 640 ? 4 : 6;
       protectedZones = Array.from(document.querySelectorAll<HTMLElement>('[data-visual-state] h1, [data-visual-state] h2, [data-visual-state] h3, [data-visual-state] p, [data-visual-state] dt, [data-visual-state] dd, [data-visual-state] .eyebrow, [data-visual-state] .btn-primary, [data-visual-state] .btn-outline, [data-visual-state] button > span, [data-visual-state] a > span')).map((element) => {
@@ -113,7 +116,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       if (!protectedZones.length) return;
       context.save();
       context.filter = 'blur(7px)';
-      context.fillStyle = 'rgba(251, 250, 247, 0.08)';
+      context.fillStyle = 'rgba(16, 20, 18, 0.42)';
       context.beginPath();
       for (const zone of protectedZones) context.rect(zone.left, zone.top, zone.right - zone.left, zone.bottom - zone.top);
       context.fill();
@@ -123,8 +126,15 @@ export function HeroEnvironment({ className }: { className?: string }) {
       anchors = Array.from(document.querySelectorAll<HTMLElement>('[data-visual-state]')).map((element) => element.getBoundingClientRect().top + window.scrollY + element.offsetHeight * 0.5 - window.innerHeight * 0.5);
       if (anchors.length) { const pageEnd = Math.max(0, document.documentElement.scrollHeight - window.innerHeight); anchors[anchors.length - 1] = Math.max(anchors[anchors.length - 1], pageEnd * 0.9); }
     };
+    // The scene belongs to the hero. Past it the canvas fades out and both the
+    // formation machine and the draw loop stop, so nothing moves behind the
+    // sections the visitor is reading.
+    const heroPresence = () => {
+      const viewport = window.innerHeight || 1;
+      return clamp(1 - (window.scrollY - viewport * 0.22) / (viewport * 0.5));
+    };
     const updateTarget = () => {
-      if (reduced || anchors.length < 2) return;
+      if (reduced || anchors.length < 2 || heroPresence() <= 0) return;
       const scroll = window.scrollY; let state = anchors.length - 1;
       for (let index = 0; index < anchors.length - 1; index++) if (scroll <= anchors[index + 1]) { const local = clamp((scroll - anchors[index]) / Math.max(anchors[index + 1] - anchors[index], 1)); state = index + smooth(local); break; }
       target = clamp(state, 0, STATE_COUNT - 1);
@@ -134,7 +144,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       const ambientTime = elapsed * AMBIENT_SPEED, idleX = reduced ? 0 : Math.sin(ambientTime * 0.00016) * width * 0.004, idleY = reduced ? 0 : Math.cos(ambientTime * 0.00013) * height * 0.004;
       context.save(); context.translate(width * 0.5 + idleX, height * 0.5 + idleY); context.rotate(reduced ? 0 : Math.sin(ambientTime * 0.00008) * 0.014); context.translate(-width * 0.5, -height * 0.5);
       const wireBreath = reduced ? 1 : 0.94 + Math.sin(ambientTime * 0.00022) * 0.06;
-      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * VISIBILITY_BOOST * wireBreath; context.strokeStyle = '#315f4d'; context.lineWidth = 1;
+      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * VISIBILITY_BOOST * wireBreath; context.strokeStyle = '#4a8f70'; context.lineWidth = 1;
       const atomPresence = 1 - clamp(Math.abs(progress - 1) / 0.9), dnaPresence = 1 - clamp(Math.abs(progress - 2.5) / 1.25), tunnelPresence = 1 - clamp(Math.abs(progress - 4.5) / 1.25);
       if (atomPresence > 0) { context.save(); context.globalAlpha *= atomPresence; context.translate(width * 0.5, height * 0.5); for (let ring = 0; ring < 3; ring++) { context.beginPath(); context.rotate(Math.PI / 3); context.ellipse(0, 0, width * (0.13 + ring * 0.035), height * (0.045 + ring * 0.012), 0, 0, Math.PI * 2); context.stroke(); } context.restore(); }
       if (dnaPresence > 0) { context.save(); context.globalAlpha *= dnaPresence * 0.72; const radius = width * (width < 640 ? 0.28 : 0.32); for (let bridge = 0; bridge < 9; bridge++) { const t = bridge / 8, helix = t * Math.PI * (width < 640 ? 5.5 : 6.5) + ambientTime * 0.00008, y = height * (0.08 + t * 0.84); context.beginPath(); context.moveTo(width * 0.5 + Math.cos(helix) * radius, y); context.lineTo(width * 0.5 + Math.cos(helix + Math.PI) * radius, y); context.stroke(); } context.restore(); }
@@ -142,7 +152,7 @@ export function HeroEnvironment({ className }: { className?: string }) {
       context.restore();
     };
     const draw = () => {
-      context.clearRect(0, 0, width, height); context.fillStyle = '#fbfaf7'; context.fillRect(0, 0, width, height); drawWireframe(); const ambientTime = elapsed * AMBIENT_SPEED;
+      context.clearRect(0, 0, width, height); context.fillStyle = GROUND; context.fillRect(0, 0, width, height); drawWireframe(); const ambientTime = elapsed * AMBIENT_SPEED;
       fragments.forEach((fragment) => {
         const point = pointAt(fragment), parallax = (target - progress) * 38 * point.z, idleStrength = reduced ? 0 : (1.8 + point.z * 3.8), idlePhase = fragment.phase + ambientTime * 0.00016 * fragment.speed, idleX = Math.sin(idlePhase * 1.7) * idleStrength, idleY = Math.cos(idlePhase * 1.13) * idleStrength * 0.72, breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.04 * point.z;
         const atomPresence = 1 - clamp(Math.abs(progress - 1) / 0.9), dnaPresence = 1 - clamp(Math.abs(progress - 2.5) / 1.25), tunnelPresence = 1 - clamp(Math.abs(progress - 4.5) / 1.25), tornadoPresence = 1 - clamp(Math.abs(progress - 6.5) / 1.35), localOrbit = reduced ? 0 : atomPresence * (3.8 + point.z * 3.4), localHelix = reduced ? 0 : dnaPresence * (2.2 + point.z * 2.1), tunnelBreath = reduced ? 0 : tunnelPresence * Math.sin(idlePhase * 0.72) * (1 + point.z * 1.7), localTwist = reduced ? 0 : tornadoPresence * (3 + point.z * 2.7);
@@ -159,12 +169,18 @@ export function HeroEnvironment({ className }: { className?: string }) {
         context.restore();
       }); softenProtectedZones();
     };
-    const animate = (time: number) => { elapsed = time; progress += (target - progress) * 0.09; draw(); frame = requestAnimationFrame(animate); };
+    const animate = (time: number) => {
+      elapsed = time;
+      const presence = heroPresence();
+      if (presence !== lastPresence) { canvas.style.opacity = presence.toFixed(3); lastPresence = presence; }
+      if (presence > 0.002) { progress += (target - progress) * 0.09; draw(); }
+      frame = requestAnimationFrame(animate);
+    };
     const resize = () => { width = window.innerWidth; height = window.innerHeight; const ratio = Math.min(window.devicePixelRatio || 1, 1.6); canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio); context.setTransform(ratio, 0, 0, ratio, 0, 0); fragments = createFragments(width < 640 ? 96 : 258, width < 640); measure(); measureProtection(); updateTarget(); draw(); };
     resize();
-    const onScroll = () => { updateTarget(); scheduleProtectionMeasure(); };
+    const onScroll = () => { updateTarget(); if (heroPresence() > 0) scheduleProtectionMeasure(); };
     window.addEventListener('resize', resize); window.addEventListener('scroll', onScroll, { passive: true }); frame = requestAnimationFrame(animate);
     return () => { cancelAnimationFrame(frame); if (protectionFrame) cancelAnimationFrame(protectionFrame); window.removeEventListener('resize', resize); window.removeEventListener('scroll', onScroll); };
   }, []);
-  return <canvas ref={canvasRef} aria-hidden="true" className={cn('pointer-events-none fixed inset-0 z-0 h-[100dvh] w-screen', className)} />;
+  return <canvas ref={canvasRef} aria-hidden="true" className={cn('pointer-events-none fixed inset-0 z-0 h-[100dvh] w-screen will-change-[opacity]', className)} />;
 }

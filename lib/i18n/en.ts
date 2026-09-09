@@ -60,7 +60,7 @@ const en: Dictionary = {
       eyebrow: 'Integrations',
       title: 'One ecosystem. Every system in sync.',
       subtitle:
-        'DAMASAVERO connects your AI, communication, revenue and operational platforms into one governed automation environment — preserving the tools your teams already rely on while orchestrating data, decisions and execution across them.',
+        'One governed automation layer across the AI, communication, revenue and operations tools your teams already use.',
       operatingLayer: 'One operating layer',
       items: [
         'OpenAI',
@@ -87,42 +87,42 @@ const en: Dictionary = {
           index: '01',
           title: 'INTELLIGENT OPERATIONS INFRASTRUCTURE',
           summary:
-            'Design interconnected automation systems that run critical business operations with minimal manual intervention.',
+            'Connected systems that run critical operations with minimal manual work.',
           href: '/services',
         },
         {
           index: '02',
           title: 'AUTONOMOUS CUSTOMER OPERATIONS',
           summary:
-            'Build intelligent systems that manage enquiries, qualification, communication, scheduling, service and escalation across the customer lifecycle.',
+            'Enquiries, qualification, scheduling and escalation, handled end to end.',
           href: '/services',
         },
         {
           index: '03',
           title: 'REVENUE OPERATIONS ARCHITECTURE',
           summary:
-            'Engineer the infrastructure connecting lead acquisition, qualification, routing, conversion, follow-up and revenue recovery.',
+            'Acquisition, routing, conversion and follow-up on one pipeline.',
           href: '/services',
         },
         {
           index: '04',
           title: 'UNIFIED BUSINESS INTELLIGENCE',
           summary:
-            'Transform fragmented operational data into a connected intelligence layer for visibility, decision-making and automated action.',
+            'Fragmented data becomes one layer for visibility and automated action.',
           href: '/services',
         },
         {
           index: '05',
           title: 'ENTERPRISE WORKFLOW ORCHESTRATION',
           summary:
-            'Coordinate complex processes across teams, departments, software and AI through one operational architecture.',
+            'Complex processes coordinated across teams, software and AI.',
           href: '/services',
         },
         {
           index: '06',
           title: 'SYSTEMS INTEGRATION & MODERNIZATION',
           summary:
-            'Connect fragmented or legacy infrastructure into a scalable automation ecosystem without forcing businesses to replace everything they already use.',
+            'Legacy and fragmented infrastructure joined up — nothing gets replaced.',
           href: '/services',
         },
       ],
@@ -323,19 +323,19 @@ const en: Dictionary = {
       title: 'Common questions, answered',
       subtitle: '',
       items: [
-        { q: 'What can DAMASAVERO automate?', a: 'Repetitive operational work — inbound calls and enquiries, lead qualification and CRM updates, messaging and follow-up, scheduling and reminders, internal approvals and hand-offs, reporting, and the integrations between the tools that run them.' },
-        { q: 'Can DAMASAVERO work with our existing software?', a: 'Yes. We build around the tools you already use — CRM, inbox, calendar, messaging, spreadsheets, support desk. DAMASAVERO sits between them, reads what comes in, decides what to do, and writes the result back where your team already looks.' },
-        { q: 'Do we need to replace our current tools?', a: 'No. Nothing gets ripped out. If a workflow should stay editable by your team we keep it that way; where a direct connection is faster we use an API, webhook or database link.' },
-        { q: 'Can you build custom integrations?', a: 'Yes. If a system exposes an API, a webhook or a database we can reach, we can almost certainly connect it into the same operating layer.' },
-        { q: 'What happens when AI cannot handle a request?', a: 'It escalates to a person, with the full context attached and every automated step logged and reversible. People handle the exceptions; the routine work has already run.' },
-        { q: 'How does the process work?', a: 'A short consultation to map where time and leads are being lost, a design built around how your team actually works, a build phase connecting the AI, software and systems against your live stack, then ongoing monitoring as coverage widens.' },
+        { q: 'What can DAMASAVERO automate?', a: 'Repetitive operational work: inbound calls and enquiries, lead qualification and CRM updates, follow-up, scheduling, approvals, reporting — and the integrations between them.' },
+        { q: 'Can DAMASAVERO work with our existing software?', a: 'Yes. DAMASAVERO sits between the tools you already use — CRM, inbox, calendar, messaging, support desk — reads what comes in, decides what to do, and writes the result back where your team looks.' },
+        { q: 'Do we need to replace our current tools?', a: 'No. Nothing gets ripped out. Workflows your team should keep editing stay editable; elsewhere we connect directly by API, webhook or database.' },
+        { q: 'Can you build custom integrations?', a: 'Yes. If a system exposes an API, a webhook or a database we can reach, we can connect it into the same operating layer.' },
+        { q: 'What happens when AI cannot handle a request?', a: 'It escalates to a person with full context, every automated step logged and reversible. People handle exceptions; the routine work has already run.' },
+        { q: 'How does the process work?', a: 'A short consultation to map where time and leads are lost, a design around how your team actually works, a build against your live stack, then ongoing monitoring.' },
       ],
     },
     cta: {
       eyebrow: 'Ready When You Are',
       title: 'Transform Operations.\nEliminate Friction.\nScale Intelligently.',
       subtitle:
-        'Engineer a more autonomous operation. We identify the structural bottlenecks, integration gaps, and repetitive processes limiting your business — then design the automation architecture to eliminate them.',
+        'We find the bottlenecks, integration gaps and repetitive work limiting your business — then design the architecture that removes them.',
       primaryCta: 'Book a Free Consultation',
       secondaryCta: 'Explore Services',
     },

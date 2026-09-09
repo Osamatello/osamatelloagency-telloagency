@@ -10,6 +10,8 @@ import { IntegrationRail } from '@/components/site/home/IntegrationRail';
 import { Capabilities } from '@/components/site/home/Capabilities';
 import { ProblemShift } from '@/components/site/home/ProblemShift';
 import { BeforeAfterAutomation } from '@/components/site/home/BeforeAfterAutomation';
+import { HorizonMark } from '@/components/site/home/HomeVisuals';
+import { useInView } from '@/lib/useInView';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 export default function HomePage() {
@@ -36,7 +38,7 @@ export default function HomePage() {
   return (
     <>
       <HeroEnvironment />
-      <section data-visual-state="0" className="relative isolate -mt-16 flex min-h-0 items-center overflow-hidden bg-transparent text-ink sm:min-h-[100svh] lg:-mt-[72px]">
+      <section id="home-page" data-visual-state="0" className="relative isolate -mt-16 flex min-h-0 items-center overflow-hidden bg-transparent text-ink sm:min-h-[100svh] lg:-mt-[72px]">
         <div className="container-page relative z-10 w-full pb-6 pt-28 sm:translate-y-0 sm:pb-[clamp(1.75rem,6.6svh,3.5rem)] sm:pt-[clamp(4.5rem,12.2svh,7.5rem)]">
           <span className={cn('eyebrow reveal-up', shown && 'is-in')} style={rd(60)}>
             {home.hero.eyebrow}
@@ -130,16 +132,21 @@ function HomeFaq() {
   const { dict } = useI18n();
   const t = dict.home.faqPreview;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { ref, inView } = useInView<HTMLDListElement>();
   return (
     <div>
       <span className="eyebrow">{t.eyebrow}</span>
       <h2 className="text-display mt-5 max-w-2xl text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">{t.title}</h2>
-      <dl className="mt-8 border-t border-line sm:mt-10">
+      <dl ref={ref} className="mt-8 border-t border-line sm:mt-10">
         {t.items.map((item, index) => {
           const open = openIndex === index;
           const answerId = `home-faq-answer-${index}`;
           return (
-            <div key={item.q} className={cn('border-b py-1 transition-colors duration-500', open ? 'border-[hsl(var(--brand)/0.38)]' : 'border-line')}>
+            <div
+              key={item.q}
+              className={cn('reveal-up border-b py-1 transition-colors duration-500', inView && 'is-in', open ? 'border-[hsl(var(--brand)/0.38)]' : 'border-line')}
+              style={{ transitionDelay: `${index * 60}ms` }}
+            >
               <dt>
                 <button type="button" onClick={() => setOpenIndex(open ? null : index)} aria-expanded={open} aria-controls={answerId} className="group flex min-h-16 w-full items-center justify-between gap-6 py-4 text-start focus-visible:outline-none">
                   <span className={cn('text-display text-[clamp(1rem,2vw,1.2rem)] transition-[color,transform] duration-500', open ? 'translate-x-1 text-brand rtl:-translate-x-1' : 'text-ink group-hover:text-brand')}>
@@ -171,17 +178,39 @@ function HomeCta() {
   const { dict, dir } = useI18n();
   const t = dict.home.cta;
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
+  const { ref, inView } = useInView<HTMLDivElement>();
   return (
-    <div className="max-w-3xl">
-      <span className="eyebrow">{t.eyebrow}</span>
-      <h2 className="text-display mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink">{t.title}</h2>
-      {t.subtitle ? <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted">{t.subtitle}</p> : null}
-      <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-        <Link href="/contact" className="btn-primary">
-          {t.primaryCta}
-          <Arrow className="h-4 w-4" />
-        </Link>
-        {t.secondaryCta ? <Link href="/services" className="btn-outline">{t.secondaryCta}</Link> : null}
+    <div ref={ref} className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+      <div className="max-w-3xl lg:col-span-7">
+        <span className={cn('eyebrow reveal-up', inView && 'is-in')}>{t.eyebrow}</span>
+        <h2
+          className={cn('text-display reveal-up mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink', inView && 'is-in')}
+          style={{ transitionDelay: '80ms' }}
+        >
+          {t.title}
+        </h2>
+        {t.subtitle ? (
+          <p
+            className={cn('reveal-up mt-5 max-w-xl text-base leading-relaxed text-ink-muted', inView && 'is-in')}
+            style={{ transitionDelay: '160ms' }}
+          >
+            {t.subtitle}
+          </p>
+        ) : null}
+        <div
+          className={cn('reveal-up mt-9 flex flex-col gap-3 sm:flex-row', inView && 'is-in')}
+          style={{ transitionDelay: '240ms' }}
+        >
+          <Link href="/contact" className="btn-primary">
+            {t.primaryCta}
+            <Arrow className="h-4 w-4" />
+          </Link>
+          {t.secondaryCta ? <Link href="/services" className="btn-outline">{t.secondaryCta}</Link> : null}
+        </div>
+      </div>
+
+      <div className="lg:col-span-4 lg:col-start-9">
+        <HorizonMark className="mx-auto max-w-[17rem] lg:max-w-none" />
       </div>
     </div>
   );

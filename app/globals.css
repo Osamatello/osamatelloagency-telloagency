@@ -417,3 +417,82 @@
     animation: none;
   }
 }
+
+/* ===========================================================================
+   HOMEPAGE DARK BEAT  —  visual test, scoped to the homepage only.
+
+   The homepage root carries `#home-page`; no other route contains that id, so
+   every other page keeps the light identity byte-for-byte. Because the whole
+   site is built on the `--ds-*` / `--brand` tokens, redefining them here flips
+   the homepage (header and footer included) with no component rewrites.
+
+   To revert: delete this block and the `id="home-page"` wrapper in
+   `app/page.tsx`.
+=========================================================================== */
+
+html:has(#home-page),
+body:has(#home-page) {
+  color-scheme: dark;
+
+  /* Very dark charcoal with a green undertone — never pure black. */
+  --ds-paper: 158 13% 7%;
+  --ds-paper-raised: 158 12% 10%;
+  --ds-paper-sunken: 160 15% 5%;
+
+  /* Warm off-white, sage-grey secondaries — never harsh pure white. */
+  --ds-ink: 44 22% 93%;
+  --ds-ink-muted: 150 8% 68%;
+  --ds-ink-faint: 150 6% 48%;
+  --ds-ink-inverse: 158 15% 7%;
+
+  /* Hairlines carry the structure instead of cards. */
+  --ds-line: 158 11% 16%;
+  --ds-line-strong: 156 10% 27%;
+
+  /* Emerald lifted out of the deep forest green so it reads on charcoal —
+     muted, never neon. */
+  --brand: 152 31% 55%;
+  --brand-soft: 148 22% 68%;
+  --brand-strong: 152 38% 64%;
+  --brand-foreground: 158 24% 7%;
+
+  /* Legacy semantic tokens the shell still paints with. */
+  --background: 158 13% 7%;
+  --foreground: 44 22% 93%;
+  --border: 158 11% 16%;
+  --muted-foreground: 150 8% 68%;
+  --ring: 152 31% 55%;
+
+  background-color: hsl(var(--ds-paper));
+}
+
+/* The footer is the one shell surface still on hard-coded light hexes.
+   Scoped override so the dark homepage does not end on a light slab. */
+html:has(#home-page) footer {
+  background-color: hsl(var(--ds-paper-sunken)) !important;
+  border-color: hsl(var(--ds-line)) !important;
+  color: hsl(var(--ds-ink)) !important;
+}
+html:has(#home-page) footer :where(p, li, a, h3, span, div) {
+  color: hsl(var(--ds-ink-muted)) !important;
+  border-color: hsl(var(--ds-line)) !important;
+}
+html:has(#home-page) footer a:hover,
+html:has(#home-page) footer .text-brand {
+  color: hsl(var(--brand)) !important;
+}
+html:has(#home-page) footer svg {
+  color: hsl(var(--brand)) !important;
+}
+
+html:has(#home-page) footer a[aria-label] {
+  color: hsl(var(--ds-ink)) !important;
+}
+
+/* The DS mark is a dark monochrome PNG; render it as a light silhouette on
+   the charcoal ground instead of letting it disappear. */
+html:has(#home-page) header a[aria-label] img,
+html:has(#home-page) footer a[aria-label] img {
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}

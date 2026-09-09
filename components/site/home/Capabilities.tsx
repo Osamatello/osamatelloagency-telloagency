@@ -3,22 +3,43 @@
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
+import { useInView } from '@/lib/useInView';
+import { cn } from '@/lib/utils';
 import { SectionHead } from './SectionHead';
+import { SystemLayers } from './HomeVisuals';
 
-/** Spatial capability field: six persistent points aligned into three paired rows. */
+/**
+ * What we build — the section head sits beside the layered-system drawing, so
+ * the stack visibly assembles while the capability rows read underneath.
+ */
 export function Capabilities() {
   const { dict, dir } = useI18n();
   const t = dict.home.capabilities;
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
+  const { ref, inView } = useInView<HTMLOListElement>();
 
   return (
     <section className="relative overflow-hidden">
       <div className="container-page relative z-10 border-t border-line pt-14 pb-5 sm:pt-16 sm:pb-6 lg:pt-20 lg:pb-8">
-        <SectionHead label={t.eyebrow} title={t.title} />
+        <div className="grid items-start gap-x-16 gap-y-10 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <SectionHead label={t.eyebrow} title={t.title} />
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9">
+            <SystemLayers className="mx-auto max-w-[15rem] lg:max-w-none" />
+          </div>
+        </div>
 
-        <ol className="mt-10 grid gap-x-16 gap-y-10 sm:mt-12 sm:grid-cols-2 sm:gap-y-12 lg:gap-x-24 lg:gap-y-14">
-          {t.items.map((item) => (
-            <li key={item.index} className="min-w-0">
+        <ol
+          ref={ref}
+          className="mt-10 grid gap-x-16 gap-y-10 sm:mt-12 sm:grid-cols-2 sm:gap-y-12 lg:gap-x-24 lg:gap-y-14"
+        >
+          {t.items.map((item, index) => (
+            <li
+              key={item.index}
+              className={cn('reveal-up min-w-0', inView && 'is-in')}
+              style={{ transitionDelay: `${index * 70}ms` }}
+            >
               <Link
                 href={item.href}
                 className="group block h-full border-t border-line pt-4 transition-transform duration-300 hover:-translate-y-1 sm:pt-5"

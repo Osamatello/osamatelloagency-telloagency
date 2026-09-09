@@ -44,6 +44,11 @@ export const metadata: Metadata = {
     template: '%s | DAMASAVERO',
   },
   description,
+  // Every route resolves its own canonical against `metadataBase`; the
+  // homepage was the one page emitting no canonical at all.
+  alternates: {
+    canonical: '/',
+  },
   keywords: [
     'AI automation',
     'business systems',
