@@ -22,7 +22,7 @@ type Zone = {
   bottom: number;
 };
 
-const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
+const COLORS = ['#2f6f55', '#3f8a68', '#6fae8d', '#96b8a5', '#c4d4c9'];
 
 function seeded(seed: number) {
   const value = Math.sin(seed * 91.713) * 43758.5453;
@@ -137,7 +137,7 @@ export function EngineAtmosphere() {
       fragments.forEach((fragment) => {
         const x = fragment.x * width + Math.sin(time * 0.18 + fragment.phase) * 7;
         const y = fragment.y * height + Math.cos(time * 0.15 + fragment.phase) * 5;
-        const alpha = (0.08 + fragment.size * 0.004) * attenuation(x, y);
+        const alpha = (0.14 + fragment.size * 0.007) * attenuation(x, y);
         if (alpha < 0.01) return;
 
         context.save();

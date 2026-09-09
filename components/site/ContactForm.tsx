@@ -28,7 +28,7 @@ const initialState: FormState = {
 };
 
 const field =
-  'w-full border border-line bg-[hsl(var(--ds-paper))] px-3.5 py-3 text-[0.95rem] text-ink placeholder:text-ink-faint ' +
+  'w-full border border-[hsl(var(--ds-ink)/0.36)] bg-[hsl(var(--ds-paper))] px-3.5 py-3 text-[0.95rem] text-ink placeholder:text-[hsl(var(--ds-ink)/0.66)] ' +
   'transition-colors duration-200 focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand';
 const invalid = 'border-[hsl(var(--destructive))] focus:border-[hsl(var(--destructive))] focus:ring-[hsl(var(--destructive))]';
 
@@ -121,12 +121,12 @@ export function ContactForm() {
 
   if (success) {
     return (
-      <div className="border border-line bg-[hsl(var(--ds-paper))] p-8 text-center sm:p-12">
+      <div className="border border-[hsl(var(--ds-ink)/0.36)] bg-[hsl(var(--ds-paper))] p-8 text-center sm:p-12">
         <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-brand/40 bg-brand/10 text-brand">
           <CheckCircle2 className="h-7 w-7" strokeWidth={1.6} />
         </span>
         <h3 className="text-display mt-6 text-[clamp(1.3rem,2.4vw,1.75rem)] text-ink">{f.successTitle}</h3>
-        <p className="mx-auto mt-3 max-w-md text-[0.95rem] leading-relaxed text-ink-muted">{f.successMessage}</p>
+        <p className="mx-auto mt-3 max-w-md text-[0.95rem] leading-relaxed text-[hsl(var(--ds-ink)/0.85)]">{f.successMessage}</p>
         <button type="button" onClick={() => setSuccess(false)} className="btn-outline mt-8">
           {f.sendAnother}
         </button>
@@ -137,12 +137,12 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border border-line bg-[hsl(var(--ds-paper))] p-6 sm:p-8 lg:p-10"
+      className="border border-[hsl(var(--ds-ink)/0.36)] bg-[hsl(var(--ds-paper))] p-6 sm:p-8 lg:p-10"
       noValidate
     >
-      <div className="border-b border-line pb-6">
+      <div className="border-b border-[hsl(var(--ds-ink)/0.36)] pb-6">
         <h2 className="text-display text-[clamp(1.4rem,2.6vw,2rem)] text-ink">{f.title}</h2>
-        <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-ink-muted">{f.subtitle}</p>
+        <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-[hsl(var(--ds-ink)/0.85)]">{f.subtitle}</p>
       </div>
 
       <div className="mt-7 grid gap-5 sm:grid-cols-2">
@@ -243,7 +243,7 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="mt-6 border-t border-line pt-6">
+      <div className="mt-6 border-t border-[hsl(var(--ds-ink)/0.36)] pt-6">
         <label htmlFor="consent" className="flex cursor-pointer items-start gap-3">
           <input
             id="consent"
@@ -253,7 +253,7 @@ export function ContactForm() {
             aria-invalid={!!errors.consent}
             className="mt-0.5 h-[1.05rem] w-[1.05rem] shrink-0 cursor-pointer accent-[hsl(var(--brand))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           />
-          <span className="text-[0.85rem] leading-relaxed text-ink-muted">{f.consent}</span>
+          <span className="text-[0.85rem] leading-relaxed text-[hsl(var(--ds-ink)/0.85)]">{f.consent}</span>
         </label>
         {errors.consent && <FieldError msg={errors.consent} />}
 
@@ -284,7 +284,7 @@ function Field({
     <div>
       <label
         htmlFor={id}
-        className="mb-2 block text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink-faint"
+        className="mb-2 block text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[hsl(var(--ds-ink)/0.66)]"
       >
         {label}
         {required && <span className="text-brand"> *</span>}
@@ -308,7 +308,7 @@ function Select({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-invalid={isInvalid}
-        className={cn(field, 'cursor-pointer appearance-none pe-10', !value && 'text-ink-faint', isInvalid && invalid)}
+        className={cn(field, 'cursor-pointer appearance-none pe-10', !value && 'text-[hsl(var(--ds-ink)/0.66)]', isInvalid && invalid)}
       >
         <option value="" disabled>{placeholder}</option>
         {options.map((opt) => (
@@ -317,7 +317,7 @@ function Select({
       </select>
       <ChevronDown
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 my-auto h-4 w-4 text-ink-faint end-3.5"
+        className="pointer-events-none absolute inset-y-0 my-auto h-4 w-4 text-[hsl(var(--ds-ink)/0.66)] end-3.5"
       />
     </div>
   );

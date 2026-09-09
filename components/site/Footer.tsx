@@ -41,7 +41,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-brand" />
-                <span>Dubai · Bur Dubai · Rolla St</span>
+                <span>Dubai · Bur Dubai</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-brand" />

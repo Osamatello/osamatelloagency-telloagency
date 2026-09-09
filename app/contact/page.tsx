@@ -52,18 +52,18 @@ export default function ContactPage() {
             <h1 className="text-display mt-5 max-w-[13ch] text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.04] text-ink">
               {copy.title}
             </h1>
-            <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-ink-muted">{copy.body}</p>
+            <p className="mt-6 max-w-md text-[0.98rem] leading-relaxed text-[hsl(var(--ds-ink)/0.85)]">{copy.body}</p>
 
-            <p className="eyebrow mt-12 text-ink-faint">{copy.detailsLabel}</p>
-            <div className="mt-4 border-t border-line">
+            <p className="eyebrow mt-12 text-[hsl(var(--ds-ink)/0.66)]">{copy.detailsLabel}</p>
+            <div className="mt-4 border-t border-[hsl(var(--ds-ink)/0.36)]">
               {details.map(({ Icon, label, value, href, ltr }) => {
                 const inner = (
                   <div className="group flex items-center gap-4 py-4">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-brand">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[hsl(var(--ds-ink)/0.36)] text-brand">
                       <Icon className="h-4 w-4" strokeWidth={1.7} />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-ink-faint">{label}</p>
+                      <p className="text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-[hsl(var(--ds-ink)/0.66)]">{label}</p>
                       <p
                         className="mt-0.5 text-[0.95rem] leading-6 text-ink"
                         dir={ltr ? 'ltr' : undefined}
@@ -73,7 +73,7 @@ export default function ContactPage() {
                       </p>
                     </div>
                     {href ? (
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-ink-faint transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" />
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-[hsl(var(--ds-ink)/0.66)] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" />
                     ) : null}
                   </div>
                 );
@@ -82,17 +82,17 @@ export default function ContactPage() {
                     key={label}
                     href={href}
                     {...(href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
-                    className="block border-b border-line"
+                    className="block border-b border-[hsl(var(--ds-ink)/0.36)]"
                   >
                     {inner}
                   </a>
                 ) : (
-                  <div key={label} className="border-b border-line">{inner}</div>
+                  <div key={label} className="border-b border-[hsl(var(--ds-ink)/0.36)]">{inner}</div>
                 );
               })}
             </div>
 
-            <p className="mt-8 max-w-sm ps-4 text-[0.85rem] leading-6 text-ink-faint [border-inline-start:1px_solid_hsl(var(--brand))]">
+            <p className="mt-8 max-w-sm ps-4 text-[0.85rem] leading-6 text-[hsl(var(--ds-ink)/0.66)] [border-inline-start:1px_solid_hsl(var(--brand))]">
               {copy.note}
             </p>
           </aside>
