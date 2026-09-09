@@ -87,6 +87,12 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
 
   useEffect(() => () => {
     cancelAnimationFrame(raf.current);
+    // Clearing the stored id matters: StrictMode's dev mount/cleanup/remount
+    // otherwise leaves a cancelled frame id here, and `ensureLoop`'s
+    // `if (!raf.current)` guard then refuses to start a fresh loop.
+    raf.current = 0;
+    last.current = 0;
+    origin.current = 0;
     clearTimeout(settle.current);
     clearTimeout(idleTimer.current);
   }, []);
