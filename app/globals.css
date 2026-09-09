@@ -515,8 +515,10 @@ html:has(#contact-page) footer a[aria-label] {
   color: hsl(var(--ds-ink)) !important;
 }
 
-/* The DS mark is a dark monochrome PNG; render it as a light silhouette on
-   the charcoal ground instead of letting it disappear. */
+/* The official DS mark now ships white-on-transparent with its own green
+   accent, so it needs no colour correction on the charcoal ground. The old
+   invert/hue-rotate pass existed only for the previous dark-on-transparent
+   artwork and would flip this one to black. Only the alpha is scoped here. */
 html:has(#home-page) header a[aria-label] img,
 html:has(#company-page) header a[aria-label] img,
 html:has(#capabilities-page) header a[aria-label] img,
@@ -525,9 +527,6 @@ html:has(#home-page) footer a[aria-label] img,
 html:has(#company-page) footer a[aria-label] img,
 html:has(#capabilities-page) footer a[aria-label] img,
 html:has(#contact-page) footer a[aria-label] img {
-  /* Invert lifts the charcoal mark to warm white; the 180deg hue rotation
-     carries the deep-green accent back to a muted emerald instead of leaving
-     it inverted to pink. Geometry is untouched, and light pages never match. */
-  filter: invert(1) hue-rotate(180deg) saturate(1.25);
-  opacity: 0.94;
+  filter: none;
+  opacity: 0.96;
 }
