@@ -22,6 +22,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     alternates: {
       canonical: `/services/${service.slug}`,
     },
+    // These detail pages still carry the older clinic-focused positioning.
+    // Keep them reachable, but out of the index until they are rewritten.
+    robots: { index: false, follow: true },
   };
 }
 

@@ -158,7 +158,7 @@ export function ServiceDetailPage({ service }: { service: ServiceDetail }) {
         primaryCta={service.cta.primaryCta}
         secondaryCta={service.cta.secondaryCta}
         primaryHref="/contact"
-        secondaryHref="/pricing"
+        secondaryHref="/contact"
       />
     </>
   );
