@@ -118,55 +118,61 @@ export function Header() {
       </div>
 
       {mobileOpen ? (
-        <div
-          id="mobile-menu"
-          className="fixed inset-0 z-[100] isolate flex h-[100dvh] min-h-[100svh] flex-col overflow-y-auto overscroll-contain bg-[hsl(var(--ds-paper))] lg:hidden"
-        >
-          <div className="container-page flex h-20 shrink-0 items-center justify-between border-b border-line pt-[env(safe-area-inset-top)]">
-            <Logo onClick={() => setMobileOpen(false)} />
-            <button
-              type="button"
-              onClick={() => setMobileOpen(false)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-[hsl(var(--ds-ink)/0.04)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-              aria-label={dict.actions.closeMenu}
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+        <div id="mobile-menu" className="fixed inset-0 z-[100] isolate lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMobileOpen(false)}
+            className="absolute inset-0 bg-[hsl(var(--ds-ink)/0.46)] backdrop-blur-md"
+            aria-label={dict.actions.closeMenu}
+          />
 
-          <nav
-            className="container-page grid flex-1 content-center py-6"
-            aria-label="Mobile"
-          >
-            {primaryNav.map((item, i) => {
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  aria-current={active ? 'page' : undefined}
-                  style={{ transitionDelay: `${40 + i * 35}ms` }}
-                  className={cn(
-                    'reveal-up flex min-h-12 items-center border-b border-line py-3 text-[clamp(1.3rem,6vw,1.75rem)] transition-colors is-in',
-                    active ? 'text-brand' : 'text-ink hover:text-brand'
-                  )}
-                >
-                  <span className="text-display">{navLabel(item)}</span>
-                </Link>
-              );
-            })}
-          </nav>
+          <div className="relative z-10 flex h-[60dvh] min-h-[420px] max-h-[620px] flex-col overflow-y-auto overscroll-contain border-b border-line bg-[hsl(var(--ds-paper))] shadow-2xl">
+            <div className="container-page flex h-20 shrink-0 items-center justify-between border-b border-line pt-[env(safe-area-inset-top)]">
+              <Logo onClick={() => setMobileOpen(false)} />
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-[hsl(var(--ds-ink)/0.04)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                aria-label={dict.actions.closeMenu}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
 
-          <div className="container-page grid shrink-0 gap-3 border-t border-line pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-5 sm:grid-cols-[auto_1fr] sm:items-center">
-            <LanguageSwitcher className="justify-self-start" />
-            <Link
-              href="/contact"
-              className="btn-primary w-full"
-              onClick={() => setMobileOpen(false)}
+            <nav
+              className="container-page grid shrink-0 pt-3"
+              aria-label="Mobile"
             >
-              {dict.actions.bookConsultation}
-            </Link>
+              {primaryNav.map((item, i) => {
+                const active = isActive(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    aria-current={active ? 'page' : undefined}
+                    style={{ transitionDelay: `${40 + i * 35}ms` }}
+                    className={cn(
+                      'reveal-up flex min-h-11 items-center border-b border-line py-2.5 text-[clamp(1.15rem,5.4vw,1.55rem)] transition-colors is-in',
+                      active ? 'text-brand' : 'text-ink hover:text-brand'
+                    )}
+                  >
+                    <span className="text-display">{navLabel(item)}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="container-page grid shrink-0 gap-3 pb-5 pt-5 sm:grid-cols-[auto_1fr] sm:items-center">
+              <LanguageSwitcher className="justify-self-start" />
+              <Link
+                href="/contact"
+                className="btn-primary w-full"
+                onClick={() => setMobileOpen(false)}
+              >
+                {dict.actions.bookConsultation}
+              </Link>
+            </div>
           </div>
         </div>
       ) : null}
