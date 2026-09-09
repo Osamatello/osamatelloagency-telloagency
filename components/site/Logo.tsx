@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
@@ -36,10 +37,13 @@ export function Logo({
       aria-label={brand.name}
     >
       {markOk && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src="/brand/damasavero-logo.png?v=3"
+        <Image
+          src="/brand/damasavero-logo.png"
           alt=""
+          width={1254}
+          height={1254}
+          sizes="32px"
+          priority
           className="h-8 w-auto shrink-0"
           onError={() => setMarkOk(false)}
         />
