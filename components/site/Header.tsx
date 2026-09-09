@@ -122,12 +122,12 @@ export function Header() {
           <button
             type="button"
             onClick={() => setMobileOpen(false)}
-            className="absolute inset-0 bg-[hsl(var(--ds-ink)/0.46)] backdrop-blur-md"
+            className="absolute inset-0 bg-[hsl(var(--ds-ink)/0.42)] backdrop-blur-sm"
             aria-label={dict.actions.closeMenu}
           />
 
-          <div className="relative z-10 flex h-[60dvh] min-h-[420px] max-h-[620px] flex-col overflow-y-auto overscroll-contain border-b border-line bg-[hsl(var(--ds-paper))] shadow-2xl">
-            <div className="container-page flex h-20 shrink-0 items-center justify-between border-b border-line pt-[env(safe-area-inset-top)]">
+          <div className="absolute inset-y-0 end-0 z-10 flex h-[100dvh] w-[88vw] max-w-[420px] flex-col overflow-y-auto overscroll-contain border-s border-line bg-[hsl(var(--ds-paper))] shadow-2xl">
+            <div className="flex h-20 shrink-0 items-center justify-between border-b border-line px-5 pt-[env(safe-area-inset-top)] sm:px-6">
               <Logo onClick={() => setMobileOpen(false)} />
               <button
                 type="button"
@@ -139,10 +139,7 @@ export function Header() {
               </button>
             </div>
 
-            <nav
-              className="container-page grid shrink-0 pt-3"
-              aria-label="Mobile"
-            >
+            <nav className="grid shrink-0 px-5 pt-6 sm:px-6" aria-label="Mobile">
               {primaryNav.map((item, i) => {
                 const active = isActive(item.href);
                 return (
@@ -153,7 +150,7 @@ export function Header() {
                     aria-current={active ? 'page' : undefined}
                     style={{ transitionDelay: `${40 + i * 35}ms` }}
                     className={cn(
-                      'reveal-up flex min-h-11 items-center border-b border-line py-2.5 text-[clamp(1.15rem,5.4vw,1.55rem)] transition-colors is-in',
+                      'reveal-up flex min-h-14 items-center border-b border-line py-3 text-[clamp(1.25rem,5.6vw,1.6rem)] transition-colors is-in',
                       active ? 'text-brand' : 'text-ink hover:text-brand'
                     )}
                   >
@@ -163,7 +160,7 @@ export function Header() {
               })}
             </nav>
 
-            <div className="container-page grid shrink-0 gap-3 pb-5 pt-5 sm:grid-cols-[auto_1fr] sm:items-center">
+            <div className="mt-auto grid shrink-0 gap-4 border-t border-line px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-5 sm:px-6">
               <LanguageSwitcher className="justify-self-start" />
               <Link
                 href="/contact"
