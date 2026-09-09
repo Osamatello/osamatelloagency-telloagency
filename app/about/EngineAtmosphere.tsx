@@ -25,7 +25,7 @@ type Fragment = {
 };
 type Zone = { left: number; top: number; right: number; bottom: number; soft: number; fade: number };
 
-const COLORS = ['#173e32', '#315f4d', '#78917f', '#a8b5a8', '#c9cec5'];
+const COLORS = ['#2f6f55', '#3f8a68', '#6fae8d', '#96b8a5', '#c4d4c9'];
 const VISIBILITY = 1.85;
 const rand = (seed: number) => {
   const value = Math.sin(seed * 91.713) * 43758.5453;
