@@ -30,8 +30,7 @@ const cairo = Cairo({
   display: 'swap',
 });
 
-// TODO(DAMASAVERO): confirm the production domain and update this value.
-const siteUrl = 'https://osamatelloagency-telloagency.vercel.app';
+const siteUrl = 'https://damasavero.com';
 
 const title = 'DAMASAVERO — AI Automation & Business Systems';
 const description =
@@ -71,8 +70,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/og-image.png',
-        width: 1200,
-        height: 630,
+        width: 1731,
+        height: 909,
         alt: 'DAMASAVERO — AI Automation & Business Systems',
       },
     ],

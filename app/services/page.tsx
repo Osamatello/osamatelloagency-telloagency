@@ -1,17 +1,71 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { EngineAtmosphere } from './EngineAtmosphere';
 import { SystemAssembly } from './SystemAssembly';
 import styles from './services.module.css';
 
+
 export default function ServicesPage() {
   const { dict, dir } = useI18n();
   const s = dict.services;
   const [active, setActive] = useState(0);
+  const domainRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const flowRef = useRef<HTMLOListElement>(null);
+  const [flowIn, setFlowIn] = useState(false);
+
+  // The process rail draws once, on entry. Deliberately not `useInView`: that
+  // helper resolves to "visible" immediately under prefers-reduced-motion, which
+  // would complete the sequence before the row is ever on screen. Here reduced
+  // motion shortens the draw (see the stylesheet) rather than skipping it.
+  useEffect(() => {
+    const el = flowRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === 'undefined' || !window.innerHeight) {
+      setFlowIn(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!entries[0]?.isIntersecting) return;
+        observer.disconnect();
+        // The fill is a keyframe animation starting from scaleX(0), so it always
+        // plays from zero — no paint-timing guard needed, and none that could
+        // strand the reveal if rAF is throttled.
+        setFlowIn(true);
+      },
+      { threshold: 0.25, rootMargin: '0px 0px -15% 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Reading position activates a stratum, alongside hover, focus and click.
+  // The band is the middle slice of the viewport, so whichever domain the
+  // reader is actually on is the one lifted in the Assembly.
+  useEffect(() => {
+    const items = domainRefs.current.filter(Boolean) as HTMLLIElement[];
+    if (!items.length || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const hit = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!hit) return;
+        const index = items.indexOf(hit.target as HTMLLIElement);
+        if (index >= 0) setActive(index);
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+    );
+
+    items.forEach(item => observer.observe(item));
+    return () => observer.disconnect();
+  }, [s.domains.items.length]);
+
   const titleWords = s.hero.title.split(' ');
   const lead = titleWords.slice(0, -2).join(' ');
   const tail = titleWords.slice(-2).join(' ');
@@ -55,6 +109,9 @@ export default function ServicesPage() {
               {s.domains.items.map((item, i) => (
                 <li
                   key={item.index}
+                  ref={node => {
+                    domainRefs.current[i] = node;
+                  }}
                   className={i === active ? `${styles.domain} ${styles.domainOn}` : styles.domain}
                   onMouseEnter={() => setActive(i)}
                 >
@@ -97,14 +154,26 @@ export default function ServicesPage() {
             <h2 id="approach-title" className="text-display">{s.approach.title}</h2>
             <p>{s.approach.lead}</p>
           </div>
-          <ol className={styles.steps}>
-            {s.detail.processSteps.map(step => (
-              <li key={step.step} className={styles.step}>
-                <span className={styles.stepNumber} aria-hidden="true">{step.step}</span>
-                <div>
-                  <h3 className="text-display">{step.title}</h3>
-                  <p>{step.description}</p>
-                </div>
+          <ol
+            ref={flowRef}
+            className={flowIn ? `${styles.flow} ${styles.flowIn}` : styles.flow}
+          >
+            {/* One muted rail, one green rail drawn over it. */}
+            <span className={styles.railBase} aria-hidden="true" />
+            <span className={styles.railFill} aria-hidden="true" />
+            {s.detail.processSteps.map((step, i) => (
+              <li
+                key={step.step}
+                className={styles.stage}
+                /* One arrival time per stage. The rail travels linearly across
+                   the row, so node i sits at i/4 of the width and is reached at
+                   i x STAGE_STEP. Node, title and description all key off it. */
+                style={{ ['--t' as string]: `${i * 700}ms` }}
+              >
+                <span className={styles.stageNode} aria-hidden="true" />
+                <span className={styles.stageNumber} aria-hidden="true">{step.step}</span>
+                <h3 className="text-display">{step.title}</h3>
+                <p>{step.description}</p>
               </li>
             ))}
           </ol>
