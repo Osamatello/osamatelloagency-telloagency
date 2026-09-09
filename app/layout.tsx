@@ -65,6 +65,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'DAMASAVERO',
+    // Resolved against `metadataBase`; matches the homepage canonical.
+    url: '/',
     title,
     description,
     images: [
