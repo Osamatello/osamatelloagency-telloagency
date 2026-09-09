@@ -6,12 +6,8 @@ import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { useInView } from '@/lib/useInView';
 import { cn } from '@/lib/utils';
 import { SectionHead } from './SectionHead';
-import { SystemLayers } from './HomeVisuals';
 
-/**
- * What we build — the section head sits beside the layered-system drawing, so
- * the stack visibly assembles while the capability rows read underneath.
- */
+/** Spatial capability field: six persistent points aligned into three paired rows. */
 export function Capabilities() {
   const { dict, dir } = useI18n();
   const t = dict.home.capabilities;
@@ -21,14 +17,7 @@ export function Capabilities() {
   return (
     <section className="relative overflow-hidden">
       <div className="container-page relative z-10 border-t border-line pt-14 pb-5 sm:pt-16 sm:pb-6 lg:pt-20 lg:pb-8">
-        <div className="grid items-start gap-x-16 gap-y-10 lg:grid-cols-12">
-          <div className="lg:col-span-6">
-            <SectionHead label={t.eyebrow} title={t.title} />
-          </div>
-          <div className="lg:col-span-4 lg:col-start-9">
-            <SystemLayers className="mx-auto max-w-[15rem] lg:max-w-none" />
-          </div>
-        </div>
+        <SectionHead label={t.eyebrow} title={t.title} />
 
         <ol
           ref={ref}

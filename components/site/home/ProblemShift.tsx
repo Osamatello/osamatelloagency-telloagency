@@ -4,7 +4,6 @@ import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { useScrollProgress } from '@/lib/useScrollProgress';
 import { cn } from '@/lib/utils';
 import { SectionHead } from './SectionHead';
-import { ConvergenceField } from './HomeVisuals';
 
 type Pair = { problem: string; automated: string };
 
@@ -103,9 +102,6 @@ export function ProblemShift() {
   return (
     <div ref={ref}>
       <SectionHead label={t.eyebrow} title={t.title} lead={t.lead} />
-
-      {/* The picture carries the argument before any of the copy does. */}
-      <ConvergenceField progress={progress} className="mt-9 h-[104px] sm:mt-11 sm:h-[130px]" />
 
       {/* Mobile: stacked rails each respond to their own position in the viewport. */}
       <div className="mt-8 grid gap-y-6 sm:hidden">

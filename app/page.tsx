@@ -10,7 +10,6 @@ import { IntegrationRail } from '@/components/site/home/IntegrationRail';
 import { Capabilities } from '@/components/site/home/Capabilities';
 import { ProblemShift } from '@/components/site/home/ProblemShift';
 import { BeforeAfterAutomation } from '@/components/site/home/BeforeAfterAutomation';
-import { HorizonMark } from '@/components/site/home/HomeVisuals';
 import { useInView } from '@/lib/useInView';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
@@ -207,10 +206,6 @@ function HomeCta() {
           </Link>
           {t.secondaryCta ? <Link href="/services" className="btn-outline">{t.secondaryCta}</Link> : null}
         </div>
-      </div>
-
-      <div className="lg:col-span-4 lg:col-start-9">
-        <HorizonMark className="mx-auto max-w-[17rem] lg:max-w-none" />
       </div>
     </div>
   );

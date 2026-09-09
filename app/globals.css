@@ -493,6 +493,9 @@ html:has(#home-page) footer a[aria-label] {
    the charcoal ground instead of letting it disappear. */
 html:has(#home-page) header a[aria-label] img,
 html:has(#home-page) footer a[aria-label] img {
-  filter: brightness(0) invert(1);
-  opacity: 0.92;
+  /* Invert lifts the charcoal mark to warm white; the 180deg hue rotation
+     carries the deep-green accent back to a muted emerald instead of leaving
+     it inverted to pink. Geometry is untouched, and light pages never match. */
+  filter: invert(1) hue-rotate(180deg) saturate(1.25);
+  opacity: 0.94;
 }
