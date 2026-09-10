@@ -3,254 +3,237 @@
 import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
-type Point = { x: number; y: number; scale: number; rotation: number; z: number };
-type Fragment = { depth: number; kind: number; color: string; phase: number; speed: number; states: Point[] };
-type ProtectedZone = { left: number; top: number; right: number; bottom: number };
+/**
+ * The homepage background — one population of fragments, one continuous story.
+ *
+ * They begin locked in the zigzag formation across the hero. As the hero leaves
+ * the viewport the formation releases and each fragment hands over to its own
+ * free drift, so the atmosphere below the hero *is* the zigzag, disassembled —
+ * not a second system fading in over it.
+ *
+ * After the release the per-frame work is just integrate-and-draw: no formation
+ * machine, no visual states, no geometry morphing.
+ */
+
+type Fragment = {
+  homeX: number; homeY: number;          // zigzag slot, normalised
+  x: number; y: number;                  // free drift position, normalised
+  vx: number; vy: number;                // px per second once released
+  scale: number; rotation: number; spin: number; z: number;
+  kind: number; color: string; phase: number; speed: number;
+  swaySpeed: number; swayAmp: number;
+};
+type Zone = { left: number; top: number; right: number; bottom: number; soft: number; fade: number };
 
 const COLORS = ['#2f6f55', '#3f8a68', '#6fae8d', '#96b8a5', '#c4d4c9'];
-const VISIBILITY_BOOST = 2.15;
-/** Page ground behind the hero — matches `--ds-paper` in the homepage dark beat. */
-const GROUND = '#101412';
-const AMBIENT_SPEED = 2.30;
-const STATE_COUNT = 8;
+const HERO_VISIBILITY = 2.15;
+const ATMOSPHERE_VISIBILITY = 1.85;
 const rand = (seed: number) => {
   const value = Math.sin(seed * 91.713) * 43758.5453;
   return value - Math.floor(value);
 };
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 const smooth = (value: number) => value * value * (3 - 2 * value);
-/** Hold each formation across the ends of its scroll segment, then cross to the
- *  next one over the middle — without this the states never settle long enough
- *  to be read as a shape (the DNA run especially). */
-const dwell = (value: number) => smooth(clamp((value - 0.28) / 0.44));
-/** States 2 and 3 are the two helix phases (`dnaX/dnaY` and `dnaLate*`), and the
- *  segment between them is the Capabilities -> The Shift run. A straight lerp
- *  between two phases of the same circle cuts through its interior, so most of
- *  that run was reading as a cloud. Park on each pure helix for ~42% of the
- *  segment and cross between them quickly instead. */
-const DNA_SEGMENT = 2;
-const dnaDwell = (value: number) => smooth(clamp((value - 0.42) / 0.16));
 
 function createFragments(count: number, compact: boolean): Fragment[] {
   return Array.from({ length: count }, (_, index) => {
     const a = rand(index + 1);
     const b = rand(index + 71);
     const c = rand(index + 149);
+    const d = rand(index + 233);
     const depth = 0.25 + c * 1.15;
-    const angle = index * 2.39996;
     const group = index % 3;
     const sequence = index / Math.max(count - 1, 1);
-    const layer = index % 4;
-    const nucleusCore = index % 5 === 0;
-    const nucleusRadiusX = nucleusCore ? 0.018 + a * 0.055 : 0.13 + layer * 0.045 + a * 0.018;
-    const nucleusRadiusY = nucleusCore ? 0.012 + b * 0.038 : (compact ? 0.055 : 0.075) + layer * (compact ? 0.021 : 0.032);
-    const nucleusX = 0.5 + Math.cos(angle) * nucleusRadiusX;
-    const nucleusY = (compact ? 0.54 : 0.5) + Math.sin(angle) * nucleusRadiusY;
     const wavePhase = (sequence * (compact ? 2.35 : 3.2)) % 1;
     const zigzag = 1 - 4 * Math.abs(wavePhase - 0.5);
-    const waveX = compact ? 0.5 + zigzag * 0.31 + (group - 1) * 0.022 : 0.05 + sequence * 0.9;
-    const waveY = compact ? 0.08 + sequence * 0.84 : 0.5 + zigzag * 0.27 + (group - 1) * 0.026;
-    const strand = index % 2 === 0 ? 0 : Math.PI;
-    const strandSequence = Math.floor(index / 2) / Math.max(Math.ceil(count / 2) - 1, 1);
-    const dnaPhase = strandSequence * Math.PI * (compact ? 5.5 : 6.5) + strand;
-    const dnaRadius = compact ? 0.28 : 0.32;
-    const dnaX = 0.5 + Math.cos(dnaPhase) * dnaRadius;
-    const dnaY = 0.08 + strandSequence * 0.84;
-    const dnaLatePhase = dnaPhase + 0.62;
-    const dnaLateX = 0.5 + Math.cos(dnaLatePhase) * dnaRadius * 0.92;
-    const dnaLateY = 0.08 + strandSequence * 0.84;
-    const tunnelBand = index % 9;
-    const tunnelDepth = tunnelBand / 8;
-    const tunnelSlot = Math.floor(index / 9);
-    const tunnelSlots = Math.max(Math.ceil(count / 9) - 1, 1);
-    const perimeter = ((tunnelSlot / tunnelSlots) * 4 + tunnelBand * 0.07) % 4;
-    let frameX = 0;
-    let frameY = 0;
-    if (perimeter < 1) { frameX = -1 + perimeter * 2; frameY = -1; }
-    else if (perimeter < 2) { frameX = 1; frameY = -1 + (perimeter - 1) * 2; }
-    else if (perimeter < 3) { frameX = 1 - (perimeter - 2) * 2; frameY = 1; }
-    else { frameX = -1; frameY = 1 - (perimeter - 3) * 2; }
-    const tunnelScale = 0.15 + Math.pow(tunnelDepth, 1.3) * 0.85;
-    const tunnelCenterX = compact ? 0.5 : 0.62;
-    const tunnelCenterY = 0.52;
-    const tunnelX = tunnelCenterX + frameX * (compact ? 0.42 : 0.38) * tunnelScale;
-    const tunnelY = tunnelCenterY + frameY * (compact ? 0.38 : 0.4) * tunnelScale;
-    const tunnelApproachX = tunnelCenterX + (tunnelX - tunnelCenterX) * 0.72;
-    const tunnelApproachY = tunnelCenterY + (tunnelY - tunnelCenterY) * 0.72;
-    const tornadoY = 0.08 + sequence * 0.84;
-    const tornadoRadius = 0.055 + (1 - sequence) * (compact ? 0.3 : 0.27);
-    const tornadoPhase = sequence * Math.PI * 9 + group * 0.5;
-    const tornadoCenterX = compact ? 0.5 : 0.7;
-    const tornadoX = tornadoCenterX + Math.cos(tornadoPhase) * tornadoRadius;
-    const tornadoGatherX = tornadoCenterX + Math.cos(tornadoPhase - 0.5) * tornadoRadius * 0.66;
-    return { depth, kind: index % 7, color: COLORS[index % COLORS.length], phase: a * Math.PI * 2, speed: 0.22 + b * 0.38, states: [
-      { x: waveX, y: waveY, scale: 0.44 + depth * 0.58, rotation: zigzag > 0 ? Math.PI / 4 : -Math.PI / 4, z: 0.22 + group * 0.48 + c * 0.3 },
-      { x: nucleusX, y: nucleusY, scale: nucleusCore ? 0.95 + depth * 0.72 : 0.42 + depth * 0.52, rotation: angle * 0.32, z: nucleusCore ? 1.25 + c * 0.55 : 0.2 + layer * 0.42 },
-      { x: dnaX, y: dnaY, scale: 0.42 + depth * 0.56, rotation: dnaPhase, z: 0.32 + (Math.sin(dnaPhase) + 1) * 0.68 },
-      { x: dnaLateX, y: dnaLateY, scale: 0.42 + depth * 0.58, rotation: dnaLatePhase, z: 0.32 + (Math.sin(dnaLatePhase) + 1) * 0.68 },
-      { x: tunnelApproachX, y: tunnelApproachY, scale: 0.38 + tunnelDepth * 0.72, rotation: perimeter * Math.PI / 2, z: 0.2 + tunnelDepth * 1.45 },
-      { x: tunnelX, y: tunnelY, scale: 0.36 + tunnelDepth * 0.82, rotation: perimeter * Math.PI / 2, z: 0.18 + tunnelDepth * 1.62 },
-      { x: tornadoGatherX, y: tornadoY, scale: 0.4 + depth * 0.52, rotation: tornadoPhase - 0.5, z: 0.24 + (Math.sin(tornadoPhase - 0.5) + 1) * 0.7 },
-      { x: tornadoX, y: tornadoY, scale: 0.38 + depth * 0.6, rotation: tornadoPhase, z: 0.22 + (Math.sin(tornadoPhase) + 1) * 0.76 },
-    ] };
+    const homeX = compact ? 0.5 + zigzag * 0.31 + (group - 1) * 0.022 : 0.05 + sequence * 0.9;
+    const homeY = compact ? 0.08 + sequence * 0.84 : 0.5 + zigzag * 0.27 + (group - 1) * 0.026;
+    // Drift speeds match the shared atmosphere on the other pages.
+    const heading = a * Math.PI * 2;
+    const speed = (10 + d * 20) * (0.55 + depth * 0.55);
+    return {
+      homeX, homeY,
+      x: homeX, y: homeY,
+      vx: Math.cos(heading) * speed,
+      vy: Math.sin(heading) * speed * 0.72,
+      scale: 0.44 + depth * 0.58,
+      rotation: zigzag > 0 ? Math.PI / 4 : -Math.PI / 4,
+      spin: (d - 0.5) * 0.42,
+      z: 0.22 + group * 0.48 + c * 0.3,
+      kind: index % 7,
+      color: COLORS[index % COLORS.length],
+      phase: a * Math.PI * 2,
+      speed: 0.22 + b * 0.38,
+      swaySpeed: 0.22 + d * 0.34,
+      swayAmp: 5 + c * 13,
+    };
   });
 }
 
 export function HeroEnvironment({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
     if (!canvas || !context) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let fragments: Fragment[] = [], anchors: number[] = [], width = 0, height = 0, target = 0, progress = target, frame = 0, elapsed = 0, protectionFrame = 0;
-    let protectedZones: ProtectedZone[] = [];
-    let lastPresence = -1, lastTime = 0, textQuiet = 1, ctaTop = Infinity, ctaHeight = 0, mirrored = false;
-    // RTL flips the composition, not the engine: the whole scene is drawn
-    // mirrored about the vertical centre, so the dominant formations move to
-    // the left and the quiet zone lands under the Arabic copy on the right.
-    const readMirror = () => document.documentElement.dir === 'rtl';
-    const measureProtection = () => {
-      const padding = width < 640 ? 4 : 6;
-      protectedZones = Array.from(document.querySelectorAll<HTMLElement>('[data-visual-state] h1, [data-visual-state] h2, [data-visual-state] h3, [data-visual-state] p, [data-visual-state] dt, [data-visual-state] dd, [data-visual-state] .eyebrow, [data-visual-state] .btn-primary, [data-visual-state] .btn-outline, [data-visual-state] button > span, [data-visual-state] a > span')).map((element) => {
-        const rect = element.getBoundingClientRect();
-        return { left: rect.left - padding, top: rect.top - padding, right: rect.right + padding, bottom: rect.bottom + padding };
+
+    let fragments: Fragment[] = [];
+    let zones: Zone[] = [];
+    let width = 0, height = 0, frame = 0, last = 0, zoneFrame = 0;
+
+    /** 1 while the hero holds the formation, 0 once it has fully released. */
+    const held = () => {
+      const viewport = window.innerHeight || 1;
+      return smooth(clamp(1 - (window.scrollY - viewport * 0.1) / (viewport * 0.7)));
+    };
+
+    // Content keeps its air once the fragments are loose over the page.
+    const measureZones = () => {
+      const page = document.getElementById('home-page')?.parentElement ?? document.body;
+      const out: Zone[] = [];
+      page.querySelectorAll('h1, h2, h3, p, li, dt, dd, .eyebrow, a, button').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < -12 || r.top > height + 12 || r.width === 0) return;
+        out.push({ left: r.left - 12, top: r.top - 12, right: r.right + 12, bottom: r.bottom + 12, soft: 0.17, fade: 58 });
       });
+      zones = out;
     };
-    const scheduleProtectionMeasure = () => { if (!protectionFrame) protectionFrame = requestAnimationFrame(() => { protectionFrame = 0; measure(); measureProtection(); }); };
-    const readabilityAt = (drawX: number, y: number) => {
-      const x = mirrored ? width - drawX : drawX;
-      let attenuation = 1;
-      for (const zone of protectedZones) {
-        if (x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom) return 0.52 * textQuiet;
-        const dx = Math.max(zone.left - x, 0, x - zone.right), dy = Math.max(zone.top - y, 0, y - zone.bottom), distance = Math.hypot(dx, dy);
-        if (distance < 46) attenuation = Math.min(attenuation, 0.6 + distance / 115);
+    const scheduleZones = () => {
+      if (!zoneFrame) zoneFrame = requestAnimationFrame(() => { zoneFrame = 0; measureZones(); });
+    };
+
+    const attenuation = (x: number, y: number) => {
+      let a = 1;
+      for (let i = 0; i < zones.length; i++) {
+        const z = zones[i];
+        if (x >= z.left && x <= z.right && y >= z.top && y <= z.bottom) { if (z.soft < a) a = z.soft; continue; }
+        const dx = Math.max(z.left - x, 0, x - z.right), dy = Math.max(z.top - y, 0, y - z.bottom);
+        const dist = Math.hypot(dx, dy);
+        if (dist < z.fade) {
+          const v = z.soft + (1 - z.soft) * (dist / z.fade);
+          if (v < a) a = v;
+        }
       }
-      return attenuation;
+      return a;
     };
-    const softenProtectedZones = () => {
-      if (!protectedZones.length) return;
-      context.save();
-      context.filter = 'blur(7px)';
-      context.fillStyle = 'rgba(16, 20, 18, 0.42)';
+
+    const shape = (kind: number, size: number) => {
+      if (kind === 4) { context.fillRect(-size, -size * 0.22, size * 2, size * 0.44); return; }
+      if (kind === 5) {
+        context.beginPath();
+        context.moveTo(-size * 1.45, -size * 0.13); context.lineTo(size * 1.25, -size * 0.42);
+        context.lineTo(size * 0.8, size * 0.18); context.lineTo(-size * 1.2, size * 0.38);
+        context.closePath(); context.fill(); return;
+      }
+      if (kind === 6) {
+        const inset = size * 0.55;
+        context.beginPath();
+        context.moveTo(0, -size); context.lineTo(size, -size * 0.35); context.lineTo(size, size * 0.7);
+        context.lineTo(0, size); context.lineTo(-size, size * 0.35); context.lineTo(-size, -size * 0.7);
+        context.closePath();
+        context.moveTo(0, -size); context.lineTo(0, size);
+        context.moveTo(-size, -size * 0.7); context.lineTo(inset, -size * 0.12); context.lineTo(size, -size * 0.35);
+        context.stroke(); return;
+      }
       context.beginPath();
-      for (const zone of protectedZones) context.rect(zone.left, zone.top, zone.right - zone.left, zone.bottom - zone.top);
-      context.fill();
-      context.restore();
+      context.moveTo(0, -size); context.lineTo(size, 0); context.lineTo(0, size); context.lineTo(-size, 0);
+      context.closePath();
+      kind === 2 ? context.stroke() : context.fill();
     };
-    const measure = () => {
-      // Anchors are keyed by the section's declared state, not by DOM order —
-      // the markup skips state 5, and the pinned / negative-margin sections can
-      // otherwise report positions out of order. Missing states are interpolated
-      // between their neighbours so every formation gets its own scroll run.
-      const viewport = window.innerHeight || 1;
-      const marks = Array.from(document.querySelectorAll<HTMLElement>('[data-visual-state]'))
-        .map((element) => ({
-          state: Number(element.dataset.visualState),
-          pos: element.getBoundingClientRect().top + window.scrollY + element.offsetHeight * 0.5 - viewport * 0.5,
-        }))
-        .filter((mark) => Number.isFinite(mark.state))
-        .sort((a, b) => a.state - b.state);
-      anchors = [];
-      if (!marks.length) return;
-      const pageEnd = Math.max(0, document.documentElement.scrollHeight - viewport);
-      marks[0].pos = Math.min(marks[0].pos, 0);
-      // Strictly forward: a later state can never sit above an earlier one.
-      for (let index = 1; index < marks.length; index++) marks[index].pos = Math.max(marks[index].pos, marks[index - 1].pos + viewport * 0.3);
-      marks[marks.length - 1].pos = Math.min(Math.max(marks[marks.length - 1].pos, pageEnd * 0.88), pageEnd);
-      for (let state = 0; state < STATE_COUNT; state++) {
-        let previous = marks[0], next = marks[marks.length - 1];
-        for (const mark of marks) { if (mark.state <= state) previous = mark; if (mark.state >= state) { next = mark; break; } }
-        const span = next.state - previous.state;
-        anchors.push(span <= 0 ? previous.pos : previous.pos + (next.pos - previous.pos) * ((state - previous.state) / span));
-      }
-      // Every formation keeps a readable minimum run of scroll.
-      for (let index = 1; index < anchors.length; index++) anchors[index] = Math.max(anchors[index], anchors[index - 1] + viewport * 0.22);
-      const cta = document.querySelector<HTMLElement>('[data-visual-state="7"]');
-      ctaTop = cta ? cta.getBoundingClientRect().top + window.scrollY : Infinity;
-      ctaHeight = cta ? cta.offsetHeight : 0;
-    };
-    // The scene belongs to the hero. Past it the canvas fades out and both the
-    // formation machine slows right down and the canvas drops to a background
-    // whisper, so the scene stays alive without competing with the copy.
-    const heroLead = () => {
-      const viewport = window.innerHeight || 1;
-      return clamp(1 - (window.scrollY - viewport * 0.22) / (viewport * 0.95));
-    };
-    // Floor opacity past the hero — lower on mobile, where the ground is nearer.
-    // The closing CTA gets the engine back at hero strength: its copy sits on
-    // the left, so the scene has the right-hand space to open up again.
-    const ctaLead = () => {
-      if (!ctaHeight) return 0;
-      const viewport = window.innerHeight || 1;
-      return clamp((window.scrollY + viewport - ctaTop) / (viewport * 0.55));
-    };
-    const heroPresence = () => {
-      const floor = width < 640 ? 0.14 : 0.2;
-      return Math.max(floor + (1 - floor) * heroLead(), ctaLead());
-    };
-    const updateTarget = () => {
-      if (reduced || anchors.length < 2) return;
-      const scroll = window.scrollY; let state = anchors.length - 1;
-      for (let index = 0; index < anchors.length - 1; index++) if (scroll <= anchors[index + 1]) { const local = clamp((scroll - anchors[index]) / Math.max(anchors[index + 1] - anchors[index], 1)); state = index + (index === DNA_SEGMENT ? dnaDwell(local) : dwell(local)); break; }
-      target = clamp(state, 0, STATE_COUNT - 1);
-    };
-    const pointAt = (fragment: Fragment) => { const state = Math.min(STATE_COUNT - 2, Math.floor(progress)), amount = smooth(progress - state), from = fragment.states[state], to = fragment.states[state + 1]; return { x: from.x + (to.x - from.x) * amount, y: from.y + (to.y - from.y) * amount, scale: from.scale + (to.scale - from.scale) * amount, rotation: from.rotation + (to.rotation - from.rotation) * amount, z: from.z + (to.z - from.z) * amount }; };
-    const drawWireframe = () => {
-      const ambientTime = elapsed * AMBIENT_SPEED, idleX = reduced ? 0 : Math.sin(ambientTime * 0.00016) * width * 0.004, idleY = reduced ? 0 : Math.cos(ambientTime * 0.00013) * height * 0.004;
-      context.save(); context.translate(width * 0.5 + idleX, height * 0.5 + idleY); context.rotate(reduced ? 0 : Math.sin(ambientTime * 0.00008) * 0.014); context.translate(-width * 0.5, -height * 0.5);
-      const wireBreath = reduced ? 1 : 0.94 + Math.sin(ambientTime * 0.00022) * 0.06;
-      context.globalAlpha = (width < 640 ? 0.07 : 0.105) * VISIBILITY_BOOST * wireBreath; context.strokeStyle = '#4a8f70'; context.lineWidth = 1;
-      const atomPresence = 1 - clamp(Math.abs(progress - 1) / 0.9), dnaPresence = 1 - clamp(Math.abs(progress - 2.5) / 1.25), tunnelPresence = 1 - clamp(Math.abs(progress - 4.5) / 1.25);
-      if (atomPresence > 0) { context.save(); context.globalAlpha *= atomPresence; context.translate(width * 0.5, height * 0.5); for (let ring = 0; ring < 3; ring++) { context.beginPath(); context.rotate(Math.PI / 3); context.ellipse(0, 0, width * (0.13 + ring * 0.035), height * (0.045 + ring * 0.012), 0, 0, Math.PI * 2); context.stroke(); } context.restore(); }
-      if (dnaPresence > 0) { context.save(); context.globalAlpha *= dnaPresence * 0.72; const radius = width * (width < 640 ? 0.28 : 0.32); for (let bridge = 0; bridge < 9; bridge++) { const t = bridge / 8, helix = t * Math.PI * (width < 640 ? 5.5 : 6.5) + ambientTime * 0.00008, y = height * (0.08 + t * 0.84); context.beginPath(); context.moveTo(width * 0.5 + Math.cos(helix) * radius, y); context.lineTo(width * 0.5 + Math.cos(helix + Math.PI) * radius, y); context.stroke(); } context.restore(); }
-      if (tunnelPresence > 0) { context.save(); context.globalAlpha *= tunnelPresence; const centerX = width * (width < 640 ? 0.5 : 0.62), centerY = height * 0.52, breathe = reduced ? 0 : Math.sin(ambientTime * 0.00018) * 0.018; for (let portal = 0; portal < 7; portal++) { const depth = portal / 6, scale = 0.14 + depth * 0.84 + breathe * depth, halfW = width * (width < 640 ? 0.42 : 0.38) * scale, halfH = height * (width < 640 ? 0.38 : 0.4) * scale; context.strokeRect(centerX - halfW, centerY - halfH, halfW * 2, halfH * 2); } context.restore(); }
-      context.restore();
-    };
-    const draw = () => {
-      textQuiet = 0.34 + 0.66 * heroLead(); mirrored = readMirror(); context.clearRect(0, 0, width, height); context.fillStyle = GROUND; context.fillRect(0, 0, width, height); context.save(); if (mirrored) { context.translate(width, 0); context.scale(-1, 1); } drawWireframe(); const ambientTime = elapsed * AMBIENT_SPEED;
-      fragments.forEach((fragment) => {
-        const point = pointAt(fragment), parallax = (target - progress) * 38 * point.z, idleStrength = reduced ? 0 : (1.8 + point.z * 3.8), idlePhase = fragment.phase + ambientTime * 0.00016 * fragment.speed, idleX = Math.sin(idlePhase * 1.7) * idleStrength, idleY = Math.cos(idlePhase * 1.13) * idleStrength * 0.72, breath = reduced ? 1 : 1 + Math.sin(idlePhase * 0.82) * 0.04 * point.z;
-        const atomPresence = 1 - clamp(Math.abs(progress - 1) / 0.9), dnaPresence = 1 - clamp(Math.abs(progress - 2.5) / 1.25), tunnelPresence = 1 - clamp(Math.abs(progress - 4.5) / 1.25), tornadoPresence = 1 - clamp(Math.abs(progress - 6.5) / 1.35), localOrbit = reduced ? 0 : atomPresence * (3.8 + point.z * 3.4), localHelix = reduced ? 0 : dnaPresence * (2.2 + point.z * 2.1), tunnelBreath = reduced ? 0 : tunnelPresence * Math.sin(idlePhase * 0.72) * (1 + point.z * 1.7), localTwist = reduced ? 0 : tornadoPresence * (3 + point.z * 2.7);
-        const x = point.x * width + idleX + Math.cos(idlePhase * 1.25) * localOrbit + Math.cos(idlePhase * 1.4) * localHelix + (point.x - 0.5) * tunnelBreath * 7 + Math.cos(idlePhase * 1.8) * localTwist;
-        const y = point.y * height + parallax + idleY + Math.sin(idlePhase) * localOrbit * 0.58 + Math.sin(idlePhase * 1.2) * localHelix * 0.34 + (point.y - 0.5) * tunnelBreath * 6 + Math.sin(idlePhase * 1.5) * localTwist * 0.28;
-        const quiet = width < 640 ? point.x > 0.1 && point.x < 0.9 && point.y > 0.08 && point.y < 0.45 : point.x > 0.08 && point.x < 0.57 && point.y > 0.08 && point.y < 0.72;
-        const base = width < 640 ? 3.2 : 3.6, foregroundBoost = fragment.kind === 6 && point.z > 1.15 ? 1.7 : 1, size = (base + point.z * (width < 640 ? 4.4 : 9.4)) * point.scale * foregroundBoost * breath;
-        context.save(); context.translate(x, y); context.rotate(point.rotation + (target - progress) * point.z * 0.75 + (reduced ? 0 : ambientTime * 0.000018 * fragment.speed * point.z));
-        const depthPresence = 0.96 + clamp(point.z / 1.8) * 0.16;
-        // The hero carries far more protected copy than the closing CTA, which
-        // left it reading weaker at the same canvas opacity. Lift it back to
-        // match, but only in the open space — anything near text keeps exactly
-        // the attenuation it had.
-        const readability = readabilityAt(x, y), heroGain = readability > 0.999 ? 1 + 0.5 * heroLead() : 1;
-        context.globalAlpha = (quiet ? 0.09 : 0.14 + point.z * 0.105) * VISIBILITY_BOOST * depthPresence * readability * heroGain; context.fillStyle = fragment.color; context.strokeStyle = fragment.color; context.lineWidth = 1;
-        if (fragment.kind === 4) context.fillRect(-size, -size * 0.22, size * 2, size * 0.44);
-        else if (fragment.kind === 5) { context.beginPath(); context.moveTo(-size * 1.45, -size * 0.13); context.lineTo(size * 1.25, -size * 0.42); context.lineTo(size * 0.8, size * 0.18); context.lineTo(-size * 1.2, size * 0.38); context.closePath(); context.fill(); }
-        else if (fragment.kind === 6) { const inset = size * 0.55; context.beginPath(); context.moveTo(0, -size); context.lineTo(size, -size * 0.35); context.lineTo(size, size * 0.7); context.lineTo(0, size); context.lineTo(-size, size * 0.35); context.lineTo(-size, -size * 0.7); context.closePath(); context.moveTo(0, -size); context.lineTo(0, size); context.moveTo(-size, -size * 0.7); context.lineTo(inset, -size * 0.12); context.lineTo(size, -size * 0.35); context.stroke(); }
-        else { context.beginPath(); context.moveTo(0, -size); context.lineTo(size, 0); context.lineTo(0, size); context.lineTo(-size, 0); context.closePath(); fragment.kind === 2 ? context.stroke() : context.fill(); }
+
+    const draw = (time: number, hold: number) => {
+      context.clearRect(0, 0, width, height);
+      const small = width < 640;
+      const heroBase = small ? 3.2 : 3.6, heroReach = small ? 4.4 : 9.4;
+      const atmoBase = small ? 3.4 : 4.2, atmoReach = small ? 5 : 10.5;
+      const loose = 1 - hold;
+      const seconds = time / 1000;
+
+      for (const f of fragments) {
+        // Position blends from the zigzag slot to the fragment's own drift.
+        const idle = f.phase + time * 0.00016 * f.speed;
+        const heroX = f.homeX * width + (reduced ? 0 : Math.sin(idle * 1.7) * (1.8 + f.z * 3.8));
+        const heroY = f.homeY * height + (reduced ? 0 : Math.cos(idle * 1.13) * (1.8 + f.z * 3.8) * 0.72);
+        const freeX = f.x * width + Math.sin(seconds * f.swaySpeed + f.phase) * f.swayAmp;
+        const freeY = f.y * height + Math.cos(seconds * f.swaySpeed * 0.83 + f.phase) * f.swayAmp * 0.7;
+        const x = heroX + (freeX - heroX) * loose;
+        const y = heroY + (freeY - heroY) * loose;
+
+        const size =
+          (heroBase + f.z * heroReach) * f.scale * hold +
+          (atmoBase + f.z * atmoReach) * loose * (f.kind === 6 && f.z > 1.15 ? 1.5 : 1);
+
+        const heroAlpha = (0.14 + f.z * 0.105) * HERO_VISIBILITY;
+        const atmoAlpha = (0.1 + f.z * 0.085) * ATMOSPHERE_VISIBILITY;
+        const alpha = (heroAlpha * hold + atmoAlpha * loose) * (loose > 0.02 ? attenuation(x, y) : 1);
+        if (alpha < 0.012) continue;
+
+        context.save();
+        context.translate(x, y);
+        context.rotate(f.rotation);
+        context.globalAlpha = alpha;
+        context.fillStyle = f.color;
+        context.strokeStyle = f.color;
+        context.lineWidth = 1;
+        shape(f.kind, size);
         context.restore();
-      }); context.restore(); softenProtectedZones();
+      }
     };
-    const animate = (time: number) => {
-      // Seed the ambient clock from the page clock so the hero opens on the
-      // exact same phase as before this loop switched to a scaled delta.
-      if (!lastTime) { lastTime = time; elapsed = time; }
-      const lead = heroLead();
-      // Ambient drift and formation travel both scale with the hero lead, so
-      // past the hero the scene breathes instead of sweeping.
-      elapsed += (time - lastTime) * (0.12 + 0.88 * lead);
-      lastTime = time;
-      const presence = heroPresence();
-      if (presence !== lastPresence) { canvas.style.opacity = presence.toFixed(3); lastPresence = presence; }
-      progress += (target - progress) * 0.09;
-      draw();
-      frame = requestAnimationFrame(animate);
+
+    const step = (now: number) => {
+      if (window.innerWidth !== width || window.innerHeight !== height) resize();
+      const dt = last ? Math.min((now - last) / 1000, 0.05) : 0.016;
+      last = now;
+      const hold = held();
+      const loose = 1 - hold;
+
+      // Only integrate once the formation has started letting go.
+      if (loose > 0.001) {
+        for (const f of fragments) {
+          f.x += (f.vx * dt * loose) / width;
+          f.y += (f.vy * dt * loose) / height;
+          if (f.x < -0.08) f.x += 1.16; else if (f.x > 1.08) f.x -= 1.16;
+          if (f.y < -0.08) f.y += 1.16; else if (f.y > 1.08) f.y -= 1.16;
+          f.rotation += f.spin * dt * loose;
+        }
+      }
+      draw(now, hold);
+      frame = requestAnimationFrame(step);
     };
-    const resize = () => { width = window.innerWidth; height = window.innerHeight; const ratio = Math.min(window.devicePixelRatio || 1, 1.6); canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio); context.setTransform(ratio, 0, 0, ratio, 0, 0); fragments = createFragments(width < 640 ? 96 : 258, width < 640); measure(); measureProtection(); updateTarget(); draw(); };
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const count = width < 640 ? 76 : 168;
+      if (fragments.length !== count) fragments = createFragments(count, width < 640);
+      measureZones();
+      draw(performance.now(), held());
+    };
+
     resize();
-    const onScroll = () => { updateTarget(); scheduleProtectionMeasure(); };
-    window.addEventListener('resize', resize); window.addEventListener('load', resize); window.addEventListener('scroll', onScroll, { passive: true }); frame = requestAnimationFrame(animate);
-    return () => { cancelAnimationFrame(frame); if (protectionFrame) cancelAnimationFrame(protectionFrame); window.removeEventListener('resize', resize); window.removeEventListener('load', resize); window.removeEventListener('scroll', onScroll); };
+    window.addEventListener('resize', resize);
+    window.addEventListener('scroll', scheduleZones, { passive: true });
+    if (!reduced) frame = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      if (zoneFrame) cancelAnimationFrame(zoneFrame);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('scroll', scheduleZones);
+    };
   }, []);
-  return <canvas ref={canvasRef} aria-hidden="true" className={cn('pointer-events-none fixed inset-0 z-0 h-[100dvh] w-screen will-change-[opacity]', className)} />;
+
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className={cn('pointer-events-none fixed inset-0 z-0 h-[100dvh] w-screen', className)}
+    />
+  );
 }

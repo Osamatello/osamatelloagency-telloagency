@@ -179,8 +179,10 @@ function HomeCta() {
   const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
   const { ref, inView } = useInView<HTMLDivElement>();
   return (
-    <div ref={ref} className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
-      <div className="max-w-3xl lg:col-span-7">
+    // Statement on one side, the actual next step on the other, split by a rule
+    // that runs the full width — the section now occupies the whole measure.
+    <div ref={ref} className="grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-16">
+      <div className="lg:col-span-6">
         <span className={cn('eyebrow reveal-up', inView && 'is-in')}>{t.eyebrow}</span>
         <h2
           className={cn('text-display reveal-up mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink', inView && 'is-in')}
@@ -188,16 +190,19 @@ function HomeCta() {
         >
           {t.title}
         </h2>
+      </div>
+
+      <div className="lg:col-span-5 lg:col-start-8 lg:pt-[5.5rem]">
         {t.subtitle ? (
           <p
-            className={cn('reveal-up mt-5 max-w-xl text-base leading-relaxed text-ink-muted', inView && 'is-in')}
+            className={cn('reveal-up border-t border-line pt-6 text-base leading-relaxed text-ink-muted', inView && 'is-in')}
             style={{ transitionDelay: '160ms' }}
           >
             {t.subtitle}
           </p>
         ) : null}
         <div
-          className={cn('reveal-up mt-9 flex flex-col gap-3 sm:flex-row', inView && 'is-in')}
+          className={cn('reveal-up mt-8 flex flex-col gap-3 sm:flex-row lg:mt-10', inView && 'is-in')}
           style={{ transitionDelay: '240ms' }}
         >
           <Link href="/contact" className="btn-primary">

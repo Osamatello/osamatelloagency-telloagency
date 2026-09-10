@@ -1,119 +1,158 @@
 'use client';
 
 import { useI18n } from '@/lib/i18n/LanguageProvider';
-import { useScrollProgress } from '@/lib/useScrollProgress';
+import { useInView } from '@/lib/useInView';
 import { cn } from '@/lib/utils';
 import { SectionHead } from './SectionHead';
 
-type Pair = { problem: string; automated: string };
+/**
+ * The Shift — a compression corridor.
+ *
+ * Not a comparison: one continuous drawing. Manual work enters on the left as
+ * scattered, broken signal traces, is forced through a narrow waist, and leaves
+ * on the right as evenly spaced rails. The five concerns are set directly onto
+ * that drawing as type — no cards, no boxes, no rails-and-nodes columns — so it
+ * shares no structure with the control-plane section further down the page.
+ */
 
-function Rail({
-  pairs,
-  resolved,
-  fill,
-  rtl,
-}: {
-  pairs: Pair[];
-  resolved: number;
-  fill: number;
-  rtl: boolean;
-}) {
-  return (
-    <ol className="relative h-full">
-      <span
-        aria-hidden="true"
-        className="absolute top-6 bottom-[3.2rem] w-px bg-line sm:top-[26px] sm:bottom-[3.475rem]"
-        style={{ insetInlineStart: '6px' }}
-      />
-      <span
-        aria-hidden="true"
-        className="absolute top-6 bottom-[3.2rem] w-px origin-top bg-brand transition-transform duration-300 ease-out sm:top-[26px] sm:bottom-[3.475rem]"
-        style={{ insetInlineStart: '6px', transform: `scaleY(${fill / 100})` }}
-      />
+const rand = (seed: number) => {
+  const value = Math.sin(seed * 91.713) * 43758.5453;
+  return value - Math.floor(value);
+};
 
-      {pairs.map((p, i) => {
-        const on = i <= resolved;
-        const scatter = (i % 2 === 0 ? -1 : 1) * (rtl ? -1 : 1) * 1.4;
-        return (
-          <li
-            key={i}
-            className="relative flex h-[4.7rem] items-start gap-5 overflow-hidden py-3 sm:h-[5.1rem] sm:py-3.5"
-          >
-            <span
-              className={cn(
-                'relative z-10 mt-1.5 h-3 w-3 shrink-0 rounded-full border-2 transition-colors duration-500',
-                on ? 'border-brand bg-brand' : 'border-line-strong bg-transparent'
-              )}
-            />
-            <div className="min-w-0 flex-1">
-              <span
-                className={cn(
-                  'block text-[clamp(0.98rem,2vw,1.3rem)] font-medium transition-all duration-500 ease-out',
-                  on ? 'text-ink-faint line-through decoration-1' : 'text-ink'
-                )}
-                style={{ transform: on ? 'none' : `translateX(${scatter}rem)` }}
-              >
-                {p.problem}
-              </span>
-              <span
-                className={cn(
-                  'mt-1 block text-[clamp(0.98rem,2vw,1.3rem)] font-medium text-brand transition-all duration-500 ease-out',
-                  on ? 'translate-y-0 opacity-100' : '-translate-y-1 opacity-0'
-                )}
-              >
-                {p.automated}
-              </span>
-            </div>
-          </li>
-        );
-      })}
-    </ol>
-  );
-}
+const WAIST_IN = 452;
+const WAIST_OUT = 512;
 
-function MobileRail({ pairs, rtl }: { pairs: Pair[]; rtl: boolean }) {
-  const { ref, progress } = useScrollProgress();
-  const n = pairs.length;
-  const railProgress = Math.min(1, Math.max(0, (progress - 0.18) / 0.48));
-  const resolved = Math.min(n - 1, Math.floor(railProgress * n));
-
-  return (
-    <div ref={ref}>
-      <Rail pairs={pairs} resolved={resolved} fill={railProgress * 100} rtl={rtl} />
-    </div>
-  );
-}
+/** Broken traces entering the corridor: irregular, unaligned, cut short. */
+const TRACES = Array.from({ length: 22 }, (_, i) => {
+  const a = rand(i + 5), b = rand(i + 61), c = rand(i + 137);
+  const y = 24 + a * 452;
+  const x0 = 8 + b * 150;
+  const x1 = x0 + 60 + c * 120;
+  const kink = x1 + 40 + a * 70;
+  return {
+    d: `M${x0.toFixed(1)} ${y.toFixed(1)} H${x1.toFixed(1)} L${kink.toFixed(1)} ${(y + (b - 0.5) * 46).toFixed(1)} L${WAIST_IN} 250`,
+    dash: c > 0.55 ? `${(4 + a * 8).toFixed(0)} ${(4 + b * 7).toFixed(0)}` : undefined,
+    faint: b < 0.4,
+  };
+});
 
 export function ProblemShift() {
-  const { dict, dir } = useI18n();
+  const { dict } = useI18n();
   const t = dict.home.shift;
-  const { ref, progress } = useScrollProgress();
-  const rtl = dir === 'rtl';
-
-  const n = Math.min(t.pairs.length, t.pairsRight.length);
-  const left = t.pairs.slice(0, n);
-  const right = t.pairsRight.slice(0, n);
-
-  // Desktop keeps the approved synchronized two-column behavior unchanged.
-  const shiftProgress = Math.min(1, Math.max(0, (progress - 0.16) / 0.34));
-  const resolved = Math.min(n - 1, Math.floor(shiftProgress * n));
-  const fill = shiftProgress * 100;
+  const labels = dict.home.beforeAfter;
+  const { ref, inView } = useInView<HTMLDivElement>();
+  const rows = t.pairs.slice(0, 5);
 
   return (
     <div ref={ref}>
       <SectionHead label={t.eyebrow} title={t.title} lead={t.lead} />
 
-      {/* Mobile: stacked rails each respond to their own position in the viewport. */}
-      <div className="mt-8 grid gap-y-6 sm:hidden">
-        <MobileRail pairs={left} rtl={rtl} />
-        <MobileRail pairs={right} rtl={rtl} />
+      <div className="mt-10 hidden items-end justify-between sm:mt-12 sm:flex">
+        <span className="text-[0.66rem] font-semibold uppercase tracking-[0.2em] text-ink-faint">
+          {labels.beforeLabel}
+        </span>
+        <span className="text-[0.66rem] font-semibold uppercase tracking-[0.2em] text-brand">
+          {labels.afterLabel}
+        </span>
       </div>
 
-      {/* Desktop/tablet: preserve the existing synchronized side-by-side system. */}
-      <div className="mt-10 hidden gap-x-10 sm:grid sm:grid-cols-2 sm:items-stretch lg:gap-x-16">
-        <Rail pairs={left} resolved={resolved} fill={fill} rtl={rtl} />
-        <Rail pairs={right} resolved={resolved} fill={fill} rtl={rtl} />
+      {/* Desktop: type sits inside the corridor drawing. */}
+      <div className="relative mt-5 hidden sm:block">
+        <svg
+          viewBox="0 0 1000 500"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full"
+          fill="none"
+        >
+          {TRACES.map((trace, i) => (
+            <path
+              key={i}
+              d={trace.d}
+              stroke={`hsl(var(--ds-ink) / ${trace.faint ? 0.26 : 0.4})`}
+              strokeWidth="1"
+              strokeDasharray={trace.dash}
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+
+          {/* the waist: everything is forced through one governed point */}
+          <path
+            d={`M${WAIST_IN} 40 C ${WAIST_IN + 22} 170, ${WAIST_IN + 22} 330, ${WAIST_IN} 460`}
+            stroke="hsl(var(--brand) / 0.78)"
+            strokeWidth="1.25"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d={`M${WAIST_OUT} 40 C ${WAIST_OUT - 22} 170, ${WAIST_OUT - 22} 330, ${WAIST_OUT} 460`}
+            stroke="hsl(var(--brand) / 0.78)"
+            strokeWidth="1.25"
+            vectorEffect="non-scaling-stroke"
+          />
+          <circle cx={(WAIST_IN + WAIST_OUT) / 2} cy="250" r="5" fill="hsl(var(--brand))" />
+
+          {/* and leaves as evenly spaced rails */}
+          {rows.map((pair, i) => {
+            const y = 50 + i * 100;
+            return (
+              <g key={pair.automated}>
+                <path
+                  d={`M${WAIST_OUT} 250 C ${WAIST_OUT + 90} 250, ${WAIST_OUT + 60} ${y}, ${WAIST_OUT + 150} ${y}`}
+                  stroke="hsl(var(--brand) / 0.8)"
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <line
+                  x1={WAIST_OUT + 150}
+                  y1={y}
+                  x2="988"
+                  y2={y}
+                  stroke="hsl(var(--brand) / 0.8)"
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </g>
+            );
+          })}
+        </svg>
+
+        <ol className="relative">
+          {rows.map((pair, index) => (
+            <li
+              key={pair.problem}
+              className={cn(
+                'reveal-up grid h-[6.25rem] grid-cols-2 items-center gap-x-[16%]',
+                inView && 'is-in'
+              )}
+              style={{ transitionDelay: `${index * 70}ms` }}
+            >
+              <p className="pe-[6%] text-end text-[clamp(0.9rem,1.5vw,1.05rem)] leading-snug text-ink-muted">
+                {pair.problem}
+              </p>
+              <p className="text-display ps-[8%] text-[clamp(1rem,1.9vw,1.4rem)] leading-snug text-ink">
+                {pair.automated}
+              </p>
+            </li>
+          ))}
+        </ol>
       </div>
+
+      {/* Mobile: the same order, carried by type alone. */}
+      <ol className="mt-9 space-y-6 sm:hidden">
+        {rows.map((pair, index) => (
+          <li
+            key={pair.problem}
+            className={cn('reveal-up', inView && 'is-in')}
+            style={{ transitionDelay: `${index * 60}ms` }}
+          >
+            <p className="text-[0.92rem] leading-snug text-ink-faint">{pair.problem}</p>
+            <p className="text-display mt-1 border-s border-brand ps-3 text-[1.1rem] leading-snug text-ink">
+              {pair.automated}
+            </p>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

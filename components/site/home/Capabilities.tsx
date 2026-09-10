@@ -7,6 +7,8 @@ import { useInView } from '@/lib/useInView';
 import { cn } from '@/lib/utils';
 import { SectionHead } from './SectionHead';
 
+import { CapabilityDiagram } from './CapabilityDiagram';
+
 /** Spatial capability field: six persistent points aligned into three paired rows. */
 export function Capabilities() {
   const { dict, dir } = useI18n();
@@ -35,6 +37,9 @@ export function Capabilities() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
+                    <div className="mb-3.5 opacity-100">
+                      <CapabilityDiagram index={index} />
+                    </div>
                     <h3 className="text-[clamp(1.05rem,2vw,1.3rem)] font-medium leading-tight text-ink transition-colors duration-300 group-hover:text-brand rtl:leading-[1.35]">
                       {item.title}
                     </h3>
