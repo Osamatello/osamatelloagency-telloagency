@@ -34,12 +34,11 @@ export function Logo({
         'inline-flex items-center gap-3 text-ink transition-opacity duration-200 hover:opacity-70',
         className
       )}
-      aria-label={brand.name}
     >
       {markOk && (
         <Image
           src="/brand/damasavero-logo.png"
-          alt=""
+          alt={brand.name}
           width={1254}
           height={1254}
           sizes="32px"
@@ -48,7 +47,7 @@ export function Logo({
           onError={() => setMarkOk(false)}
         />
       )}
-      <span className="text-[0.95rem] font-semibold uppercase tracking-[0.3em] leading-none">
+      <span aria-hidden="true" className="text-[0.95rem] font-semibold uppercase tracking-[0.3em] leading-none">
         {brand.name}
       </span>
     </Link>

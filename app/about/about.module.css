@@ -133,7 +133,7 @@
 .touchHint { display: none; }
 .lensNote { position: relative; min-height: 11.5rem; padding: 1.15rem 0 .5rem; padding-inline-end: 2.75rem; }
 .insightIndex { display: block; font-size: .65rem; color: hsl(var(--brand)); letter-spacing: .12em; margin-bottom: .5rem; direction: ltr; text-align: start; width: fit-content; }
-.lensNote h3 { font-size: 1rem; font-weight: 500; line-height: 1.4; color: hsl(var(--ds-ink)); }
+.lensNote h2 { font-size: 1rem; font-weight: 500; line-height: 1.4; color: hsl(var(--ds-ink)); }
 .lensNote p { font-size: .875rem; line-height: 1.65; margin-top: .4rem; color: hsl(var(--ds-ink) / .78); }
 .closeInsight { position: absolute; top: .75rem; inset-inline-end: 0; width: 44px; height: 44px; display: grid; place-items: center; color: hsl(var(--brand)); }
 .working { padding-block: 5rem; background: hsl(var(--ds-paper-sunken)); border-block: 1px solid hsl(var(--ds-line)); }

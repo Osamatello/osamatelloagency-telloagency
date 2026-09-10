@@ -377,7 +377,8 @@ export function DecisionLens({ copy }: { copy: CompanyEditorial['lens'] }) {
       <div className={styles.lensNote}>
         <div id={id} aria-live="polite" aria-atomic="true">
           <span className={styles.insightIndex} aria-hidden="true">{active === null ? 'D / S' : `${String(active + 1).padStart(2, '0')} / ${RIBS.length}`}</span>
-          <h3>{insight?.title ?? copy.idleTitle}</h3>
+          {/* h2: this panel sits directly under the page h1, so h3 skipped a level. */}
+          <h2>{insight?.title ?? copy.idleTitle}</h2>
           <p>{insight?.body ?? copy.idleBody}</p>
         </div>
         {insight && <button type="button" className={styles.closeInsight} onClick={dismiss} aria-label={copy.close}><X size={16} aria-hidden="true" /></button>}
