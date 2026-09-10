@@ -424,7 +424,8 @@
    The homepage root carries `#home-page`; no other route contains that id, so,
    The homepage root carries `#company-page`; no other route contains that id, so,
    The homepage root carries `#capabilities-page`; no other route contains that id, so,
-   The homepage root carries `#contact-page`; no other route contains that id, so
+   The homepage root carries `#contact-page`; no other route contains that id, so,
+   The homepage root carries `#legal-page`; no other route contains that id, so
    every other page keeps the light identity byte-for-byte. Because the whole
    site is built on the `--ds-*` / `--brand` tokens, redefining them here flips
    the homepage (header and footer included) with no component rewrites.
@@ -436,10 +437,12 @@ html:has(#home-page),
 html:has(#company-page),
 html:has(#capabilities-page),
 html:has(#contact-page),
+html:has(#legal-page),
 body:has(#home-page),
 body:has(#company-page),
 body:has(#capabilities-page),
-body:has(#contact-page) {
+body:has(#contact-page),
+body:has(#legal-page) {
   color-scheme: dark;
 
   /* Very dark charcoal with a green undertone — never pure black. */
@@ -479,7 +482,8 @@ body:has(#contact-page) {
 html:has(#home-page) footer,
 html:has(#company-page) footer,
 html:has(#capabilities-page) footer,
-html:has(#contact-page) footer {
+html:has(#contact-page) footer,
+html:has(#legal-page) footer {
   background-color: hsl(var(--ds-paper-sunken)) !important;
   border-color: hsl(var(--ds-line)) !important;
   color: hsl(var(--ds-ink)) !important;
@@ -487,7 +491,8 @@ html:has(#contact-page) footer {
 html:has(#home-page) footer :where(p, li, a, h3, span, div),
 html:has(#company-page) footer :where(p, li, a, h3, span, div),
 html:has(#capabilities-page) footer :where(p, li, a, h3, span, div),
-html:has(#contact-page) footer :where(p, li, a, h3, span, div) {
+html:has(#contact-page) footer :where(p, li, a, h3, span, div),
+html:has(#legal-page) footer :where(p, li, a, h3, span, div) {
   color: hsl(var(--ds-ink-muted)) !important;
   border-color: hsl(var(--ds-line)) !important;
 }
@@ -495,23 +500,27 @@ html:has(#home-page) footer a:hover,
 html:has(#company-page) footer a:hover,
 html:has(#capabilities-page) footer a:hover,
 html:has(#contact-page) footer a:hover,
+html:has(#legal-page) footer a:hover,
 html:has(#home-page) footer .text-brand,
 html:has(#company-page) footer .text-brand,
 html:has(#capabilities-page) footer .text-brand,
-html:has(#contact-page) footer .text-brand {
+html:has(#contact-page) footer .text-brand,
+html:has(#legal-page) footer .text-brand {
   color: hsl(var(--brand)) !important;
 }
 html:has(#home-page) footer svg,
 html:has(#company-page) footer svg,
 html:has(#capabilities-page) footer svg,
-html:has(#contact-page) footer svg {
+html:has(#contact-page) footer svg,
+html:has(#legal-page) footer svg {
   color: hsl(var(--brand)) !important;
 }
 
 html:has(#home-page) footer a[aria-label],
 html:has(#company-page) footer a[aria-label],
 html:has(#capabilities-page) footer a[aria-label],
-html:has(#contact-page) footer a[aria-label] {
+html:has(#contact-page) footer a[aria-label],
+html:has(#legal-page) footer a[aria-label] {
   color: hsl(var(--ds-ink)) !important;
 }
 
@@ -523,10 +532,12 @@ html:has(#home-page) header a[aria-label] img,
 html:has(#company-page) header a[aria-label] img,
 html:has(#capabilities-page) header a[aria-label] img,
 html:has(#contact-page) header a[aria-label] img,
+html:has(#legal-page) header a[aria-label] img,
 html:has(#home-page) footer a[aria-label] img,
 html:has(#company-page) footer a[aria-label] img,
 html:has(#capabilities-page) footer a[aria-label] img,
-html:has(#contact-page) footer a[aria-label] img {
+html:has(#contact-page) footer a[aria-label] img,
+html:has(#legal-page) footer a[aria-label] img {
   filter: none;
   opacity: 0.96;
 }

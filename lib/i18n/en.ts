@@ -699,8 +699,8 @@ const en: Dictionary = {
     privacy: {
       eyebrow: 'Privacy',
       title: 'Privacy Policy',
-      subtitle: 'How TELLO collects, uses, and protects your information.',
-      intro: 'This policy describes what information we collect, how we use it, and the choices you have. It applies to the TELLO website and to the systems we build for clients.',
+      subtitle: 'How DAMASAVERO collects, uses, and protects your information.',
+      intro: 'This policy describes what information we collect, how we use it, and the choices you have. It applies to the DAMASAVERO website and to the systems we build for clients.',
       sections: [
         { heading: 'Information we collect', body: 'We collect information you provide directly — such as your name, email, phone number, and message — when you use our contact form or book a consultation. We also collect limited technical data such as browser type and pages visited, through standard analytics.' },
         { heading: 'How we use information', body: 'We use your information to respond to inquiries, schedule consultations, prepare proposals, and improve our services. We do not sell your personal information to third parties.' },
@@ -714,14 +714,14 @@ const en: Dictionary = {
     terms: {
       eyebrow: 'Terms',
       title: 'Terms of Service',
-      subtitle: 'The terms that govern use of the TELLO website and services.',
-      intro: 'By accessing the TELLO website or engaging our services, you agree to the terms below. These terms apply to website visitors and to clients receiving proposals or deliverables.',
+      subtitle: 'The terms that govern use of the DAMASAVERO website and services.',
+      intro: 'By accessing the DAMASAVERO website or engaging our services, you agree to the terms below. These terms apply to website visitors and to clients receiving proposals or deliverables.',
       sections: [
-        { heading: 'Services', body: 'TELLO provides AI automation, custom software, website development, and lead generation services. The scope, timeline, and pricing of each engagement are defined in a separate project proposal agreed before work begins.' },
+        { heading: 'Services', body: 'DAMASAVERO provides AI automation, custom software, website development, and lead generation services. The scope, timeline, and pricing of each engagement are defined in a separate project proposal agreed before work begins.' },
         { heading: 'Project proposals', body: 'Each engagement is governed by a written proposal describing scope, deliverables, timeline, and fees. A proposal is binding only once signed by both parties.' },
         { heading: 'Client responsibilities', body: 'Clients agree to provide timely access to systems, information, and contacts needed to deliver the agreed scope, and to respond to review and approval requests within reasonable timeframes.' },
-        { heading: 'Intellectual property', body: 'Upon full payment, ownership of custom deliverables transfers to the client, excluding third-party tools, open-source components, and TELLO’s pre-existing frameworks, which remain licensed for use.' },
-        { heading: 'Limitation of liability', body: 'TELLO’s liability is limited to the fees paid for the specific engagement giving rise to the claim. We are not liable for indirect or consequential damages.' },
+        { heading: 'Intellectual property', body: 'Upon full payment, ownership of custom deliverables transfers to the client, excluding third-party tools, open-source components, and DAMASAVERO’s pre-existing frameworks, which remain licensed for use.' },
+        { heading: 'Limitation of liability', body: 'DAMASAVERO’s liability is limited to the fees paid for the specific engagement giving rise to the claim. We are not liable for indirect or consequential damages.' },
       ],
       updatedLabel: 'Last updated',
       updated: 'July 2025',
@@ -729,8 +729,8 @@ const en: Dictionary = {
     cookie: {
       eyebrow: 'Cookies',
       title: 'Cookie Policy',
-      subtitle: 'How TELLO uses cookies and similar technologies.',
-      intro: 'This policy explains how TELLO uses cookies and similar technologies on this website, and how you can control them.',
+      subtitle: 'How DAMASAVERO uses cookies and similar technologies.',
+      intro: 'This policy explains how DAMASAVERO uses cookies and similar technologies on this website, and how you can control them.',
       sections: [
         { heading: 'What cookies are', body: 'Cookies are small text files stored on your device when you visit a website. They help the site remember your actions and preferences over time.' },
         { heading: 'Cookies we use', body: 'We use essential cookies for site functionality, and analytics cookies to understand how visitors use the site so we can improve it. We do not use cookies for cross-site advertising.' },
