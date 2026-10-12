@@ -1,11 +1,12 @@
 import type { MetadataRoute } from 'next';
+import { services } from '@/lib/services-data';
 
 const SITE = 'https://damasavero.com';
 
 /**
- * Only the four approved, current pages. The service-detail routes and the
- * legal pages are deliberately absent — they carry `noindex` until their
- * content is rewritten against the current DAMASAVERO positioning.
+ * The four core pages plus the three service-detail routes, now rewritten for
+ * the current cross-industry positioning and indexable. Legal pages stay out:
+ * they are `noindex` by design.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -14,5 +15,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE}/services`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${SITE}/about`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE}/contact`, lastModified, changeFrequency: 'yearly', priority: 0.6 },
+    ...services.map((service) => ({
+      url: `${SITE}/services/${service.slug}`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
   ];
 }

@@ -5,6 +5,7 @@ import { DM_Sans, Space_Grotesk, Cairo } from 'next/font/google';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
+import { AREA_SERVED } from '@/lib/seo';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -34,7 +35,7 @@ const siteUrl = 'https://damasavero.com';
 
 const title = 'DAMASAVERO — AI Automation Agency in Dubai & UAE';
 const description =
-  'DAMASAVERO builds AI automation and business systems in Dubai and the UAE: AI voice agents, CRM and lead automation, workflow automation and custom integrations.';
+  'AI automation and business systems by DAMASAVERO: AI voice agents, CRM and lead automation, workflow automation and integrations. Dubai-based, working worldwide.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -114,10 +115,7 @@ export default function RootLayout({
       addressLocality: 'Dubai',
       addressCountry: 'AE',
     },
-    areaServed: [
-      { '@type': 'City', name: 'Dubai' },
-      { '@type': 'Country', name: 'United Arab Emirates' },
-    ],
+    areaServed: AREA_SERVED,
     knowsAbout: [
       'AI automation',
       'AI voice agents',
@@ -127,7 +125,7 @@ export default function RootLayout({
       'business systems integration',
     ],
     description:
-      'DAMASAVERO is an AI automation and business systems company. It designs and builds AI voice agents, CRM and lead automation, messaging and scheduling automation, and custom integrations for businesses across industries.',
+      'DAMASAVERO is an AI automation and business systems company based in Dubai, United Arab Emirates, working with businesses worldwide. It designs and builds AI voice agents, CRM and lead automation, messaging and scheduling automation, and custom integrations across industries.',
     founder: {
       '@type': 'Person',
       name: 'Osama Tello',

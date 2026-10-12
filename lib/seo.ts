@@ -64,3 +64,20 @@ export function pageMetadata({
 export const noIndex: Metadata = {
   robots: { index: false, follow: true },
 };
+
+/**
+ * Where DAMASAVERO actually operates: a Dubai base, every emirate in the UAE,
+ * and remote delivery beyond it. Shared so the Organization schema and each
+ * Service schema never drift apart.
+ */
+export const AREA_SERVED = [
+  { '@type': 'City', name: 'Dubai' },
+  { '@type': 'City', name: 'Abu Dhabi' },
+  { '@type': 'City', name: 'Sharjah' },
+  { '@type': 'City', name: 'Ajman' },
+  { '@type': 'City', name: 'Ras Al Khaimah' },
+  { '@type': 'City', name: 'Fujairah' },
+  { '@type': 'City', name: 'Umm Al Quwain' },
+  { '@type': 'Country', name: 'United Arab Emirates' },
+  { '@type': 'Place', name: 'Worldwide' },
+];

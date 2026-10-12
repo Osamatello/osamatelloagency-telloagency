@@ -6,9 +6,8 @@ const en: Dictionary = {
   brand: { name: 'DAMASAVERO', tagline: 'AI Automation & Business Systems' },
   nav: [
     { label: 'Overview', href: '/' },
-    { label: 'Company', href: '/about' },
+    { label: 'Who We Are', href: '/about' },
     { label: 'Capabilities', href: '/services' },
-    { label: 'Contact', href: '/contact' },
     { label: 'Book a Consultation', href: '/contact' },
   ],
   actions: {
@@ -47,7 +46,7 @@ const en: Dictionary = {
       title: 'Complexity ends here.',
       titleAccent: 'Intelligence takes over.',
       subtitle:
-        'We build AI voice agents, CRM and lead automation, workflow systems and custom integrations for businesses in Dubai and across the UAE.',
+        'We build AI voice agents, CRM and lead automation, workflow systems and custom integrations for businesses — based in Dubai, working across the UAE and worldwide.',
       primaryCta: 'Book a Free Consultation',
       secondaryCta: 'Explore Services',
       stat1Value: '80%',
@@ -322,11 +321,17 @@ const en: Dictionary = {
     faqPreview: {
       eyebrow: 'FAQ',
       title: 'Common questions, answered',
-      subtitle: '',
+      subtitle:
+        'What businesses ask before starting an AI automation project with DAMASAVERO.',
       items: [
+        { q: 'What does an AI automation agency actually do?', a: 'An AI automation agency designs and builds the systems that run repetitive operational work: answering enquiries, qualifying leads, updating the CRM, scheduling, follow-up and reporting. DAMASAVERO builds those systems on top of the tools a business already uses, rather than replacing them.' },
+        { q: 'Where is DAMASAVERO based and who do you work with?', a: 'DAMASAVERO is based in Dubai, United Arab Emirates, and works with businesses across every emirate — Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah and Umm Al Quwain — as well as clients worldwide. Delivery is remote by nature, because the systems are built on top of cloud tools you already use.' },
+        { q: 'Which industries does DAMASAVERO work with?', a: 'Any business with repetitive operational work. We build across sectors — professional services, trade and logistics, retail and e-commerce, real estate, healthcare, hospitality and B2B services. The automation is designed around how your operation actually runs, not around an industry template.' },
         { q: 'What can DAMASAVERO automate?', a: 'Repetitive operational work: inbound calls and enquiries, lead qualification and CRM updates, follow-up, scheduling, approvals, reporting — and the integrations between them.' },
-        { q: 'Can DAMASAVERO work with our existing software?', a: 'Yes. DAMASAVERO sits between the tools you already use — CRM, inbox, calendar, messaging, support desk — reads what comes in, decides what to do, and writes the result back where your team looks.' },
-        { q: 'Do we need to replace our current tools?', a: 'No. Nothing gets ripped out. Workflows your team should keep editing stay editable; elsewhere we connect directly by API, webhook or database.' },
+        { q: 'What are AI voice agents and how do businesses use them?', a: 'An AI voice agent answers inbound calls, understands what the caller needs, captures their details and either books them in or routes the call to the right person. Businesses use them to cover calls outside working hours and to stop missed calls turning into lost customers. Ours work in English and Arabic.' },
+        { q: 'How much does an AI automation project cost?', a: 'There are no fixed packages. Cost depends on how many workflows and systems are involved, so it is scoped against your actual operation during a free consultation and quoted before any work starts. A single workflow is a much smaller engagement than a connected multi-system build.' },
+        { q: 'How long does it take to build?', a: 'A single automation workflow typically takes 1–2 weeks. A connected system spanning several workflows and tools takes 3–6 weeks, depending on scope and how many systems need integrating.' },
+        { q: 'Can DAMASAVERO work with our existing software?', a: 'Yes. DAMASAVERO sits between the tools you already use — CRM, inbox, calendar, messaging, support desk — reads what comes in, decides what to do, and writes the result back where your team looks. Nothing gets ripped out.' },
         { q: 'Can you build custom integrations?', a: 'Yes. If a system exposes an API, a webhook or a database we can reach, we can connect it into the same operating layer.' },
         { q: 'What happens when AI cannot handle a request?', a: 'It escalates to a person with full context, every automated step logged and reversible. People handle exceptions; the routine work has already run.' },
         { q: 'How does the process work?', a: 'A short consultation to map where time and leads are lost, a design around how your team actually works, a build against your live stack, then ongoing monitoring.' },
@@ -614,7 +619,7 @@ const en: Dictionary = {
       hoursLabel: 'Hours',
       emailValue: 'Founder@damasavero.com',
       phoneValue: '+971 50 160 7600',
-      locationValue: 'Dubai, United Arab Emirates',
+      locationValue: 'Dubai, United Arab Emirates — working with clients worldwide',
       hoursValue: 'Sun–Thu, 9:00–18:00 (GST)',
     },
     form: {

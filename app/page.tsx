@@ -34,8 +34,23 @@ export default function HomePage() {
 
   const rd = (ms: number) => ({ transitionDelay: `${ms}ms` });
 
+  // The homepage FAQ, restated for search and answer engines.
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: home.faqPreview.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <HeroEnvironment />
       <section id="home-page" data-visual-state="0" className="relative isolate -mt-16 flex min-h-0 items-center overflow-hidden bg-transparent text-ink sm:min-h-[100svh] lg:-mt-[72px]">
         <div className="container-page relative z-10 w-full pb-6 pt-28 sm:translate-y-0 sm:pb-[clamp(1.75rem,6.6svh,3.5rem)] sm:pt-[clamp(4.5rem,12.2svh,7.5rem)]">

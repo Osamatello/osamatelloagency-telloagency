@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { services, getServiceBySlug } from '@/lib/services-data';
+import { AREA_SERVED } from '@/lib/seo';
 import { ServiceDetailPage } from '@/components/site/ServiceDetailPage';
 
 export const dynamicParams = false;
@@ -22,14 +23,48 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     alternates: {
       canonical: `/services/${service.slug}`,
     },
-    // These detail pages still carry the older clinic-focused positioning.
-    // Keep them reachable, but out of the index until they are rewritten.
-    robots: { index: false, follow: true },
   };
 }
 
 export default function ServicePage({ params }: { params: { slug: string } }) {
   const service = getServiceBySlug(params.slug);
   if (!service) notFound();
-  return <ServiceDetailPage service={service} />;
+
+  // Service + FAQPage markup. The FAQ answers are already on the page, so this
+  // only restates them in a form search and answer engines can quote directly.
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: service.name,
+      serviceType: service.tagline,
+      description: service.metaDescription,
+      url: `https://damasavero.com/services/${service.slug}`,
+      provider: {
+        '@type': 'Organization',
+        name: 'DAMASAVERO',
+        url: 'https://damasavero.com',
+      },
+      areaServed: AREA_SERVED,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: service.faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    },
+  ];
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <ServiceDetailPage service={service} />
+    </>
+  );
 }
