@@ -32,9 +32,9 @@ const cairo = Cairo({
 
 const siteUrl = 'https://damasavero.com';
 
-const title = 'DAMASAVERO — AI Automation & Business Systems';
+const title = 'DAMASAVERO — AI Automation Agency in Dubai & UAE';
 const description =
-  'DAMASAVERO designs and builds AI automation and business systems — voice agents, CRM and lead automation, messaging, scheduling, and custom integrations — for businesses across industries.';
+  'DAMASAVERO builds AI automation and business systems in Dubai and the UAE: AI voice agents, CRM and lead automation, workflow automation and custom integrations.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -107,6 +107,25 @@ export default function RootLayout({
     '@type': 'Organization',
     name: 'DAMASAVERO',
     url: siteUrl,
+    email: 'Founder@damasavero.com',
+    telephone: '+971501607600',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Dubai',
+      addressCountry: 'AE',
+    },
+    areaServed: [
+      { '@type': 'City', name: 'Dubai' },
+      { '@type': 'Country', name: 'United Arab Emirates' },
+    ],
+    knowsAbout: [
+      'AI automation',
+      'AI voice agents',
+      'CRM automation',
+      'lead automation',
+      'workflow automation',
+      'business systems integration',
+    ],
     description:
       'DAMASAVERO is an AI automation and business systems company. It designs and builds AI voice agents, CRM and lead automation, messaging and scheduling automation, and custom integrations for businesses across industries.',
     founder: {

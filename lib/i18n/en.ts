@@ -43,10 +43,11 @@ const en: Dictionary = {
   },
   home: {
     hero: {
-      eyebrow: 'AI Automation · Business Systems',
+      eyebrow: 'AI Automation · Business Systems · Dubai, UAE',
       title: 'Complexity ends here.',
       titleAccent: 'Intelligence takes over.',
-      subtitle: '',
+      subtitle:
+        'We build AI voice agents, CRM and lead automation, workflow systems and custom integrations for businesses in Dubai and across the UAE.',
       primaryCta: 'Book a Free Consultation',
       secondaryCta: 'Explore Services',
       stat1Value: '80%',
@@ -87,42 +88,42 @@ const en: Dictionary = {
           index: '01',
           title: 'INTELLIGENT OPERATIONS INFRASTRUCTURE',
           summary:
-            'Connected systems that run critical operations with minimal manual work.',
+            'Connected systems and workflow automation that run critical operations with minimal manual work.',
           href: '/services',
         },
         {
           index: '02',
           title: 'AUTONOMOUS CUSTOMER OPERATIONS',
           summary:
-            'Enquiries, qualification, scheduling and escalation, handled end to end.',
+            'AI voice agents and messaging that handle enquiries, qualification, scheduling and escalation.',
           href: '/services',
         },
         {
           index: '03',
           title: 'REVENUE OPERATIONS ARCHITECTURE',
           summary:
-            'Acquisition, routing, conversion and follow-up on one pipeline.',
+            'CRM and lead automation across acquisition, routing, conversion and follow-up.',
           href: '/services',
         },
         {
           index: '04',
           title: 'UNIFIED BUSINESS INTELLIGENCE',
           summary:
-            'Fragmented data becomes one layer for visibility and automated action.',
+            'Fragmented operational data becomes one layer for visibility, reporting and automated action.',
           href: '/services',
         },
         {
           index: '05',
           title: 'ENTERPRISE WORKFLOW ORCHESTRATION',
           summary:
-            'Complex processes coordinated across teams, software and AI.',
+            'Business automation that coordinates complex processes across teams, software and AI.',
           href: '/services',
         },
         {
           index: '06',
           title: 'SYSTEMS INTEGRATION & MODERNIZATION',
           summary:
-            'Legacy and fragmented infrastructure joined up — nothing gets replaced.',
+            'Systems integration that joins legacy and fragmented infrastructure — nothing gets replaced.',
           href: '/services',
         },
       ],
@@ -612,8 +613,8 @@ const en: Dictionary = {
       locationLabel: 'Location',
       hoursLabel: 'Hours',
       emailValue: 'Founder@damasavero.com',
-      phoneValue: '+971 58 991 2345',
-      locationValue: 'Dubai, United Arab Emirates — serving clinics worldwide',
+      phoneValue: '+971 50 160 7600',
+      locationValue: 'Dubai, United Arab Emirates',
       hoursValue: 'Sun–Thu, 9:00–18:00 (GST)',
     },
     form: {
