@@ -8,6 +8,8 @@ const en: Dictionary = {
     { label: 'Overview', href: '/' },
     { label: 'Who We Are', href: '/about' },
     { label: 'Capabilities', href: '/services' },
+    { label: 'Articles', href: '/articles' },
+    { label: 'Contact', href: '/contact' },
     { label: 'Book a Consultation', href: '/contact' },
   ],
   actions: {
@@ -124,6 +126,13 @@ const en: Dictionary = {
           summary:
             'Systems integration that joins legacy and fragmented infrastructure — nothing gets replaced.',
           href: '/services',
+        },
+        {
+          index: '07',
+          title: 'WEB DEVELOPMENT & DIGITAL PRESENCE',
+          summary:
+            'Business websites and landing pages built to capture enquiries, perform on mobile and rank in search.',
+          href: '/services/website-development',
         },
       ],
     },
@@ -361,7 +370,7 @@ const en: Dictionary = {
     },
     domains: {
       eyebrow: 'Where our systems apply',
-      title: 'Six domains of one engineering capability.',
+      title: 'Seven domains of one engineering capability.',
       lead:
         'These are the kinds of systems we architect. Each one is a stratum of a larger operational architecture, not a product on a shelf.',
       note:
@@ -409,6 +418,13 @@ const en: Dictionary = {
           summary:
             'Connecting and extending what a business already runs, so it gains capability without a rebuild it cannot afford.',
           components: ['API integration', 'Legacy interfaces', 'Data migration', 'Incremental replacement', 'Documentation'],
+        },
+        {
+          index: '07',
+          title: 'Web Development & Digital Presence',
+          summary:
+            'The public surface of the operation: business websites and landing pages engineered for speed, search visibility and enquiry capture, wired directly into the systems behind them.',
+          components: ['Business websites', 'Landing pages', 'Technical SEO', 'Enquiry capture', 'Bilingual EN/AR builds'],
         },
       ],
     },

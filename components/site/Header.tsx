@@ -36,7 +36,7 @@ export function Header() {
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
-  const primaryNav = dict.nav.slice(0, 3);
+  const primaryNav = dict.nav.slice(0, 5);
   const forceLight = pathname.startsWith('/about') || pathname.startsWith('/services') || pathname.startsWith('/contact');
 
   return (

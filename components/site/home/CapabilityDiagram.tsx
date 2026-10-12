@@ -150,7 +150,28 @@ const Integration = () => (
   </Frame>
 );
 
-const DIAGRAMS = [Infrastructure, CustomerOps, Revenue, Intelligence, Orchestration, Integration];
+/** 07 — a page that turns visitors into enquiries, wired to the stack behind it. */
+const WebPresence = () => (
+  <Frame>
+    <rect x="4" y="10" width="110" height="84" stroke={L} />
+    <line x1="4" y1="26" x2="114" y2="26" stroke={L} />
+    {[12, 20, 28].map((x) => (
+      <circle key={x} cx={x} cy="18" r="2.5" fill={LD} />
+    ))}
+    <rect x="14" y="36" width="54" height="10" fill={FILL} stroke={B} />
+    <line x1="14" y1="56" x2="90" y2="56" stroke={LD} />
+    <line x1="14" y1="64" x2="74" y2="64" stroke={LD} />
+    <rect x="14" y="74" width="34" height="12" fill={FILL} stroke={B} strokeWidth="1.5" />
+    <path d="M114 80 H146" stroke={B} strokeWidth="2" />
+    <path d="M140 74 L146 80 L140 86" stroke={B} strokeWidth="2" />
+    <rect x="150" y="66" width="46" height="28" stroke={B} />
+    <line x1="158" y1="78" x2="188" y2="78" stroke={B} />
+    <line x1="158" y1="86" x2="176" y2="86" stroke={LD} />
+    <text x="150" y="56" fill="hsl(var(--ds-ink) / 0.66)" fontSize="9" letterSpacing="1.2">CRM</text>
+  </Frame>
+);
+
+const DIAGRAMS = [Infrastructure, CustomerOps, Revenue, Intelligence, Orchestration, Integration, WebPresence];
 
 export function CapabilityDiagram({ index }: { index: number }) {
   const Diagram = DIAGRAMS[index % DIAGRAMS.length];

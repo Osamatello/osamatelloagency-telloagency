@@ -8,6 +8,8 @@ const ar: Dictionary = {
     { label: 'نظرة عامة', href: '/' },
     { label: 'من نحن', href: '/about' },
     { label: 'القدرات', href: '/services' },
+    { label: 'مقالات', href: '/articles' },
+    { label: 'تواصل معنا', href: '/contact' },
     { label: 'احجز استشارة', href: '/contact' },
   ],
   actions: {
@@ -124,6 +126,13 @@ const ar: Dictionary = {
           summary:
             'تكامل أنظمة يربط البنية القديمة والمجزأة دون استبدال ما تستخدمه اليوم.',
           href: '/services',
+        },
+        {
+          index: '07',
+          title: 'تطوير المواقع والحضور الرقمي',
+          summary:
+            'مواقع أعمال وصفحات هبوط مبنية لالتقاط الاستفسارات والأداء على الهاتف والظهور في البحث.',
+          href: '/services/website-development',
         },
       ],
     },
@@ -358,7 +367,7 @@ const ar: Dictionary = {
     },
     domains: {
       eyebrow: 'أين تُطبّق أنظمتنا',
-      title: 'ستة مجالات لقدرة هندسية واحدة.',
+      title: 'سبعة مجالات لقدرة هندسية واحدة.',
       lead:
         'هذه أنواع الأنظمة التي نصمّمها. كل مجال طبقة ضمن بنية تشغيلية أوسع، لا منتجًا على رفّ.',
       note:

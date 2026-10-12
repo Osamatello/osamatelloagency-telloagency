@@ -28,8 +28,10 @@ const initialState: FormState = {
 };
 
 const field =
-  'w-full border border-[hsl(var(--ds-ink)/0.36)] bg-[hsl(var(--ds-paper))] px-3.5 py-3 text-[0.95rem] text-ink placeholder:text-[hsl(var(--ds-ink)/0.66)] ' +
-  'transition-colors duration-200 focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand';
+  'w-full rounded-[2px] border border-[hsl(var(--ds-ink)/0.3)] bg-[hsl(var(--ds-paper-raised))] px-4 py-3.5 text-[0.95rem] text-ink ' +
+  'placeholder:text-[hsl(var(--ds-ink)/0.45)] transition-[border-color,box-shadow,background-color] duration-200 ' +
+  'hover:border-[hsl(var(--ds-ink)/0.45)] focus:border-brand focus:bg-[hsl(var(--ds-paper))] focus:outline-none ' +
+  'focus:ring-2 focus:ring-[hsl(var(--brand)/0.35)]';
 const invalid = 'border-[hsl(var(--destructive))] focus:border-[hsl(var(--destructive))] focus:ring-[hsl(var(--destructive))]';
 
 export function ContactForm() {
@@ -121,7 +123,7 @@ export function ContactForm() {
 
   if (success) {
     return (
-      <div className="border border-[hsl(var(--ds-ink)/0.36)] bg-[hsl(var(--ds-paper))] p-8 text-center sm:p-12">
+      <div className="rounded-[3px] border border-[hsl(var(--ds-ink)/0.26)] bg-[hsl(var(--ds-paper-raised))] p-8 text-center sm:p-12">
         <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-brand/40 bg-brand/10 text-brand">
           <CheckCircle2 className="h-7 w-7" strokeWidth={1.6} />
         </span>
@@ -137,15 +139,17 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border border-[hsl(var(--ds-ink)/0.36)] bg-[hsl(var(--ds-paper))] p-6 sm:p-8 lg:p-10"
+      className="relative overflow-hidden rounded-[3px] border border-[hsl(var(--ds-ink)/0.26)] bg-[hsl(var(--ds-paper-raised))] p-6 shadow-[0_1px_0_0_hsl(var(--ds-ink)/0.06)] sm:p-9 lg:p-11"
       noValidate
     >
-      <div className="border-b border-[hsl(var(--ds-ink)/0.36)] pb-6">
+      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-brand via-[hsl(var(--brand)/0.35)] to-transparent" />
+
+      <div className="border-b border-[hsl(var(--ds-ink)/0.2)] pb-7">
         <h2 className="text-display text-[clamp(1.4rem,2.6vw,2rem)] text-ink">{f.title}</h2>
         <p className="mt-2 max-w-lg text-[0.95rem] leading-relaxed text-[hsl(var(--ds-ink)/0.85)]">{f.subtitle}</p>
       </div>
 
-      <div className="mt-7 grid gap-5 sm:grid-cols-2">
+      <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <Field id="fullName" label={f.fullName} required error={errors.fullName}>
           <input
             id="fullName"
@@ -215,7 +219,7 @@ export function ContactForm() {
         </Field>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-6">
         <Field id="message" label={f.message} required error={errors.message}>
           <textarea
             id="message"
@@ -243,7 +247,7 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="mt-6 border-t border-[hsl(var(--ds-ink)/0.36)] pt-6">
+      <div className="mt-8 border-t border-[hsl(var(--ds-ink)/0.2)] pt-7">
         <label htmlFor="consent" className="flex cursor-pointer items-start gap-3">
           <input
             id="consent"
@@ -267,7 +271,7 @@ export function ContactForm() {
           </p>
         )}
 
-        <button type="submit" disabled={submitting} className="btn-primary mt-7 w-full disabled:opacity-60">
+        <button type="submit" disabled={submitting} className="btn-primary mt-8 w-full py-4 disabled:opacity-60">
           {submitting ? f.sending : f.submit}
         </button>
       </div>
@@ -284,7 +288,7 @@ function Field({
     <div>
       <label
         htmlFor={id}
-        className="mb-2 block text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[hsl(var(--ds-ink)/0.66)]"
+        className="mb-2.5 block text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[hsl(var(--ds-ink)/0.78)]"
       >
         {label}
         {required && <span className="text-brand"> *</span>}

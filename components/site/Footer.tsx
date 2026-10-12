@@ -22,7 +22,7 @@ export function Footer() {
           <div className="md:col-span-4 lg:col-span-6">
             <h3 className="eyebrow text-[#858b87]">{dict.footer.navTitle}</h3>
             <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:mt-3 sm:gap-y-2 lg:flex lg:flex-wrap lg:gap-x-4 lg:gap-y-2 xl:flex-nowrap">
-              {dict.nav.slice(0, 3).map((item) => (
+              {dict.nav.slice(0, 5).map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-sm text-[#626a66] transition-colors hover:text-brand">
                     {item.label}

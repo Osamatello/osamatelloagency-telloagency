@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { services } from '@/lib/services-data';
+import { articles } from '@/lib/articles-data';
 
 const SITE = 'https://damasavero.com';
 
@@ -20,6 +21,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+    })),
+    { url: `${SITE}/articles`, lastModified, changeFrequency: 'weekly' as const, priority: 0.7 },
+    ...articles.map((article) => ({
+      url: `${SITE}/articles/${article.slug}`,
+      lastModified: new Date(article.updated),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
     })),
   ];
 }

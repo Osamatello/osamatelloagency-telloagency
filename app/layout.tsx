@@ -35,7 +35,7 @@ const siteUrl = 'https://damasavero.com';
 
 const title = 'DAMASAVERO — AI Automation Agency in Dubai & UAE';
 const description =
-  'AI automation and business systems by DAMASAVERO: AI voice agents, CRM and lead automation, workflow automation and integrations. Dubai-based, working worldwide.';
+  'AI automation, business systems and web development by DAMASAVERO: AI voice agents, CRM and lead automation, workflow automation and business websites. Dubai-based, working worldwide.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -105,7 +105,8 @@ export default function RootLayout({
 }) {
   const organizationSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
+    '@type': ['Organization', 'ProfessionalService'],
+    '@id': `${siteUrl}/#organization`,
     name: 'DAMASAVERO',
     url: siteUrl,
     email: 'Founder@damasavero.com',
@@ -123,9 +124,13 @@ export default function RootLayout({
       'lead automation',
       'workflow automation',
       'business systems integration',
+      'web development',
+      'business website design',
+      'landing page development',
+      'technical SEO',
     ],
     description:
-      'DAMASAVERO is an AI automation and business systems company based in Dubai, United Arab Emirates, working with businesses worldwide. It designs and builds AI voice agents, CRM and lead automation, messaging and scheduling automation, and custom integrations across industries.',
+      'DAMASAVERO is an AI automation, business systems and web development company based in Dubai, United Arab Emirates, working with businesses worldwide. It designs and builds AI voice agents, CRM and lead automation, messaging and scheduling automation, custom integrations, and business websites across industries.',
     founder: {
       '@type': 'Person',
       name: 'Osama Tello',
@@ -133,6 +138,19 @@ export default function RootLayout({
     },
     // NOTE: contact email intentionally omitted until a verified DAMASAVERO
     // address is confirmed. Do not re-add hello@telloagency.ai.
+  };
+
+  // A WebSite node ties the pages together and names the publisher once, so
+  // search and answer engines resolve the brand rather than inferring it.
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteUrl}/#website`,
+    url: siteUrl,
+    name: 'DAMASAVERO',
+    description,
+    inLanguage: ['en', 'ar'],
+    publisher: { '@id': `${siteUrl}/#organization` },
   };
 
   return (
@@ -156,7 +174,7 @@ export default function RootLayout({
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(organizationSchema),
+              __html: JSON.stringify([organizationSchema, websiteSchema]),
             }}
           />
 
