@@ -4,6 +4,7 @@ import { useState, type FormEvent, type ReactNode } from 'react';
 import { CheckCircle2, AlertCircle, ChevronDown } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { cn } from '@/lib/utils';
+import { trackEnquiry, trackEnquiryFailed } from '@/lib/analytics';
 
 interface FormState {
   fullName: string;
@@ -108,14 +109,20 @@ export function ContactForm() {
       // Success is only ever shown after the CRM has actually accepted the lead.
       if (!response.ok || !result.ok) {
         setFailed(true);
+        trackEnquiryFailed('rejected');
         return;
       }
+
+      // Counted here rather than on submit, so the number means leads the CRM
+      // holds — not attempts. Read before the state reset clears the fields.
+      trackEnquiry({ service: form.service, budget: form.budget });
 
       setSuccess(true);
       setForm(initialState);
       setTrap('');
     } catch {
       setFailed(true);
+      trackEnquiryFailed('network');
     } finally {
       setSubmitting(false);
     }

@@ -4,6 +4,7 @@ import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { ContactForm } from '@/components/site/ContactForm';
 import { EngineAtmosphere } from './EngineAtmosphere';
+import { trackContactClick, type ContactChannel } from '@/lib/analytics';
 
 export default function ContactPage() {
   const { locale, dir } = useI18n();
@@ -34,10 +35,19 @@ export default function ContactPage() {
         note: 'Every engagement starts with understanding the requirement, not selling a predefined service.',
       };
 
-  const details = [
-    { Icon: Phone, label: copy.phoneLabel, value: '+971 50 160 7600', href: 'tel:+971501607600', ltr: true },
+  // `channel` is only set on the two that are actually a way to get in touch;
+  // the location row is a detail, not a conversion.
+  const details: {
+    Icon: typeof Phone;
+    label: string;
+    value: string;
+    href?: string;
+    ltr?: boolean;
+    channel?: ContactChannel;
+  }[] = [
+    { Icon: Phone, label: copy.phoneLabel, value: '+971 50 160 7600', href: 'tel:+971501607600', ltr: true, channel: 'phone' },
     { Icon: MapPin, label: copy.locationLabel, value: copy.locationValue },
-    { Icon: Mail, label: copy.emailLabel, value: 'Founder@damasavero.com', href: 'mailto:Founder@damasavero.com', ltr: true },
+    { Icon: Mail, label: copy.emailLabel, value: 'Founder@damasavero.com', href: 'mailto:Founder@damasavero.com', ltr: true, channel: 'email' },
   ];
 
   return (
@@ -56,7 +66,7 @@ export default function ContactPage() {
 
             <p className="eyebrow mt-12 text-[hsl(var(--ds-ink)/0.66)]">{copy.detailsLabel}</p>
             <div className="mt-4 border-t border-[hsl(var(--ds-ink)/0.36)]">
-              {details.map(({ Icon, label, value, href, ltr }) => {
+              {details.map(({ Icon, label, value, href, ltr, channel }) => {
                 const inner = (
                   <div className="group flex items-center gap-4 py-4">
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[hsl(var(--ds-ink)/0.36)] text-brand">
@@ -82,6 +92,7 @@ export default function ContactPage() {
                     key={label}
                     href={href}
                     {...(href.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
+                    onClick={channel ? () => trackContactClick(channel, 'contact-page') : undefined}
                     className="block border-b border-[hsl(var(--ds-ink)/0.36)]"
                   >
                     {inner}

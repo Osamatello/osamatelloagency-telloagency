@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { Logo } from './Logo';
+import { trackContactClick } from '@/lib/analytics';
 
 export function Footer() {
   const { dict } = useI18n();
@@ -37,7 +38,13 @@ export function Footer() {
             <ul className="mt-2 space-y-1.5 text-sm text-[#626a66] sm:mt-3 sm:space-y-2.5">
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-brand" />
-                <a href="tel:+971501607600" className="transition-colors hover:text-brand">+971 50 160 7600</a>
+                <a
+                  href="tel:+971501607600"
+                  onClick={() => trackContactClick('phone', 'footer')}
+                  className="transition-colors hover:text-brand"
+                >
+                  +971 50 160 7600
+                </a>
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-brand" />
@@ -45,7 +52,13 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-brand" />
-                <a href="mailto:Founder@damasavero.com" className="transition-colors hover:text-brand">Founder@damasavero.com</a>
+                <a
+                  href="mailto:Founder@damasavero.com"
+                  onClick={() => trackContactClick('email', 'footer')}
+                  className="transition-colors hover:text-brand"
+                >
+                  Founder@damasavero.com
+                </a>
               </li>
             </ul>
           </div>
