@@ -92,9 +92,13 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  // Icons come from the app/ file convention — app/icon.png, app/apple-icon.png
-  // and app/favicon.ico — which Next fingerprints and links automatically.
-  // Declaring metadata.icons here as well would emit a second, competing set.
+  // Official DAMASAVERO DS mark — transparent PNG at
+  // public/brand/damasavero-logo.png. The ?v= token busts any cached
+  // (previously white-background) version. No other icon reference exists.
+  icons: {
+    icon: [{ url: '/brand/damasavero-logo.png?v=5', type: 'image/png' }],
+    apple: '/brand/damasavero-logo.png?v=5',
+  },
 };
 
 export default function RootLayout({
@@ -108,6 +112,16 @@ export default function RootLayout({
     '@id': `${siteUrl}/#organization`,
     name: 'DAMASAVERO',
     url: siteUrl,
+    // Feeds the knowledge panel. Distinct from the favicon: Google reads this
+    // for the brand box, not for the icon beside a search result. Points at the
+    // official square mark, well above Google's 112x112 minimum.
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/brand/damasavero-logo.png`,
+      width: 1254,
+      height: 1254,
+    },
+    image: `${siteUrl}/og-image.png`,
     email: 'Founder@damasavero.com',
     telephone: '+971501607600',
     address: {
