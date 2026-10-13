@@ -1,232 +1,28 @@
-'use client';
+import { articles } from '@/lib/articles-data';
+import { articlesAr } from '@/lib/articles-data-ar';
+import { HomeView } from '@/components/site/home/HomeView';
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useI18n } from '@/lib/i18n/LanguageProvider';
-import { cn } from '@/lib/utils';
-import { HeroEnvironment } from '@/components/site/HeroEnvironment';
-import { BusinessAutomationDemo } from '@/components/site/BusinessAutomationDemo';
-import { IntegrationRail } from '@/components/site/home/IntegrationRail';
-import { Capabilities } from '@/components/site/home/Capabilities';
-import { ProblemShift } from '@/components/site/home/ProblemShift';
-import { BeforeAfterAutomation } from '@/components/site/home/BeforeAfterAutomation';
-import { useInView } from '@/lib/useInView';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+/**
+ * Server shell for the homepage. The page itself is a client component — the
+ * hero, the FAQ accordion and the language toggle all need state — so the three
+ * most recent articles are picked here and handed down as props. That keeps the
+ * full article datasets on the server instead of in the browser bundle.
+ */
+export default function Page() {
+  const recent = [...articles]
+    .sort((a, b) => b.published.localeCompare(a.published))
+    .slice(0, 3)
+    .map((a) => ({
+      slug: a.slug,
+      published: a.published,
+      readingMinutes: a.readingMinutes,
+      topic: a.topic,
+      title: a.title,
+      excerpt: a.excerpt,
+      topicAr: articlesAr[a.slug]?.topic,
+      titleAr: articlesAr[a.slug]?.title,
+      excerptAr: articlesAr[a.slug]?.excerpt,
+    }));
 
-export default function HomePage() {
-  const { dict, dir } = useI18n();
-  const home = dict.home;
-  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
-
-  const stats = [
-    { value: home.hero.stat1Value, label: home.hero.stat1Label },
-    { value: home.hero.stat2Value, label: home.hero.stat2Label },
-    { value: home.hero.stat3Value, label: home.hero.stat3Label },
-  ];
-
-  const titleLines = home.hero.title.split('\n');
-
-  const [shown, setShown] = useState(false);
-  useEffect(() => {
-    const r = requestAnimationFrame(() => setShown(true));
-    return () => cancelAnimationFrame(r);
-  }, []);
-
-  const rd = (ms: number) => ({ transitionDelay: `${ms}ms` });
-
-  // The homepage FAQ, restated for search and answer engines.
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: home.faqPreview.items.map((item) => ({
-      '@type': 'Question',
-      name: item.q,
-      acceptedAnswer: { '@type': 'Answer', text: item.a },
-    })),
-  };
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <HeroEnvironment />
-      <section id="home-page" data-visual-state="0" className="relative isolate -mt-16 flex min-h-0 items-center overflow-hidden bg-transparent text-ink sm:min-h-[100svh] lg:-mt-[72px]">
-        <div className="container-page relative z-10 w-full pb-6 pt-28 sm:translate-y-0 sm:pb-[clamp(1.75rem,6.6svh,3.5rem)] sm:pt-[clamp(4.5rem,12.2svh,7.5rem)]">
-          <span className={cn('eyebrow reveal-up', shown && 'is-in')} style={rd(60)}>
-            {home.hero.eyebrow}
-          </span>
-
-          <h1 className="text-display mt-[clamp(1rem,3.1svh,1.75rem)] text-ink text-[clamp(2.35rem,5.6vw,min(4.5rem,9.2svh))]">
-            {titleLines.map((line, i) => (
-              <span key={i} className={cn('reveal-line block', shown && 'is-in')} style={rd(180 + i * 90)}>
-                <span>{line}</span>
-              </span>
-            ))}
-            <span className={cn('reveal-line block', shown && 'is-in')} style={rd(180 + titleLines.length * 90)}>
-              <span className="text-brand">{home.hero.titleAccent}</span>
-            </span>
-          </h1>
-
-          <div className="mt-12 grid gap-x-8 gap-y-12 lg:mt-[clamp(1.75rem,6.6svh,4rem)] lg:grid-cols-12">
-            {home.hero.subtitle ? (
-              <p className={cn('reveal-up self-end text-[0.98rem] leading-relaxed text-ink-muted lg:col-span-4', shown && 'is-in')} style={rd(560)}>
-                {home.hero.subtitle}
-              </p>
-            ) : null}
-
-            <div className={cn('reveal-fade lg:col-span-5 lg:col-start-8', shown && 'is-in')} style={rd(680)}>
-              <BusinessAutomationDemo />
-            </div>
-          </div>
-
-          <div className="mt-7 flex flex-col gap-9 border-t border-line pt-6 sm:mt-[clamp(1.4rem,5svh,3rem)] sm:pt-[clamp(1rem,3.2svh,2rem)] lg:flex-row lg:items-center lg:justify-between">
-            <div className={cn('reveal-up flex flex-col gap-3 sm:flex-row', shown && 'is-in')} style={rd(820)}>
-              <Link href="/contact" className="btn-primary">
-                {home.hero.primaryCta}
-                <Arrow className="h-4 w-4" />
-              </Link>
-              <Link href="/services" className="btn-outline">
-                {home.hero.secondaryCta}
-              </Link>
-            </div>
-
-            <dl className={cn('reveal-up flex flex-wrap gap-x-9 gap-y-4', shown && 'is-in')} style={rd(900)}>
-              {stats.map((s) => (
-                <div key={s.label} className="flex items-baseline gap-2.5">
-                  <dt className="text-display text-2xl text-brand">{s.value}</dt>
-                  <dd className="max-w-[9rem] text-xs font-medium leading-tight text-ink-faint">{s.label}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-      </section>
-
-      <div className="relative bg-transparent text-ink">
-        <section data-visual-state="1" className="relative overflow-hidden">
-          <div className="container-page relative z-10 pb-14 pt-4 sm:py-18 lg:py-20 lg:pt-12">
-            <IntegrationRail />
-          </div>
-        </section>
-
-        <div data-visual-state="2" className="relative">
-          <Capabilities />
-        </div>
-
-        <section data-visual-state="3" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line pt-14 pb-0 sm:pt-18 sm:pb-1 lg:pt-20 lg:pb-2">
-            <ProblemShift />
-          </div>
-        </section>
-
-        <div data-visual-state="4" className="relative">
-          <BeforeAfterAutomation />
-        </div>
-
-        {/* Mobile keeps a clean handoff after item 06; desktop retains the approved overlap. */}
-        <section data-visual-state="6" className="relative mt-0 overflow-hidden sm:-mt-[12svh] lg:-mt-[14svh]">
-          <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
-            <HomeFaq />
-          </div>
-        </section>
-
-        <section data-visual-state="7" className="relative overflow-hidden">
-          <div className="container-page relative z-10 border-t border-line py-14 sm:py-18 lg:py-20">
-            <HomeCta />
-          </div>
-        </section>
-      </div>
-    </>
-  );
-}
-
-function HomeFaq() {
-  const { dict } = useI18n();
-  const t = dict.home.faqPreview;
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { ref, inView } = useInView<HTMLDListElement>();
-  return (
-    <div>
-      <span className="eyebrow">{t.eyebrow}</span>
-      <h2 className="text-display mt-5 max-w-2xl text-[clamp(1.6rem,3.2vw,2.4rem)] text-ink">{t.title}</h2>
-      <dl ref={ref} className="mt-8 border-t border-line sm:mt-10">
-        {t.items.map((item, index) => {
-          const open = openIndex === index;
-          const answerId = `home-faq-answer-${index}`;
-          return (
-            <div
-              key={item.q}
-              className={cn('reveal-up border-b py-1 transition-colors duration-500', inView && 'is-in', open ? 'border-[hsl(var(--brand)/0.38)]' : 'border-line')}
-              style={{ transitionDelay: `${index * 60}ms` }}
-            >
-              <dt>
-                <button type="button" onClick={() => setOpenIndex(open ? null : index)} aria-expanded={open} aria-controls={answerId} className="group flex min-h-16 w-full items-center justify-between gap-6 py-4 text-start focus-visible:outline-none">
-                  <span className={cn('text-display text-[clamp(1rem,2vw,1.2rem)] transition-[color,transform] duration-500', open ? 'translate-x-1 text-brand rtl:-translate-x-1' : 'text-ink group-hover:text-brand')}>
-                    {item.q}
-                  </span>
-                  <span aria-hidden="true" className={cn('h-5 w-5 shrink-0 transition-[color,transform] duration-500', open ? 'rotate-45 text-brand' : 'text-ink-muted group-hover:text-brand')}>
-                    <svg viewBox="0 0 20 20" fill="none" className="h-full w-full">
-                      <path d="M10 3v14M3 10h14" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
-                    </svg>
-                  </span>
-                </button>
-              </dt>
-              <dd id={answerId} aria-hidden={!open} className={cn('grid max-w-2xl transition-[grid-template-rows,opacity] duration-500 ease-out', open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0')}>
-                <div className="overflow-hidden">
-                  <p className="pb-5 pe-10 text-sm leading-relaxed text-ink-muted transition-transform duration-500 ease-out" style={{ transform: open ? 'translateY(0)' : 'translateY(-0.45rem)' }}>
-                    {item.a}
-                  </p>
-                </div>
-              </dd>
-            </div>
-          );
-        })}
-      </dl>
-    </div>
-  );
-}
-
-function HomeCta() {
-  const { dict, dir } = useI18n();
-  const t = dict.home.cta;
-  const Arrow = dir === 'rtl' ? ArrowLeft : ArrowRight;
-  const { ref, inView } = useInView<HTMLDivElement>();
-  return (
-    // Statement on one side, the actual next step on the other, split by a rule
-    // that runs the full width — the section now occupies the whole measure.
-    <div ref={ref} className="grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-16">
-      <div className="lg:col-span-6">
-        <span className={cn('eyebrow reveal-up', inView && 'is-in')}>{t.eyebrow}</span>
-        <h2
-          className={cn('text-display reveal-up mt-6 whitespace-pre-line text-[clamp(1.9rem,4.4vw,3.25rem)] text-ink', inView && 'is-in')}
-          style={{ transitionDelay: '80ms' }}
-        >
-          {t.title}
-        </h2>
-      </div>
-
-      <div className="lg:col-span-5 lg:col-start-8 lg:pt-[5.5rem]">
-        {t.subtitle ? (
-          <p
-            className={cn('reveal-up border-t border-line pt-6 text-base leading-relaxed text-ink-muted', inView && 'is-in')}
-            style={{ transitionDelay: '160ms' }}
-          >
-            {t.subtitle}
-          </p>
-        ) : null}
-        <div
-          className={cn('reveal-up mt-8 flex flex-col gap-3 sm:flex-row lg:mt-10', inView && 'is-in')}
-          style={{ transitionDelay: '240ms' }}
-        >
-          <Link href="/contact" className="btn-primary">
-            {t.primaryCta}
-            <Arrow className="h-4 w-4" />
-          </Link>
-          {t.secondaryCta ? <Link href="/services" className="btn-outline">{t.secondaryCta}</Link> : null}
-        </div>
-      </div>
-    </div>
-  );
+  return <HomeView recent={recent} />;
 }

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { articles } from '@/lib/articles-data';
 import { pageMetadata } from '@/lib/seo';
 import { ArticlesIndexView } from '@/components/site/ArticlesIndexView';
+import { articlesAr } from '@/lib/articles-data-ar';
+import { services } from '@/lib/services-data';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Articles on AI Automation & Business Systems — DAMASAVERO',
@@ -33,7 +35,20 @@ export default function ArticlesIndex() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <ArticlesIndexView />
+      <ArticlesIndexView
+        articles={articles.map((a) => ({
+          slug: a.slug,
+          published: a.published,
+          readingMinutes: a.readingMinutes,
+          topic: a.topic,
+          title: a.title,
+          excerpt: a.excerpt,
+          topicAr: articlesAr[a.slug]?.topic,
+          titleAr: articlesAr[a.slug]?.title,
+          excerptAr: articlesAr[a.slug]?.excerpt,
+        }))}
+        serviceLinks={services.map((s) => ({ slug: s.slug, name: s.name }))}
+      />
     </>
   );
 }

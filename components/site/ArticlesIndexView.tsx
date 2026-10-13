@@ -3,9 +3,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
-import { articles } from '@/lib/articles-data';
-import { articlesAr } from '@/lib/articles-data-ar';
-import { services } from '@/lib/services-data';
 
 /** The articles index, in whichever language the header toggle is set to. */
 const UI = {
@@ -29,7 +26,25 @@ const UI = {
   },
 } as const;
 
-export function ArticlesIndexView() {
+export type ArticleSummary = {
+  slug: string;
+  published: string;
+  readingMinutes: number;
+  topic: string;
+  title: string;
+  excerpt: string;
+  topicAr?: string;
+  titleAr?: string;
+  excerptAr?: string;
+};
+
+export function ArticlesIndexView({
+  articles,
+  serviceLinks,
+}: {
+  articles: ArticleSummary[];
+  serviceLinks: { slug: string; name: string }[];
+}) {
   const { locale, dir } = useI18n();
   const ar = locale === 'ar';
   const t = UI[ar ? 'ar' : 'en'];
@@ -53,7 +68,11 @@ export function ArticlesIndexView() {
       <div className="container-page py-14 sm:py-18 lg:py-20">
         <ol className="mx-auto max-w-3xl">
           {articles.map((article, index) => {
-            const copy = ar ? articlesAr[article.slug] ?? article : article;
+            const copy = {
+              topic: (ar && article.topicAr) || article.topic,
+              title: (ar && article.titleAr) || article.title,
+              excerpt: (ar && article.excerptAr) || article.excerpt,
+            };
             const published = new Date(article.published).toLocaleDateString(t.locale, {
               day: 'numeric',
               month: 'long',
@@ -96,7 +115,7 @@ export function ArticlesIndexView() {
             {t.builds}
           </h2>
           <ul className="mt-5 grid gap-3 sm:grid-cols-3">
-            {services.map((service) => (
+            {serviceLinks.map((service) => (
               <li key={service.slug}>
                 <Link
                   href={`/services/${service.slug}`}

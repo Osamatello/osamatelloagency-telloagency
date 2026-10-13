@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { articles, getArticleBySlug } from '@/lib/articles-data';
 import { AREA_SERVED } from '@/lib/seo';
 import { ArticleView } from '@/components/site/ArticleView';
+import { articlesAr } from '@/lib/articles-data-ar';
+import { services } from '@/lib/services-data';
 
 export const dynamicParams = false;
 
@@ -88,7 +90,21 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <ArticleView slug={article.slug} />
+      <ArticleView
+        en={article}
+        ar={articlesAr[article.slug]}
+        published={article.published}
+        readingMinutes={article.readingMinutes}
+        related={articles
+          .filter((other) => other.slug !== article.slug)
+          .slice(0, 3)
+          .map((other) => ({
+            slug: other.slug,
+            title: other.title,
+            titleAr: articlesAr[other.slug]?.title,
+          }))}
+        serviceLinks={services.map((s) => ({ slug: s.slug, name: s.name }))}
+      />
     </>
   );
 }

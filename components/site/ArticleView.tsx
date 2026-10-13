@@ -3,21 +3,13 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
-import { articles, getArticleBySlug, type ArticleContent } from '@/lib/articles-data';
-import { articlesAr } from '@/lib/articles-data-ar';
-import { services } from '@/lib/services-data';
+import type { ArticleContent } from '@/lib/articles-data';
 
 /**
  * Article body, rendered in whichever language the header toggle is set to.
  * The page shell stays a server component so metadata and JSON-LD are emitted
  * statically; only the prose swaps here.
  */
-
-const copyFor = (slug: string, locale: string): ArticleContent | undefined => {
-  const english = getArticleBySlug(slug);
-  if (!english) return undefined;
-  return locale === 'ar' ? articlesAr[slug] ?? english : english;
-};
 
 const UI = {
   en: {
@@ -50,14 +42,30 @@ const UI = {
   },
 } as const;
 
-export function ArticleView({ slug }: { slug: string }) {
-  const { locale, dir } = useI18n();
-  const t = UI[locale === 'ar' ? 'ar' : 'en'];
-  const article = copyFor(slug, locale);
-  const meta = getArticleBySlug(slug);
-  if (!article || !meta) return null;
+export type ArticleLink = { slug: string; title: string; titleAr?: string };
+export type ServiceLink = { slug: string; name: string };
 
-  const published = new Date(meta.published).toLocaleDateString(t.locale, {
+export function ArticleView({
+  en,
+  ar,
+  published: publishedIso,
+  readingMinutes,
+  related,
+  serviceLinks,
+}: {
+  en: ArticleContent;
+  ar?: ArticleContent;
+  published: string;
+  readingMinutes: number;
+  related: ArticleLink[];
+  serviceLinks: ServiceLink[];
+}) {
+  const { locale, dir } = useI18n();
+  const isAr = locale === 'ar';
+  const t = UI[isAr ? 'ar' : 'en'];
+  const article = (isAr && ar) || en;
+
+  const published = new Date(publishedIso).toLocaleDateString(t.locale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -81,9 +89,9 @@ export function ArticleView({ slug }: { slug: string }) {
             </h1>
 
             <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.72rem] uppercase tracking-[0.18em] text-[hsl(var(--ds-ink)/0.6)]">
-              <time dateTime={meta.published}>{published}</time>
+              <time dateTime={publishedIso}>{published}</time>
               <span>
-                {meta.readingMinutes} {t.minRead}
+                {readingMinutes} {t.minRead}
               </span>
             </div>
           </div>
@@ -162,7 +170,7 @@ export function ArticleView({ slug }: { slug: string }) {
               {t.related}
             </h2>
             <ul className="mt-5 grid gap-3 sm:grid-cols-3">
-              {services.map((service) => (
+              {serviceLinks.map((service) => (
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}`}
@@ -180,19 +188,16 @@ export function ArticleView({ slug }: { slug: string }) {
               {t.keepReading}
             </h2>
             <ul className="mt-5 space-y-3">
-              {articles
-                .filter((other) => other.slug !== slug)
-                .slice(0, 3)
-                .map((other) => (
-                  <li key={other.slug}>
-                    <Link
-                      href={`/articles/${other.slug}`}
-                      className="text-[0.98rem] leading-snug text-[hsl(var(--ds-ink)/0.86)] transition-colors hover:text-brand"
-                    >
-                      {(locale === 'ar' ? articlesAr[other.slug]?.title : undefined) ?? other.title}
-                    </Link>
-                  </li>
-                ))}
+              {related.map((other) => (
+                <li key={other.slug}>
+                  <Link
+                    href={`/articles/${other.slug}`}
+                    className="text-[0.98rem] leading-snug text-[hsl(var(--ds-ink)/0.86)] transition-colors hover:text-brand"
+                  >
+                    {(isAr ? other.titleAr : undefined) ?? other.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </section>
 

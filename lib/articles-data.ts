@@ -802,6 +802,386 @@ export const articles: Article[] = [
       { q: 'Is SEO included when a website is built?', a: 'Technical foundations should be: heading structure, metadata, canonical URLs, sitemap, robots rules and structured data. These are cheap to build in and expensive to retrofit. Ongoing content and ranking work is a separate, continuing effort.' },
     ],
   },
+  {
+    slug: 'missed-calls-cost-business',
+    topic: 'Operations',
+    title: 'What missed calls actually cost a business',
+    metaTitle: 'What Missed Calls Cost a Business',
+    metaDescription:
+      'How to calculate what unanswered calls are costing you, why the real number is larger than it looks, and the cheapest ways to close the gap.',
+    excerpt:
+      'Every business knows it misses calls. Very few know the number, and almost none know what that number is worth.',
+    published: '2026-10-13',
+    updated: '2026-10-13',
+    readingMinutes: 5,
+    answer:
+      'To work out what missed calls cost you, multiply the number of unanswered calls per month by the share that would have become customers, then by your average customer value. Most businesses are surprised twice: first by how many calls go unanswered outside working hours, and second by the fact that the majority never call back — they call the next business on the list instead. The cost is ongoing and invisible, which is why it rarely gets fixed.',
+    takeaways: [
+      'Count the missed calls before estimating the cost; most guesses are too low.',
+      'The majority of callers do not try again — they call a competitor.',
+      'Out-of-hours and overflow are where the losses concentrate.',
+      'Voicemail is not coverage; most callers will not leave one.',
+      'The fix is cheap relative to the leak, which is why the maths is worth doing.',
+    ],
+    sections: [
+      {
+        heading: 'Do the arithmetic once',
+        body: [
+          'The calculation is simple and almost nobody runs it. Take your missed calls per month, multiply by the proportion that would realistically have converted, and multiply that by what an average customer is worth over their lifetime with you.',
+          'Even conservative inputs usually produce a number large enough to change the conversation. The reason it stays hidden is that nothing in your accounts shows it — a lost call leaves no record anywhere.',
+        ],
+      },
+      {
+        heading: 'Where the calls are actually lost',
+        body: [
+          'Three windows account for most of it, and all three are predictable.',
+        ],
+        list: [
+          'Outside working hours. Evenings, weekends and public holidays, when the phone rings and nothing answers.',
+          'Overflow. Two or three calls arriving at once, so the second and third go nowhere.',
+          'During live work. The team is with a customer or on site, so the phone is ignored by necessity.',
+        ],
+      },
+      {
+        heading: 'Why voicemail does not count as coverage',
+        body: [
+          'Treating voicemail as a safety net assumes callers will use it. Most will not — leaving a message is more effort than dialling the next result, and it offers no certainty of a reply.',
+          'A voicemail box that fills up with three messages a week is not evidence that only three calls were missed. It is evidence that three callers out of however many were patient enough to leave one.',
+        ],
+      },
+      {
+        heading: 'What closing the gap looks like',
+        body: [
+          'The goal is not to answer every call personally. It is to make sure no call ends in silence: something answers, captures who called and what they wanted, and puts that in front of a person who can follow up.',
+          'That can be an answering service, a rota, or an AI voice agent. What matters is that the outcome is a record someone owns, not a missed-call notification nobody acts on.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'How do I calculate the cost of missed calls?', a: 'Multiply missed calls per month by the share that would realistically have converted, then by your average customer lifetime value. Most businesses find the figure is larger than expected because unanswered calls leave no trace in any report.' },
+      { q: 'Do people call back if nobody answers?', a: 'Usually not. Most callers move to the next business rather than trying again, which is why missed calls are a permanent loss rather than a delayed one.' },
+      { q: 'Is voicemail enough to cover missed calls?', a: 'No. Most callers will not leave a message, so voicemail captures only the most patient fraction. The messages you receive are not a measure of the calls you missed.' },
+    ],
+  },
+  {
+    slug: 'automation-mistakes-businesses-make',
+    topic: 'Pitfalls',
+    title: 'Seven automation mistakes that waste the budget',
+    metaTitle: 'Common AI Automation Mistakes to Avoid',
+    metaDescription:
+      'The recurring mistakes that cause automation projects to fail — automating the wrong process, skipping the data work, building without failure handling, and more.',
+    excerpt:
+      'Automation projects rarely fail because the technology did not work. They fail for reasons that were visible before anyone started building.',
+    published: '2026-10-13',
+    updated: '2026-10-13',
+    readingMinutes: 7,
+    answer:
+      'Most failed automation projects share the same causes: automating a process nobody can describe consistently, starting with the most interesting process rather than the most expensive one, skipping the data cleanup, building without failure alerting, letting the agency own the accounts, producing no documentation, and measuring nothing before starting so there is no way to prove the result. None of these are technical problems.',
+    takeaways: [
+      'Automating an undefined process just encodes one person\u2019s version of it silently.',
+      'Dirty data breaks automation faster than any technical limitation.',
+      'If failures are silent, you will find out through a customer complaint.',
+      'No baseline measurement means no way to prove the project worked.',
+      'If you cannot change it without the agency, you do not own it.',
+    ],
+    sections: [
+      {
+        heading: '1. Automating a process nobody agrees on',
+        body: [
+          'If two people in the business describe the process differently, automation does not resolve that disagreement — it silently picks one version and enforces it. The person whose version lost stops trusting the system.',
+          'Write the process down and get agreement before anything is built. It is the cheapest hour in the project.',
+        ],
+      },
+      {
+        heading: '2. Starting with the interesting process',
+        body: [
+          'Dashboards and reporting are satisfying to build and rarely change a revenue number. The process that quietly loses work every week is less exciting and worth far more.',
+        ],
+      },
+      {
+        heading: '3. Skipping the data cleanup',
+        body: [
+          'Automation inherits whatever state your records are in. Duplicate contacts, inconsistent naming and half-filled fields produce automation that is wrong in ways that are hard to trace.',
+          'This is the most commonly underestimated cost in any project, and it cannot be assessed from outside your systems.',
+        ],
+      },
+      {
+        heading: '4. Building without failure handling',
+        body: [
+          'Every automation eventually breaks. If nothing alerts a named person when it does, records stop moving silently and the business finds out weeks later through a complaint.',
+          'Alerting, safe retries and a log of what was attempted are not optional extras; they are the difference between a system and a liability.',
+        ],
+      },
+      {
+        heading: '5. Letting someone else own the accounts',
+        body: [
+          'If the agency holds the platform accounts, the API keys and the hosting, you are renting the system. The accounts should be in your name with access granted, so that access can be revoked without anything stopping.',
+        ],
+      },
+      {
+        heading: '6. Shipping without documentation',
+        body: [
+          'The person maintaining the system in a year may not be the person who commissioned it. A system nobody can explain gets switched off the first time it misbehaves.',
+        ],
+      },
+      {
+        heading: '7. Measuring nothing beforehand',
+        body: [
+          'Without a baseline, you cannot demonstrate that the project worked, which makes funding the next one an argument rather than a decision.',
+          'Capture the before number — response time, missed calls, follow-up rate — in the week before the build starts. It takes an hour and it protects the entire programme.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'Why do automation projects fail?', a: 'Rarely for technical reasons. The common causes are automating a process nobody agrees on, skipping data cleanup, building without failure alerting, no documentation, and measuring nothing beforehand so the result cannot be proven.' },
+      { q: 'What is the most underestimated cost in an automation project?', a: 'Data cleanup. Duplicate contacts, inconsistent records and half-filled fields have to be resolved before automation can run reliably on top of them, and the scale of that work cannot be assessed from outside the systems.' },
+      { q: 'How do we avoid being locked in to an automation agency?', a: 'Hold the platform accounts, API keys and data in your own name, insist on documentation as a deliverable, and confirm before work starts what your team can change without the agency.' },
+    ],
+  },
+  {
+    slug: 'what-is-an-ai-agent-for-business',
+    topic: 'Fundamentals',
+    title: 'What is an AI agent, in business terms',
+    metaTitle: 'What Is an AI Agent for Business?',
+    metaDescription:
+      'A plain explanation of AI agents for business — what separates an agent from a chatbot or an automation, what they are good at, and where they should not be used.',
+    excerpt:
+      'The word is used for everything from a chatbot to a workflow. Here is the distinction that actually matters operationally.',
+    published: '2026-10-13',
+    updated: '2026-10-13',
+    readingMinutes: 6,
+    answer:
+      'An AI agent is software that is given a goal rather than a script, decides what steps to take to reach it, and can use tools — reading a CRM, sending a message, booking a slot — to act. That is what separates it from a chatbot, which only replies, and from a classic automation, which follows a fixed sequence. In business terms, you use an agent where the path varies case by case, and a plain automation where it does not.',
+    takeaways: [
+      'Chatbot replies. Automation follows a fixed path. An agent decides a path.',
+      'Use an agent where the route varies; use automation where it never does.',
+      'Agents need tools and permissions to be useful, not just a good model.',
+      'Every agent needs a defined boundary and a human escalation route.',
+      'Agents are harder to test than automations, so scope them narrowly.',
+    ],
+    sections: [
+      {
+        heading: 'The distinction that matters',
+        body: [
+          'A chatbot answers questions. It produces text and nothing changes in your systems.',
+          'A classic automation follows a fixed sequence: when this happens, do these four things, in this order, every time. It is reliable precisely because it never deviates.',
+          'An agent is given an objective and works out the steps. Faced with an unusual case it can take a different route, which is useful when cases genuinely differ and dangerous when they do not.',
+        ],
+      },
+      {
+        heading: 'When an agent is the right choice',
+        body: [
+          'The test is whether the path varies. If every instance of the process follows the same route, an agent adds unpredictability for no benefit — use a plain automation, which is cheaper, faster and far easier to test.',
+          'Where the path genuinely differs — an inbound enquiry that could be any of twenty things, a research task, triage across mixed inputs — the ability to decide a route is the whole point.',
+        ],
+      },
+      {
+        heading: 'An agent is only as useful as its tools',
+        body: [
+          'Most of the value is not in the model; it is in what the agent is permitted to do. An agent that can read your CRM, check a calendar, send a message and write a record can complete work. One with no tools can only talk about completing it.',
+          'This is also where the risk sits, which is why each tool should be granted deliberately rather than by default.',
+        ],
+      },
+      {
+        heading: 'Boundaries are the design, not an afterthought',
+        body: [
+          'A production agent needs an explicit scope: what it may decide, what it must escalate, what it may never do without approval. Anything carrying real cost or risk belongs in the second and third categories.',
+          'It also needs a record. If you cannot review what the agent saw and why it acted, you cannot debug it and you will not trust it.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What is the difference between an AI agent and a chatbot?', a: 'A chatbot replies with text and changes nothing in your systems. An agent is given a goal, decides the steps to reach it, and uses tools to act — reading records, sending messages, making bookings.' },
+      { q: 'When should a business use an AI agent instead of an automation?', a: 'Use an agent when the path through the process genuinely varies case by case. When every instance follows the same sequence, a plain automation is cheaper, faster and far easier to test.' },
+      { q: 'Are AI agents safe to let loose on business systems?', a: 'Only with explicit boundaries. Define what the agent may decide alone, what it must escalate, and what always needs human approval, and make sure every action it takes leaves a reviewable record.' },
+    ],
+  },
+  {
+    slug: 'automating-quotes-and-proposals',
+    topic: 'Sales Operations',
+    title: 'Automating quotes without losing control of pricing',
+    metaTitle: 'Automating Quotes and Proposals Safely',
+    metaDescription:
+      'How to speed up quoting with automation while keeping pricing judgement with a person — what to automate, what to never automate, and where the time actually goes.',
+    excerpt:
+      'Quoting is slow for reasons that have nothing to do with typing. Automating the wrong half makes it faster and worse.',
+    published: '2026-10-13',
+    updated: '2026-10-13',
+    readingMinutes: 5,
+    answer:
+      'Automate the assembly of a quote, not the pricing decision. Gathering the requirement, pulling standard line items, formatting the document, sending it and chasing the response can all run automatically. The price on a non-standard job should stay with a person, because the cost of being wrong is immediate and public. Most quoting delay comes from assembly and chasing, not from deciding the number, so this split captures nearly all the speed benefit without the risk.',
+    takeaways: [
+      'Assembly, formatting, sending and chasing automate well.',
+      'Pricing on anything non-standard should stay a human decision.',
+      'Most of the delay is before and after the price, not at it.',
+      'A quote that is never followed up is the most common loss.',
+      'Version control matters: one quote, one current number.',
+    ],
+    sections: [
+      {
+        heading: 'Where quoting time actually goes',
+        body: [
+          'Ask a team where quoting time goes and they will say "writing quotes". Watch the process and you will usually find the writing is the short part.',
+          'The time goes into chasing the requirement from the customer, hunting for the last similar quote, formatting the document, getting it approved internally, and then following up repeatedly to find out whether it landed.',
+        ],
+      },
+      {
+        heading: 'What to automate',
+        body: [
+          'Everything either side of the price.',
+        ],
+        list: [
+          'Requirement capture, so the information arrives structured instead of in a thread.',
+          'Standard line items and pricing for anything genuinely standardised.',
+          'Document assembly and formatting from a template.',
+          'Delivery, plus a record of when it was opened.',
+          'Follow-up on a schedule, stopping automatically when the customer replies.',
+        ],
+      },
+      {
+        heading: 'What to leave alone',
+        body: [
+          'The price on anything non-standard. The moment a job has unusual scope, access constraints, timing pressure or a difficult site, the number needs judgement that a rules engine will get wrong in exactly the cases that matter most.',
+          'Automate the preparation so the person pricing it has everything in front of them, then let them decide.',
+        ],
+      },
+      {
+        heading: 'The follow-up is where quotes are won and lost',
+        body: [
+          'A quote sent and never chased is the single most common loss in the process. It is not lost to price; it is lost to silence.',
+          'Automated follow-up on an agreed schedule, which stops the moment the customer responds, converts a meaningful share of quotes that would otherwise have gone quiet. It is also the easiest part of the whole process to automate.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'Can quoting be fully automated?', a: 'The assembly, delivery and follow-up can be. The price on a non-standard job should stay with a person, because unusual scope, access or timing need judgement that a rules engine gets wrong precisely where it matters most.' },
+      { q: 'What is the fastest win in quote automation?', a: 'Automated follow-up. Quotes are more often lost to silence than to price, and scheduled follow-up that stops when the customer replies is both the easiest part to automate and the most reliably valuable.' },
+      { q: 'How do we stop automated quotes undercutting our pricing?', a: 'Restrict automated pricing to genuinely standardised items only, and route anything with unusual scope, access or timing to a person for the number. The system prepares, the person decides.' },
+    ],
+  },
+  {
+    slug: 'automation-vs-hiring',
+    topic: 'Decisions',
+    title: 'Automation or another hire: how to decide',
+    metaTitle: 'Automation vs Hiring: How to Decide',
+    metaDescription:
+      'A practical framework for deciding whether a process needs a system or a person — what automation is genuinely better at, and what it is not.',
+    excerpt:
+      'The honest answer is often "hire". Knowing which problems are not automation problems saves more money than any build.',
+    published: '2026-10-13',
+    updated: '2026-10-13',
+    readingMinutes: 5,
+    answer:
+      'Automate when the work is repetitive, rule-based and high volume, and the bottleneck is throughput rather than judgement. Hire when the work needs relationship, negotiation, physical presence, or decisions that vary with context in ways that cannot be written down. Many businesses reach for automation when the real constraint is that nobody owns the process — and no system fixes an ownership problem.',
+    takeaways: [
+      'Repetitive, rule-based, high volume: automate.',
+      'Relationship, negotiation, judgement, presence: hire.',
+      'If nobody owns the process, neither option will fix it.',
+      'Automation has a build cost then low marginal cost; a hire is the reverse.',
+      'The two are not alternatives — automation usually changes what you hire for.',
+    ],
+    sections: [
+      {
+        heading: 'The question underneath the question',
+        body: [
+          'When a business asks whether to automate or hire, the constraint is often neither capacity nor technology. It is that the process has no owner, so work stalls regardless of who or what is doing it.',
+          'Before choosing, check whether a specific named person is accountable for the outcome end to end. If not, fix that first — it is free, and it may dissolve the question entirely.',
+        ],
+      },
+      {
+        heading: 'What automation is genuinely better at',
+        body: [
+          'Consistency and availability, mainly. A system does the same thing at 2am on a public holiday as it does on Tuesday morning, never forgets a follow-up, and does not get busier when volume rises.',
+          'It is also better at anything that must happen across several systems at once — updating three places simultaneously is tedious for a person and trivial for software.',
+        ],
+      },
+      {
+        heading: 'What a person is better at',
+        body: [
+          'Anything where the right answer depends on reading a situation. Negotiation, handling an upset customer, deciding whether an unusual request is worth accommodating, building a relationship that produces repeat work.',
+          'Also anything genuinely novel. A system handles the cases it was designed for; a person handles the case nobody anticipated.',
+        ],
+      },
+      {
+        heading: 'The cost shapes differ',
+        body: [
+          'A hire is a steady recurring cost that starts immediately and scales linearly: twice the volume eventually needs roughly twice the people.',
+          'Automation front-loads cost into a build, then has low marginal cost — handling twice the volume often costs nearly nothing more. That makes automation stronger the more volume you expect, and weaker for low-frequency work.',
+        ],
+      },
+      {
+        heading: 'Usually it is both',
+        body: [
+          'In practice automation rarely replaces a role. It changes what the role is for: less handling, more of the work that needed a person in the first place.',
+          'The useful framing is not "which one" but "what should the person be spending their time on, and what has to be true for that to happen".',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'Should I automate or hire someone?', a: 'Automate repetitive, rule-based, high-volume work where the bottleneck is throughput. Hire where the work needs judgement, relationship, negotiation or physical presence. If the real problem is that nobody owns the process, neither will fix it.' },
+      { q: 'Is automation cheaper than hiring?', a: 'The cost shape differs. A hire is a recurring cost that scales with volume; automation front-loads a build cost then has low marginal cost. Automation gets stronger the more volume you expect, and weaker for low-frequency work.' },
+      { q: 'Does automation mean reducing headcount?', a: 'Usually not. It typically changes what a role is for — less repetitive handling, more of the work that genuinely needs a person — rather than removing the role.' },
+    ],
+  },
+  {
+    slug: 'operations-automation-checklist',
+    topic: 'Practical',
+    title: 'A readiness checklist before you automate anything',
+    metaTitle: 'Automation Readiness Checklist for Businesses',
+    metaDescription:
+      'The eight things to have in place before an automation project starts — process definition, data state, system access, ownership, measurement and failure handling.',
+    excerpt:
+      'Most of what determines whether an automation project succeeds is settled before any building starts. Here is the list.',
+    published: '2026-10-13',
+    updated: '2026-10-13',
+    readingMinutes: 5,
+    answer:
+      'Before automating anything, confirm eight things: the process is written down and agreed, you have measured the current state, the data is clean enough to build on, you have API access to every system involved, one named person owns the outcome, the failure behaviour is defined, you know what the system may not decide alone, and you have agreed who maintains it afterwards. Projects that skip these do not fail during the build — they fail three months later.',
+    takeaways: [
+      'Write the process down and get two people to agree on it.',
+      'Capture the before number, or you cannot prove the after.',
+      'Confirm API access early; it causes more delay than build work.',
+      'Name one owner for the outcome, not a department.',
+      'Define failure behaviour before success behaviour.',
+    ],
+    sections: [
+      {
+        heading: 'The checklist',
+        body: [
+          'Each item takes well under an hour and prevents a category of failure that is expensive to fix later.',
+        ],
+        list: [
+          'The process is written down, and two people who do it agree the description is accurate.',
+          'The current state is measured: response time, volume, drop-off, whatever the project is meant to improve.',
+          'The data the automation will touch has been looked at — duplicates, inconsistent fields and gaps identified.',
+          'API or integration access to every system involved has been confirmed, not assumed.',
+          'One named person owns the outcome. Not a team, a person.',
+          'Failure behaviour is defined: what alerts, to whom, how fast, and what retries safely.',
+          'The decisions the system may not make alone are written down explicitly.',
+          'Who maintains it after handover is agreed, along with what they can change without a developer.',
+        ],
+      },
+      {
+        heading: 'The two that get skipped most',
+        body: [
+          'Measurement and system access. Measurement gets skipped because it feels like delay, and then there is no way to demonstrate the result or justify the next project.',
+          'Access gets assumed rather than confirmed, and then a two-week build becomes a six-week one while somebody finds out whether the booking system has an API and who holds the credentials.',
+        ],
+      },
+      {
+        heading: 'If you cannot complete the list',
+        body: [
+          'An incomplete checklist is not a reason to abandon the project; it is a map of what to do first. A process nobody can describe needs describing. Dirty data needs a cleanup pass. No owner needs an owner.',
+          'That preparatory work is usually cheaper than the automation itself, and it is work you would have had to do eventually anyway.',
+        ],
+      },
+    ],
+    faq: [
+      { q: 'What do we need before starting an automation project?', a: 'A written and agreed process description, a baseline measurement, a look at the data quality, confirmed API access to every system, one named owner, defined failure behaviour, explicit limits on what the system may decide, and agreement on who maintains it afterwards.' },
+      { q: 'What causes the most delay in automation projects?', a: 'Waiting on system access. Teams assume an API exists and that someone has the credentials, and discovering otherwise mid-project turns a two-week build into a much longer one.' },
+      { q: 'Why measure before automating?', a: 'Without a baseline you cannot demonstrate that the project worked, which turns funding the next one into an argument instead of a decision. Capturing the before number takes about an hour.' },
+    ],
+  },
 ];
 
 export function getArticleBySlug(slug: string): Article | undefined {
