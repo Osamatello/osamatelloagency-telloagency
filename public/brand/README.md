@@ -11,22 +11,29 @@ The identity is defined by the DAMASAVERO business card / signature
 
 ## Current state
 
-Both the header (`components/site/Logo.tsx`) and the favicon (`app/layout.tsx`
-`metadata.icons`) load a single asset:
+There are **two** supplied variants of the mark, both transparent-background.
+Which one a surface uses depends on what it sits on:
 
-    public/brand/damasavero-logo.png      (transparent background, DS mark)
+    public/brand/damasavero-logo.png        off-white mark — for DARK grounds
+    public/brand/damasavero-logo-dark.png   charcoal mark  — for LIGHT grounds
 
-- Header: `[DS mark]  DAMASAVERO` — mark rendered as-is at `h-8 w-auto`, no
-  redraw / recolour / crop.
-- Favicon: same file, referenced with a `?v=3` cache-buster so browsers cannot
-  keep serving any earlier white-background version. No other icon reference
-  exists anywhere (the old `public/icon.svg` was deleted).
+- **Header** (`components/site/Logo.tsx`) uses the off-white mark, rendered
+  as-is at `h-8 w-auto` — no redraw / recolour / crop. The site chrome is dark.
+- **Favicons** (`app/icon.png`, `app/apple-icon.png`, `app/favicon.ico`) are
+  built from the **dark** variant on a white ground. Search engines and
+  browsers composite favicons onto white, so the off-white mark was invisible
+  there — it showed as a blank circle in Google results.
+- **`Organization.logo`** in the root layout's schema points at the dark
+  variant too, since Google renders the knowledge panel on a light ground.
 
-### To finish — save ONE file
+The favicons are generated, not hand-drawn: the mark is trimmed to its bounding
+box and placed at 66% of the canvas, because Google masks favicons to a circle
+and a centred square only fits inside one at up to ~70% of the width.
 
-Save the supplied **transparent-background** DS mark to exactly:
+### Replacing a variant
 
-    public/brand/damasavero-logo.png
+Drop a new transparent PNG at the same path. If you replace the dark variant,
+regenerate the three files under `app/` from it so the favicon follows.
 
 That's it — header and favicon both pick it up (hard-refresh the tab once).
 Until the file exists the header shows the wordmark alone; it never falls back

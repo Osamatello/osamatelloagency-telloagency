@@ -92,13 +92,13 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  // Official DAMASAVERO DS mark — transparent PNG at
-  // public/brand/damasavero-logo.png. The ?v= token busts any cached
-  // (previously white-background) version. No other icon reference exists.
-  icons: {
-    icon: [{ url: '/brand/damasavero-logo.png?v=5', type: 'image/png' }],
-    apple: '/brand/damasavero-logo.png?v=5',
-  },
+  // Icons come from the app/ file convention — app/icon.png, app/apple-icon.png
+  // and app/favicon.ico — which Next fingerprints and links automatically.
+  // Declaring metadata.icons here as well would emit a second, competing set.
+  //
+  // They are built from the dark-on-transparent mark, not the off-white one the
+  // header uses: search engines and browsers composite favicons onto a white
+  // ground, where an off-white mark is invisible.
 };
 
 export default function RootLayout({
