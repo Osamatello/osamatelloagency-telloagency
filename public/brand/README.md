@@ -20,9 +20,12 @@ Which one a surface uses depends on what it sits on:
 - **Header** (`components/site/Logo.tsx`) uses the off-white mark, rendered
   as-is at `h-8 w-auto` — no redraw / recolour / crop. The site chrome is dark.
 - **Favicons** (`app/icon.png`, `app/apple-icon.png`, `app/favicon.ico`) are
-  built from the **dark** variant on a white ground. Search engines and
-  browsers composite favicons onto white, so the off-white mark was invisible
-  there — it showed as a blank circle in Google results.
+  built from the **dark** variant, background left transparent. Google
+  composites favicons onto a white circle of its own, which is why the
+  off-white mark was invisible there — it showed as a blank circle in results.
+  The dark mark reads against that circle without needing a ground of its own.
+  The trade-off is a dark-mode browser tab strip, where charcoal on dark grey
+  is low contrast; a light ground would fix that but shows as a white disc.
 - **`Organization.logo`** in the root layout's schema points at the dark
   variant too, since Google renders the knowledge panel on a light ground.
 
