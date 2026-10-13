@@ -113,11 +113,13 @@ export default function RootLayout({
     name: 'DAMASAVERO',
     url: siteUrl,
     // Feeds the knowledge panel. Distinct from the favicon: Google reads this
-    // for the brand box, not for the icon beside a search result. Points at the
-    // official square mark, well above Google's 112x112 minimum.
+    // for the brand box, not for the icon beside a search result. The dark
+    // variant, because that panel renders on a light ground — the off-white
+    // mark the header uses would be invisible there, the same way it was in
+    // search results before the favicon was rebuilt.
     logo: {
       '@type': 'ImageObject',
-      url: `${siteUrl}/brand/damasavero-logo.png`,
+      url: `${siteUrl}/brand/damasavero-logo-dark.png`,
       width: 1254,
       height: 1254,
     },
