@@ -8,7 +8,7 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata: Metadata = pageMetadata({
   title: 'AI Automation & Business Systems Services — DAMASAVERO',
   description:
-    'Explore DAMASAVERO’s AI automation and business systems capabilities, including workflow automation, customer operations, revenue systems, integrations and modernization.',
+    'DAMASAVERO’s AI automation, business systems and web development capabilities: workflow automation, customer operations, revenue systems and integrations.',
   path: '/services',
 });
 

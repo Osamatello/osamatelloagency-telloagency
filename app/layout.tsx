@@ -33,9 +33,12 @@ const cairo = Cairo({
 
 const siteUrl = 'https://damasavero.com';
 
-const title = 'DAMASAVERO — AI Automation Agency in Dubai & UAE';
+// Title and description are kept inside the lengths search engines actually
+// render: ~60 characters for the title, ~155 for the description. The previous
+// description ran to 183 and was being truncated mid-sentence in results.
+const title = 'AI Automation & Web Development Agency Dubai — DAMASAVERO';
 const description =
-  'AI automation, business systems and web development by DAMASAVERO: AI voice agents, CRM and lead automation, workflow automation and business websites. Dubai-based, working worldwide.';
+  'AI voice agents, CRM and lead automation, workflow systems and business websites — built by DAMASAVERO in Dubai, for businesses across the UAE and worldwide.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -89,13 +92,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  // Official DAMASAVERO DS mark — transparent PNG at
-  // public/brand/damasavero-logo.png. The ?v= token busts any cached
-  // (previously white-background) version. No other icon reference exists.
-  icons: {
-    icon: [{ url: '/brand/damasavero-logo.png?v=5', type: 'image/png' }],
-    apple: '/brand/damasavero-logo.png?v=5',
-  },
+  // Icons come from the app/ file convention — app/icon.png, app/apple-icon.png
+  // and app/favicon.ico — which Next fingerprints and links automatically.
+  // Declaring metadata.icons here as well would emit a second, competing set.
 };
 
 export default function RootLayout({
