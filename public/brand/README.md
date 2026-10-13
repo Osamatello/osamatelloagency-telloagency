@@ -1,7 +1,8 @@
 # DAMASAVERO brand assets
 
-The identity is defined by the DAMASAVERO business card / signature
-(`FOUNDER - OSAMA sIGNATURE .png`, kept outside the repo):
+The identity is defined by the DAMASAVERO business card, now kept in the repo
+at `damasavero-business-card.png` (it was previously held outside it, under the
+filename `FOUNDER - OSAMA sIGNATURE .png`):
 
 - **Mark:** a charcoal geometric **DS monogram** with a **deep forest-green wedge**
   at the lower right.
