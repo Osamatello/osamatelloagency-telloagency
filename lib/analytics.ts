@@ -13,7 +13,7 @@ import { track } from '@vercel/analytics';
  * nothing to consent obligations and nothing to local development.
  */
 
-export type ContactChannel = 'phone' | 'email';
+export type ContactChannel = 'phone' | 'email' | 'linkedin';
 
 /** Where a contact link was clicked, so the footer and the page can be told apart. */
 export type ContactSurface = 'footer' | 'contact-page';
@@ -38,7 +38,7 @@ export function trackEnquiryFailed(reason: 'rejected' | 'network') {
   track('enquiry_failed', { reason });
 }
 
-/** A tel: or mailto: link was used. */
+/** A tel:, mailto: or LinkedIn link was used. */
 export function trackContactClick(channel: ContactChannel, surface: ContactSurface) {
   track('contact_click', { channel, surface });
 }

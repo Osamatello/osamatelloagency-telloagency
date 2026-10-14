@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { Logo } from './Logo';
 import { trackContactClick } from '@/lib/analytics';
@@ -58,6 +58,19 @@ export function Footer() {
                   className="transition-colors hover:text-brand"
                 >
                   Founder@damasavero.com
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Linkedin className="h-4 w-4 text-brand" />
+                <a
+                  href="https://www.linkedin.com/company/damasavero"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${dict.footer.followTitle}: LinkedIn`}
+                  onClick={() => trackContactClick('linkedin', 'footer')}
+                  className="transition-colors hover:text-brand"
+                >
+                  LinkedIn
                 </a>
               </li>
             </ul>

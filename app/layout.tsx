@@ -132,6 +132,9 @@ export default function RootLayout({
       addressCountry: 'AE',
     },
     areaServed: AREA_SERVED,
+    // Confirmed profiles only: sameAs is how search engines tie the company
+    // page to this site.
+    sameAs: ['https://www.linkedin.com/company/damasavero'],
     knowsAbout: [
       'AI automation',
       'AI voice agents',
