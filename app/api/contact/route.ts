@@ -174,7 +174,12 @@ export async function POST(request: Request) {
       `Service: ${service}`,
       `Budget: ${budget}`,
       `Language: ${language}`,
-      `Submitted: ${submittedAt}`,
+      `Submitted: ${new Date(submittedAt).toLocaleString('en-GB', {
+        timeZone: 'Asia/Dubai',
+        dateStyle: 'medium',
+        timeStyle: 'short',
+        hour12: true,
+      })} (Dubai)`,
       '',
       'Message:',
       message,
