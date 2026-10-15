@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Instagram } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { DecisionLens } from './DecisionLens';
 import { EngineAtmosphere } from './EngineAtmosphere';
 import { Reveal, PremiseFigure, DirectionFigure } from './AboutVisuals';
 import styles from './about.module.css';
+import { trackContactClick } from '@/lib/analytics';
 
 export default function AboutPage() {
   const { dict, dir } = useI18n();
@@ -68,6 +69,18 @@ export default function AboutPage() {
           <div className={styles.founderIdentity}>
             <span className="eyebrow">{c.founder.label}</span>
             <div className={styles.byline}><p className="text-display" dir="ltr">{c.founder.name}</p><span>{c.founder.role}</span></div>
+            <a
+              className={styles.founderFollow}
+              href="https://www.instagram.com/osamatello0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackContactClick('instagram', 'about-page')}
+            >
+              <Instagram size={16} strokeWidth={1.7} aria-hidden="true" />
+              <span>{c.founder.follow}</span>
+              <span dir="ltr">@osamatello0</span>
+              <ArrowUpRight size={14} className={styles.ctaArrow} aria-hidden="true" />
+            </a>
           </div>
           <div className={styles.founderCopy}>
             <Reveal><h2 id="founder-title" className="text-display">{c.founder.title}</h2></Reveal>

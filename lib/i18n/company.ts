@@ -10,7 +10,7 @@ export interface CompanyEditorial {
   };
   premise: { label: string; title: string; paragraphs: [string, string]; marginal: string };
   working: { label: string; title: string; introduction: string; items: { title: string; body: string }[] };
-  founder: { label: string; name: string; role: string; title: string; body: string; direction: string };
+  founder: { label: string; name: string; role: string; follow: string; title: string; body: string; direction: string };
   closing: { label: string; title: string; body: string; action: string };
 }
 
@@ -87,7 +87,7 @@ export const companyEn: CompanyEditorial = {
     ],
   },
   founder: {
-    label: 'The direction behind DAMASAVERO', name: 'Osama Tello', role: 'Founder — DAMASAVERO',
+    label: 'The direction behind DAMASAVERO', name: 'Osama Tello', role: 'Founder — DAMASAVERO', follow: 'Follow the founder',
     title: 'Thinking and making.\nOne responsibility.',
     body: 'Founder Osama Tello sets a clear direction for DAMASAVERO: take the idea all the way through to the working system. The details of implementation deserve the same care as the original design.',
     direction: 'The ambition is to build a company known for thoughtful engineering and work that holds up in everyday use. That is the standard we want every project to meet.',
@@ -168,7 +168,7 @@ export const companyAr: CompanyEditorial = {
     ],
   },
   founder: {
-    label: 'الاتجاه وراء DAMASAVERO', name: 'Osama Tello', role: 'المؤسس — DAMASAVERO',
+    label: 'الاتجاه وراء DAMASAVERO', name: 'Osama Tello', role: 'المؤسس — DAMASAVERO', follow: 'تابع المؤسس',
     title: 'التفكير والتنفيذ.\nمسؤولية واحدة.',
     body: 'يحدّد المؤسس Osama Tello اتجاهًا واضحًا للشركة: مرافقة الفكرة حتى تصبح نظامًا يعمل. تفاصيل التنفيذ تستحقّ العناية نفسها التي يحظى بها التصميم الأولي.',
     direction: 'الطموح هو بناء شركة تُعرف بهندسة مدروسة وعمل يثبت جودته في الاستخدام اليومي. هذا هو المعيار الذي نريد لكل مشروع أن يحقّقه.',

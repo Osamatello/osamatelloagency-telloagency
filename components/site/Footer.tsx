@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { Logo } from './Logo';
 import { trackContactClick } from '@/lib/analytics';
@@ -71,6 +71,19 @@ export function Footer() {
                   className="transition-colors hover:text-brand"
                 >
                   LinkedIn
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Instagram className="h-4 w-4 text-brand" />
+                <a
+                  href="https://www.instagram.com/osamatello0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${dict.footer.followTitle}: Instagram`}
+                  onClick={() => trackContactClick('instagram', 'footer')}
+                  className="transition-colors hover:text-brand"
+                >
+                  Instagram
                 </a>
               </li>
             </ul>

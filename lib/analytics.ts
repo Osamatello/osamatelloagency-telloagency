@@ -13,10 +13,10 @@ import { track } from '@vercel/analytics';
  * nothing to consent obligations and nothing to local development.
  */
 
-export type ContactChannel = 'phone' | 'email' | 'linkedin';
+export type ContactChannel = 'phone' | 'email' | 'linkedin' | 'instagram';
 
-/** Where a contact link was clicked, so the footer and the page can be told apart. */
-export type ContactSurface = 'footer' | 'contact-page';
+/** Where a contact link was clicked, so the footer and the pages can be told apart. */
+export type ContactSurface = 'footer' | 'contact-page' | 'about-page';
 
 /**
  * The enquiry form was sent and the CRM accepted it. Service and budget come
@@ -38,7 +38,7 @@ export function trackEnquiryFailed(reason: 'rejected' | 'network') {
   track('enquiry_failed', { reason });
 }
 
-/** A tel:, mailto: or LinkedIn link was used. */
+/** A tel:, mailto:, LinkedIn or Instagram link was used. */
 export function trackContactClick(channel: ContactChannel, surface: ContactSurface) {
   track('contact_click', { channel, surface });
 }

@@ -64,6 +64,9 @@
 .byline { margin-top: 1rem; padding-top: 0; }
 .byline p { font-size: 2rem; text-transform: none; text-align: start; width: fit-content; line-height: 1.2; }
 .byline > span { display: block; font-size: .875rem; margin-top: .6rem; color: hsl(var(--brand)); }
+.founderFollow { display: inline-flex; align-items: center; gap: .5rem; width: fit-content; padding-top: 1rem; border-top: 1px solid hsl(var(--ds-line)); font-size: .875rem; color: hsl(var(--ds-ink) / .78); transition: color .2s; }
+.founderFollow:hover { color: hsl(var(--brand)); }
+.founderFollow > span[dir='ltr'] { color: hsl(var(--brand)); }
 .founderCopy h2 { white-space: pre-line; font-size: clamp(1.75rem,2.6vw,2.35rem); line-height: 1.15; }
 .founderCopy > p { margin-top: 1.5rem; color: hsl(var(--ds-ink) / .78); max-width: 40rem; }
 .founderCopy .direction { padding-top: 1.5rem; border-top: 1px solid hsl(var(--ds-line)); color: hsl(var(--brand)); }
