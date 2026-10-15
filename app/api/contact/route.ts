@@ -51,6 +51,30 @@ function clientIp(request: Request) {
 
 const text = (value: unknown) => (typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : '');
 
+// Instant lead alert to Telegram. Best-effort: a failure here is logged and
+// never blocks the submission, which the CRM webhook already holds.
+async function notifyTelegram(alert: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return;
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: alert.slice(0, 4000), disable_web_page_preview: true }),
+      signal: AbortSignal.timeout(8_000),
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      const detail = await response.text().catch(() => '');
+      console.error('[contact] telegram rejected', response.status, detail.slice(0, 300));
+    }
+  } catch (error) {
+    console.error('[contact] telegram unreachable', error);
+  }
+}
+
 export async function POST(request: Request) {
   const webhook = process.env.N8N_CONTACT_WEBHOOK_URL;
   if (!webhook) {
@@ -136,6 +160,26 @@ export async function POST(request: Request) {
     submitted_at: submittedAt,
   };
 
+  const alert = notifyTelegram(
+    [
+      'New website lead — DAMASAVERO',
+      '',
+      `Name: ${fullName}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      company ? `Company: ${company}` : null,
+      `Service: ${service}`,
+      `Budget: ${budget}`,
+      `Language: ${language}`,
+      `Submitted: ${submittedAt}`,
+      '',
+      'Message:',
+      message,
+    ]
+      .filter((line) => line !== null)
+      .join('\n'),
+  );
+
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15_000);
@@ -165,5 +209,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('[contact] webhook unreachable', error);
     return NextResponse.json({ error: 'UPSTREAM_UNAVAILABLE' }, { status: 502 });
+  } finally {
+    // Serverless can freeze once the response is sent; let the alert land first.
+    await alert;
   }
 }
