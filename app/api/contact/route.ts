@@ -56,7 +56,10 @@ const text = (value: unknown) => (typeof value === 'string' ? value.trim().repla
 async function notifyTelegram(alert: string) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) return;
+  if (!token || !chatId) {
+    console.warn('[contact] telegram skipped: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is not set');
+    return;
+  }
 
   try {
     const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
