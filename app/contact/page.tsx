@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
+import { ArrowUpRight, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { ContactForm } from '@/components/site/ContactForm';
 import { EngineAtmosphere } from './EngineAtmosphere';
@@ -19,6 +19,7 @@ export default function ContactPage() {
         phoneLabel: 'الهاتف',
         locationLabel: 'الموقع',
         emailLabel: 'البريد الإلكتروني',
+        linkedinLabel: 'لينكدإن',
         locationValue: 'دبي - بر دبي',
         note: 'كل مشروع يبدأ بفهم المتطلّب، لا ببيع خدمة جاهزة.',
       }
@@ -31,11 +32,12 @@ export default function ContactPage() {
         phoneLabel: 'Phone',
         locationLabel: 'Location',
         emailLabel: 'Email',
+        linkedinLabel: 'LinkedIn',
         locationValue: 'Dubai - Bur Dubai',
         note: 'Every engagement starts with understanding the requirement, not selling a predefined service.',
       };
 
-  // `channel` is only set on the two that are actually a way to get in touch;
+  // `channel` is only set on the rows that are actually a way to get in touch;
   // the location row is a detail, not a conversion.
   const details: {
     Icon: typeof Phone;
@@ -48,6 +50,7 @@ export default function ContactPage() {
     { Icon: Phone, label: copy.phoneLabel, value: '+971 50 160 7600', href: 'tel:+971501607600', ltr: true, channel: 'phone' },
     { Icon: MapPin, label: copy.locationLabel, value: copy.locationValue },
     { Icon: Mail, label: copy.emailLabel, value: 'Founder@damasavero.com', href: 'mailto:Founder@damasavero.com', ltr: true, channel: 'email' },
+    { Icon: Linkedin, label: copy.linkedinLabel, value: 'linkedin.com/company/damasavero', href: 'https://www.linkedin.com/company/damasavero', ltr: true, channel: 'linkedin' },
   ];
 
   return (
