@@ -1,11 +1,12 @@
-import './globals.css';
+import '../globals.css';
 
 import type { Metadata } from 'next';
 import { DM_Sans, Space_Grotesk, Cairo } from 'next/font/google';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
-import { AREA_SERVED } from '@/lib/seo';
+import { AREA_SERVED, languageAlternates } from '@/lib/seo';
+import { getDir, locales, type Locale } from '@/lib/i18n';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -36,76 +37,108 @@ const siteUrl = 'https://damasavero.com';
 // Title and description are kept inside the lengths search engines actually
 // render: ~60 characters for the title, ~155 for the description. The previous
 // description ran to 183 and was being truncated mid-sentence in results.
-const title = 'AI Automation & Web Development Agency Dubai — DAMASAVERO';
-const description =
-  'AI voice agents, CRM and lead automation, workflow systems and business websites — built by DAMASAVERO in Dubai, for businesses across the UAE and worldwide.';
-
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: title,
-    template: '%s | DAMASAVERO',
+const copy: Record<Locale, { title: string; description: string; ogLocale: string; ogAlt: string }> = {
+  en: {
+    title: 'AI Automation & Web Development Agency Dubai — DAMASAVERO',
+    description:
+      'AI voice agents, CRM and lead automation, workflow systems and business websites — built by DAMASAVERO in Dubai, for businesses across the UAE and worldwide.',
+    ogLocale: 'en_US',
+    ogAlt: 'DAMASAVERO — AI Automation & Business Systems',
   },
-  description,
-  // Every route resolves its own canonical against `metadataBase`; the
-  // homepage was the one page emitting no canonical at all.
-  alternates: {
-    canonical: '/',
+  ar: {
+    title: 'وكالة أتمتة بالذكاء الاصطناعي وتطوير مواقع في دبي — DAMASAVERO',
+    description:
+      'وكلاء صوت بالذكاء الاصطناعي، وأتمتة إدارة العملاء والعملاء المحتملين، وأنظمة تدفقات العمل، ومواقع الشركات. تبنيها DAMASAVERO في دبي لشركات في الإمارات وحول العالم.',
+    ogLocale: 'ar_AE',
+    ogAlt: 'DAMASAVERO — الأتمتة بالذكاء الاصطناعي وأنظمة الأعمال',
   },
-  keywords: [
-    'AI automation',
-    'business systems',
-    'AI voice agents',
-    'business process automation',
-    'CRM automation',
-    'lead automation',
-    'workflow automation',
-    'AI integrations',
-    'DAMASAVERO',
-  ],
-  authors: [{ name: 'Osama Tello' }],
-  creator: 'Osama Tello',
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    siteName: 'DAMASAVERO',
-    // Resolved against `metadataBase`; matches the homepage canonical.
-    url: '/',
-    title,
-    description,
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1731,
-        height: 909,
-        alt: 'DAMASAVERO — AI Automation & Business Systems',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title,
-    description,
-    images: ['/og-image.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  // Icons come from the app/ file convention — app/icon.png, app/apple-icon.png
-  // and app/favicon.ico — which Next fingerprints and links automatically.
-  // Declaring metadata.icons here as well would emit a second, competing set.
-  //
-  // They are built from the dark-on-transparent mark, not the off-white one the
-  // header uses: search engines and browsers composite favicons onto a white
-  // ground, where an off-white mark is invisible.
 };
+
+// Both languages are prerendered; anything else under the segment is a 404.
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+const isLocale = (value: string): value is Locale => (locales as string[]).includes(value);
+
+export function generateMetadata({ params }: { params: { lang: string } }): Metadata {
+  const lang: Locale = isLocale(params.lang) ? params.lang : 'en';
+  const { title, description, ogLocale, ogAlt } = copy[lang];
+  const home = lang === 'ar' ? '/ar' : '/';
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: title,
+      template: '%s | DAMASAVERO',
+    },
+    description,
+    // Every route resolves its own canonical against `metadataBase`; the
+    // homepage was the one page emitting no canonical at all.
+    alternates: {
+      canonical: home,
+      languages: languageAlternates('/'),
+    },
+    keywords: [
+      'AI automation',
+      'business systems',
+      'AI voice agents',
+      'business process automation',
+      'CRM automation',
+      'lead automation',
+      'workflow automation',
+      'AI integrations',
+      'DAMASAVERO',
+    ],
+    authors: [{ name: 'Osama Tello' }],
+    creator: 'Osama Tello',
+    openGraph: {
+      type: 'website',
+      locale: ogLocale,
+      siteName: 'DAMASAVERO',
+      // Resolved against `metadataBase`; matches the homepage canonical.
+      url: home,
+      title,
+      description,
+      images: [
+        {
+          url: '/og-image.png',
+          width: 1731,
+          height: 909,
+          alt: ogAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/og-image.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    // Icons come from the app/ file convention — app/icon.png, app/apple-icon.png
+    // and app/favicon.ico — which Next fingerprints and links automatically.
+    // Declaring metadata.icons here as well would emit a second, competing set.
+    //
+    // They are built from the dark-on-transparent mark, not the off-white one the
+    // header uses: search engines and browsers composite favicons onto a white
+    // ground, where an off-white mark is invisible.
+  };
+}
 
 export default function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { lang: string };
 }) {
+  const lang: Locale = isLocale(params.lang) ? params.lang : 'en';
+  const { description } = copy[lang];
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'ProfessionalService'],
@@ -172,7 +205,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning>
+    <html lang={lang} dir={getDir(lang)} suppressHydrationWarning>
       <head>
         <style>{`
           html:has(#company-page),
@@ -196,7 +229,7 @@ export default function RootLayout({
             }}
           />
 
-          <LanguageProvider>
+          <LanguageProvider locale={lang}>
             <Header />
 
             <main className="min-h-screen pt-16 lg:pt-[72px]">

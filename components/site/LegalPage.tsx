@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/site/LocaleLink';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import type { LegalDoc } from '@/lib/i18n/dictionary';
 

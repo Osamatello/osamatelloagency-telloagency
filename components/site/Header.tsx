@@ -1,17 +1,19 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/site/LocaleLink';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
+import { stripLocale } from '@/lib/i18n/paths';
 import { cn } from '@/lib/utils';
 import { Logo } from './Logo';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
 export function Header() {
   const { dict } = useI18n();
-  const pathname = usePathname();
+  // Active state and page checks work on the path without its /ar prefix.
+  const pathname = stripLocale(usePathname() || '/');
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
