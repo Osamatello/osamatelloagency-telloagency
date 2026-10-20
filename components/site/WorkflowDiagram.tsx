@@ -39,7 +39,7 @@ export function WorkflowDiagram({
   return (
     <div ref={containerRef} className={cn('relative', className)}>
       {/* Connecting line - vertical on mobile, horizontal on desktop */}
-      <div className="absolute left-[27px] top-0 h-full w-px bg-white/10 sm:left-0 sm:top-[35px] sm:h-px sm:w-full sm:bg-gradient-to-r sm:from-transparent sm:via-[hsl(var(--neon)/0.3)] sm:to-transparent" />
+      <div className="absolute left-[27px] top-0 h-full w-px bg-line sm:left-0 sm:top-[35px] sm:h-px sm:w-full sm:bg-gradient-to-r sm:from-transparent sm:via-[hsl(var(--neon)/0.3)] sm:to-transparent" />
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {steps.map((s, i) => (
@@ -56,7 +56,7 @@ export function WorkflowDiagram({
                   'relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border text-lg font-bold transition-all duration-500',
                   i <= visibleStep - 1
                     ? 'border-[hsl(var(--neon)/0.5)] bg-[hsl(var(--neon)/0.1)] text-[hsl(var(--neon))] shadow-[0_0_20px_hsl(var(--neon)/0.2)]'
-                    : 'border-white/10 bg-[hsl(var(--background))] text-white/30'
+                    : 'border-line bg-[hsl(var(--background))] text-ink-faint'
                 )}
               >
                 {s.step}
@@ -66,8 +66,8 @@ export function WorkflowDiagram({
                 )}
               </div>
               <div className="sm:mt-4">
-                <h3 className="text-sm font-semibold text-white">{s.title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-white/55">{s.description}</p>
+                <h3 className="text-sm font-semibold text-ink">{s.title}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-ink-muted">{s.description}</p>
               </div>
             </div>
           </div>

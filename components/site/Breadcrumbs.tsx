@@ -17,13 +17,13 @@ export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: 
 
   return (
     <nav aria-label="Breadcrumb" className={cn('container-tello pt-6', className)}>
-      <ol className="flex flex-wrap items-center gap-1.5 text-sm text-white/50">
+      <ol className="flex flex-wrap items-center gap-1.5 text-sm text-ink-faint">
         {all.map((item, i) => {
           const last = i === all.length - 1;
           return (
             <li key={item.href} className="flex items-center gap-1.5">
               {last ? (
-                <span className="text-white/80" aria-current="page">
+                <span className="text-ink" aria-current="page">
                   {item.label}
                 </span>
               ) : (
@@ -31,7 +31,7 @@ export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: 
                   {item.label}
                 </Link>
               )}
-              {!last && <Chevron className="h-3.5 w-3.5 text-white/30" aria-hidden="true" />}
+              {!last && <Chevron className="h-3.5 w-3.5 text-ink-faint" aria-hidden="true" />}
             </li>
           );
         })}

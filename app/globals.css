@@ -563,3 +563,13 @@ html:has(#articles-page) footer a[aria-label] img {
   filter: none;
   opacity: 0.96;
 }
+
+/* The service pages' legacy components still paint with --neon, --background
+   and --card; point them at the dark DAMASAVERO tokens on that route. */
+#service-page {
+  --neon: var(--brand);
+  --neon-soft: var(--brand-soft);
+  --neon-dim: var(--brand-strong);
+  --background: var(--ds-paper);
+  --card: var(--ds-paper-raised);
+}

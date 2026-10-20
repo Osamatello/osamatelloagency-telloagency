@@ -120,6 +120,7 @@ export const services: ServiceDetail[] = [
         { q: 'Will AI replace my staff?', a: 'No. The automation handles repetitive handling so your team can focus on the work that needs a person. For anything carrying risk or cost, the system prepares the work and a person approves it.' },
         { q: 'Which tools do you integrate with?', a: 'We work with n8n, Make, Zapier, OpenAI, Anthropic, Vapi, ElevenLabs, Gmail, Google Calendar, WhatsApp, Slack, HubSpot, Salesforce and Stripe, plus most CRM and calendar systems. If a system exposes an API, a webhook or a database, it can usually be connected.' },
         { q: 'How long does an automation project take?', a: 'A single workflow typically takes 1–2 weeks. A full system with several connected workflows takes 3–6 weeks depending on scope and how many tools are involved.' },
+        { q: 'Do we need technical knowledge to run it?', a: 'No. Systems are built to be operated by your existing team, with documentation and a handover session so the rules a system follows stay readable and changeable.' },
       ],
     },
     cta: {

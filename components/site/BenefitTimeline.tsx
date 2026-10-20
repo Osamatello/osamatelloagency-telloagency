@@ -12,7 +12,7 @@ export function BenefitTimeline({ items, className }: BenefitTimelineProps) {
   return (
     <div className={cn('relative', className)}>
       {/* Vertical line */}
-      <div className="absolute left-4 top-2 bottom-2 w-px bg-gradient-to-b from-[hsl(var(--neon)/0.4)] via-white/10 to-transparent sm:left-1/2" />
+      <div className="absolute left-4 top-2 bottom-2 w-px bg-gradient-to-b from-[hsl(var(--neon)/0.4)] via-[hsl(var(--ds-line))] to-transparent sm:left-1/2" />
 
       <div className="space-y-8">
         {items.map((item, i) => (
@@ -34,7 +34,7 @@ export function BenefitTimeline({ items, className }: BenefitTimelineProps) {
             <div className="ml-12 flex-1 sm:ml-0 sm:w-1/2 sm:px-8">
               <div
                 className={cn(
-                  'hover-lift rounded-xl border border-white/10 bg-white/[0.03] p-5',
+                  'hover-lift rounded-xl border border-line bg-[hsl(var(--ds-paper-raised)/0.55)] p-5',
                   i % 2 === 0 ? 'sm:text-right' : 'sm:text-left'
                 )}
               >
@@ -45,9 +45,9 @@ export function BenefitTimeline({ items, className }: BenefitTimelineProps) {
                   )}
                 >
                   <Check className="h-4 w-4 shrink-0 text-[hsl(var(--neon))]" />
-                  <h3 className="text-base font-semibold text-white">{item.title}</h3>
+                  <h3 className="text-base font-semibold text-ink">{item.title}</h3>
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-white/55">{item.description}</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{item.description}</p>
               </div>
             </div>
 
