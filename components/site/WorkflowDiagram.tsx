@@ -39,7 +39,7 @@ export function WorkflowDiagram({
   return (
     <div ref={containerRef} className={cn('relative', className)}>
       {/* Connecting line - vertical on mobile, horizontal on desktop */}
-      <div className="absolute left-[27px] top-0 h-full w-px bg-line sm:left-0 sm:top-7 sm:h-px sm:w-full sm:bg-gradient-to-r sm:from-transparent sm:via-[hsl(var(--neon)/0.3)] sm:to-transparent" />
+      <div className="absolute start-[27px] top-0 h-full w-px bg-line sm:start-0 sm:top-7 sm:h-px sm:w-full sm:bg-gradient-to-r sm:from-transparent sm:via-[hsl(var(--neon)/0.3)] sm:to-transparent" />
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {steps.map((s, i) => (
@@ -62,7 +62,7 @@ export function WorkflowDiagram({
                 {s.step}
                 {/* Pulse dot between steps */}
                 {i < steps.length - 1 && i <= visibleStep - 1 && (
-                  <span className="absolute -right-1 -top-1 hidden h-2.5 w-2.5 animate-pulse rounded-full bg-[hsl(var(--neon))] sm:block lg:hidden" />
+                  <span className="absolute -end-1 -top-1 hidden h-2.5 w-2.5 animate-pulse rounded-full bg-[hsl(var(--neon))] sm:block lg:hidden" />
                 )}
               </div>
               <div className="sm:mt-4">

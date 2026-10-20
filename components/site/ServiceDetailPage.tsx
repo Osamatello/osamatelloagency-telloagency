@@ -11,14 +11,18 @@ import { useInView } from '@/lib/useInView';
 import { cn } from '@/lib/utils';
 import { getIcon } from '@/lib/icons';
 import type { ServiceDetail } from '@/lib/services-data';
+import { servicesAr } from '@/lib/services-data-ar';
 
 /**
  * `#service-page` opts the route into the dark DAMASAVERO token scope in
  * globals.css, and the fragment atmosphere drifts behind every section.
  */
-export function ServiceDetailPage({ service }: { service: ServiceDetail }) {
-  const { dir } = useI18n();
-  const Icon = getIcon(service.icon);
+export function ServiceDetailPage({ service: base }: { service: ServiceDetail }) {
+  const { dir, locale } = useI18n();
+  const Icon = getIcon(base.icon);
+  // Same URL in both languages: the Arabic copy replaces the English one in place.
+  const ar = locale === 'ar' ? servicesAr[base.slug] : undefined;
+  const service: ServiceDetail = ar ? { ...base, ...ar } : base;
 
   return (
     <article id="service-page" dir={dir} className="relative isolate bg-transparent text-ink">
