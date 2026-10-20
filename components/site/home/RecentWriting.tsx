@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/site/LocaleLink';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { useInView } from '@/lib/useInView';

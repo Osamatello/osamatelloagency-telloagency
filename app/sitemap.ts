@@ -5,13 +5,12 @@ import { articles } from '@/lib/articles-data';
 const SITE = 'https://damasavero.com';
 
 /**
- * The four core pages plus the three service-detail routes, now rewritten for
- * the current cross-industry positioning and indexable. Legal pages stay out:
- * they are `noindex` by design.
+ * The core pages, the three service-detail routes and the articles, in English
+ * and Arabic. Legal pages stay out: they are `noindex` by design.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
-  return [
+  const english: MetadataRoute.Sitemap = [
     { url: `${SITE}/`, lastModified, changeFrequency: 'weekly', priority: 1 },
     { url: `${SITE}/services`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${SITE}/about`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
@@ -30,4 +29,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     })),
   ];
+  // Every page also exists in Arabic under /ar. Next 13.5 cannot write
+  // hreflang into the sitemap, so the pairing is declared in each page's head.
+  const arabic = english.map((entry) => {
+    const path = entry.url.slice(SITE.length);
+    return { ...entry, url: `${SITE}${path === '/' ? '/ar' : `/ar${path}`}` };
+  });
+  return [...english, ...arabic];
 }
