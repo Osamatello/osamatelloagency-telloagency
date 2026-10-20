@@ -2,17 +2,15 @@ import type { ServiceDetail } from './services-data';
 
 /**
  * Arabic content for the service detail pages, keyed by slug. Same shape as
- * the English record minus the fields that never change by language.
+ * the English record minus the fields that never change by language (slug,
+ * icon) and the metadata, which is rendered server-side in English.
  */
-export type ServiceContentAr = Omit<ServiceDetail, 'slug' | 'icon'>;
+export type ServiceContentAr = Omit<ServiceDetail, 'slug' | 'icon' | 'metaTitle' | 'metaDescription'>;
 
 export const servicesAr: Record<string, ServiceContentAr> = {
   'ai-automation': {
     name: 'الأتمتة بالذكاء الاصطناعي والبرمجيات المخصّصة',
     tagline: 'أتمتة تدفقات العمل والأدوات الداخلية',
-    metaTitle: 'خدمات الأتمتة بالذكاء الاصطناعي في دبي والإمارات',
-    metaDescription:
-      'وكلاء صوت بالذكاء الاصطناعي، وأتمتة إدارة العملاء، وأتمتة تدفقات العمل، وأدوات داخلية مخصّصة. من دبي لشركات في الإمارات وحول العالم.',
     hero: {
       eyebrow: 'الأتمتة بالذكاء الاصطناعي',
       title: 'أتمتة بالذكاء الاصطناعي تدير العمل خلف شركتك',
@@ -90,9 +88,6 @@ export const servicesAr: Record<string, ServiceContentAr> = {
   'website-development': {
     name: 'تصميم وتطوير المواقع',
     tagline: 'مواقع حديثة وسريعة تركّز على التحويل',
-    metaTitle: 'تصميم وتطوير مواقع الشركات في دبي',
-    metaDescription:
-      'مواقع شركات وصفحات هبوط سريعة وحديثة، مبنية لاستقبال الاستفسارات والعمل على الهاتف والظهور في البحث، من دبي لعملاء حول العالم.',
     hero: {
       eyebrow: 'تطوير المواقع',
       title: 'موقع يحوّل الزوار إلى استفسارات',
@@ -168,9 +163,6 @@ export const servicesAr: Record<string, ServiceContentAr> = {
   'lead-generation': {
     name: 'إيجاد العملاء المحتملين وتوليدهم بالذكاء الاصطناعي',
     tagline: 'ابحث عن عملاء محتملين مؤهّلين وأثرِ بياناتهم',
-    metaTitle: 'توليد العملاء المحتملين بالذكاء الاصطناعي في دبي',
-    metaDescription:
-      'بحث عن العملاء المحتملين بالذكاء الاصطناعي، وإيجاد صنّاع القرار، والتحقق من البريد، والتواصل التلقائي. من دبي لعملاء في الإمارات وحول العالم.',
     hero: {
       eyebrow: 'توليد العملاء المحتملين',
       title: 'تدفّق ثابت من العملاء المحتملين المؤهّلين، بشكل تلقائي',

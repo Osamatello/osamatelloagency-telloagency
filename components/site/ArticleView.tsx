@@ -1,6 +1,6 @@
 'use client';
 
-import Link from '@/components/site/LocaleLink';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import type { ArticleContent } from '@/lib/articles-data';

@@ -1,6 +1,6 @@
 'use client';
 
-import Link from '@/components/site/LocaleLink';
+import Link from 'next/link';
 import { Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { Logo } from './Logo';

@@ -1,6 +1,6 @@
 'use client';
 
-import Link from '@/components/site/LocaleLink';
+import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Instagram } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { DecisionLens } from './DecisionLens';

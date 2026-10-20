@@ -1,6 +1,6 @@
 'use client';
 
-import Link from '@/components/site/LocaleLink';
+import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getIcon } from '@/lib/icons';

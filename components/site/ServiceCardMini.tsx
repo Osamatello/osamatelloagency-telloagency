@@ -1,6 +1,6 @@
 'use client';
 
-import Link from '@/components/site/LocaleLink';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { getIcon, ArrowRight, ArrowLeft } from '@/lib/icons';
 import { useI18n } from '@/lib/i18n/LanguageProvider';

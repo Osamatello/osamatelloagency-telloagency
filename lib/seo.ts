@@ -1,8 +1,4 @@
 import type { Metadata } from 'next';
-import type { Locale } from '@/lib/i18n';
-import { localePath } from '@/lib/i18n/paths';
-
-export { localePath };
 
 /** The one social card, shared by every page. Dimensions match the real file. */
 const OG_IMAGE = {
@@ -12,46 +8,33 @@ const OG_IMAGE = {
   alt: 'DAMASAVERO — AI Automation & Business Systems',
 };
 
-/** hreflang map for one page. x-default points at English. */
-export function languageAlternates(path: string) {
-  return {
-    en: localePath(path, 'en'),
-    ar: localePath(path, 'ar'),
-    'x-default': localePath(path, 'en'),
-  };
-}
-
 /**
  * Page metadata helper.
  *
  * Canonical, Open Graph and Twitter values all derive from one title /
  * description / path, so a route cannot end up with a canonical that disagrees
  * with its `og:url`. URLs resolve against `metadataBase` in the root layout.
- * `path` is the English path; the Arabic one is derived from it.
  */
 export function pageMetadata({
   title,
   description,
   path,
-  lang = 'en',
 }: {
   title: string;
   description: string;
   path: string;
-  lang?: Locale;
 }): Metadata {
-  const url = localePath(path, lang);
   return {
     // `absolute` opts out of the root layout's `%s | DAMASAVERO` template —
     // these titles already carry the brand.
     title: { absolute: title },
     description,
-    alternates: { canonical: url, languages: languageAlternates(path) },
+    alternates: { canonical: path },
     openGraph: {
       type: 'website',
       siteName: 'DAMASAVERO',
-      locale: lang === 'ar' ? 'ar_AE' : 'en_US',
-      url,
+      locale: 'en_US',
+      url: path,
       title,
       description,
       // A page-level `openGraph` replaces the root object wholesale, so the

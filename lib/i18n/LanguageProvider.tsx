@@ -1,8 +1,17 @@
 'use client';
 
-import { createContext, useCallback, useContext, useMemo, type ReactNode } from 'react';
-import { getDictionary, getDir, type Dictionary, type Locale } from './index';
-import { localePath, stripLocale } from './paths';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
+import { defaultLocale, getDictionary, getDir, locales, type Dictionary, type Locale } from './index';
+
+const STORAGE_KEY = 'tello-locale';
 
 interface I18nContextValue {
   locale: Locale;
@@ -10,40 +19,59 @@ interface I18nContextValue {
   dir: 'ltr' | 'rtl';
   setLocale: (locale: Locale) => void;
   toggleLocale: () => void;
-  /** Kept for existing callers; the locale is known on the server, so always true. */
   isHydrated: boolean;
 }
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 
-/** The current page's URL in `lang`, from the browser's own address. */
-export function alternateHref(lang: Locale): string {
-  if (typeof window === 'undefined') return lang === 'ar' ? '/ar' : '/';
-  const { pathname, search, hash } = window.location;
-  return localePath(stripLocale(pathname), lang) + search + hash;
-}
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
+  const [isHydrated, setIsHydrated] = useState(false);
 
-/**
- * The language comes from the URL (`/ar/...` or unprefixed English), resolved
- * by the `[lang]` root layout, so the server renders each page in its own
- * language. Switching language is a navigation to the other URL.
- */
-export function LanguageProvider({ locale, children }: { locale: Locale; children: ReactNode }) {
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY) as Locale | null;
+      if (stored && locales.includes(stored)) setLocaleState(stored);
+    } catch {
+      // ignore (private mode, etc.)
+    }
+    setIsHydrated(true);
+  }, []);
+
+  const setLocale = useCallback((next: Locale) => {
+    setLocaleState(next);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const toggleLocale = useCallback(() => {
+    setLocaleState((prev) => {
+      const next = prev === 'en' ? 'ar' : 'en';
+      try {
+        window.localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  }, []);
+
   const dict = useMemo(() => getDictionary(locale), [locale]);
   const dir = getDir(locale);
 
-  // Each language has its own root layout, so a full navigation is required.
-  const setLocale = useCallback(
-    (next: Locale) => {
-      if (next !== locale) window.location.assign(alternateHref(next));
-    },
-    [locale]
-  );
-  const toggleLocale = useCallback(() => setLocale(locale === 'en' ? 'ar' : 'en'), [locale, setLocale]);
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = dict.meta.htmlLang;
+      document.documentElement.dir = dir;
+    }
+  }, [locale, dir, dict.meta.htmlLang]);
 
   const value = useMemo<I18nContextValue>(
-    () => ({ locale, dict, dir, setLocale, toggleLocale, isHydrated: true }),
-    [locale, dict, dir, setLocale, toggleLocale]
+    () => ({ locale, dict, dir, setLocale, toggleLocale, isHydrated }),
+    [locale, dict, dir, setLocale, toggleLocale, isHydrated]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
