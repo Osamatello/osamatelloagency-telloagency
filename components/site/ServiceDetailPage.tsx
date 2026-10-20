@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
-import { Breadcrumbs } from '@/components/site/Breadcrumbs';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { WorkflowDiagram } from '@/components/site/WorkflowDiagram';
 import { BenefitTimeline } from '@/components/site/BenefitTimeline';
@@ -18,7 +17,7 @@ import type { ServiceDetail } from '@/lib/services-data';
  * globals.css, and the fragment atmosphere drifts behind every section.
  */
 export function ServiceDetailPage({ service }: { service: ServiceDetail }) {
-  const { dict, dir } = useI18n();
+  const { dir } = useI18n();
   const Icon = getIcon(service.icon);
 
   return (
@@ -29,10 +28,10 @@ export function ServiceDetailPage({ service }: { service: ServiceDetail }) {
       <section className="relative overflow-hidden pt-12">
         <div className="container-tello relative">
           <div className="mx-auto max-w-3xl py-16 text-center lg:py-24">
-            <div className="animate-fade-up inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-[hsl(var(--neon)/0.3)] bg-[hsl(var(--neon)/0.08)]">
-              <Icon className="h-7 w-7 text-[hsl(var(--neon))]" />
+            <div className="animate-fade-up inline-flex h-[72px] w-[72px] items-center justify-center rounded-3xl border border-[hsl(var(--neon)/0.3)] bg-[hsl(var(--neon)/0.08)] sm:h-[88px] sm:w-[88px]">
+              <Icon className="h-8 w-8 text-[hsl(var(--neon))] sm:h-10 sm:w-10" />
             </div>
-            <span className="animate-fade-up mt-6 block eyebrow" style={{ animationDelay: '60ms' }}>
+            <span className="animate-fade-up mt-6 block eyebrow service-hero-eyebrow" style={{ animationDelay: '60ms' }}>
               {service.hero.eyebrow}
             </span>
             <h1
@@ -51,8 +50,6 @@ export function ServiceDetailPage({ service }: { service: ServiceDetail }) {
         </div>
       </section>
 
-      <Breadcrumbs items={[{ label: dict.nav[2].label, href: '/services' }, { label: service.name, href: `/services/${service.slug}` }]} />
-
       {/* ===== PAIN POINTS — large cards ===== */}
       <section className="py-24 lg:py-32">
         <div className="container-tello">
@@ -68,10 +65,10 @@ export function ServiceDetailPage({ service }: { service: ServiceDetail }) {
                 className="hover-lift animate-fade-up-stagger group relative overflow-hidden rounded-2xl border border-line bg-gradient-to-b from-[hsl(var(--ds-paper-raised)/0.7)] to-transparent p-7"
                 style={{ animationDelay: `${i * 80}ms` }}
               >
-                <span className="pointer-events-none absolute -right-2 -top-4 text-7xl font-black text-[hsl(var(--ds-ink)/0.05)]">
+                <span className="pointer-events-none absolute end-6 top-5 text-5xl font-black leading-none text-[hsl(var(--ds-ink)/0.05)]">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <h3 className="text-lg font-bold text-ink">{item.title}</h3>
+                <h3 className="pe-16 text-lg font-bold text-ink">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink-muted">{item.description}</p>
                 <div className="mt-6 h-px w-full bg-gradient-to-r from-[hsl(var(--neon)/0.3)] to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
@@ -80,34 +77,28 @@ export function ServiceDetailPage({ service }: { service: ServiceDetail }) {
         </div>
       </section>
 
-      {/* ===== SOLUTION — split layout with check list ===== */}
+      {/* ===== SOLUTION — centred statement, four cards below ===== */}
       <section className="border-y border-line py-24 lg:py-32">
         <div className="container-tello">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-            <div className="lg:sticky lg:top-24">
-              <span className="eyebrow">{service.solution.eyebrow}</span>
-              <h2 className="mt-4 text-display text-3xl text-ink sm:text-4xl">
-                {service.solution.title}
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-ink-muted">{service.solution.subtitle}</p>
-            </div>
-            <div className="space-y-4">
-              {service.solution.items.map((item, i) => (
-                <div
-                  key={item.title}
-                  className="hover-lift animate-fade-up-stagger flex gap-4 rounded-xl border border-line bg-[hsl(var(--ds-paper-raised)/0.55)] p-5"
-                  style={{ animationDelay: `${i * 80}ms` }}
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[hsl(var(--neon)/0.3)] bg-[hsl(var(--neon)/0.1)] text-xs font-bold text-[hsl(var(--neon))]">
-                    {i + 1}
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-ink">{item.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{item.description}</p>
-                  </div>
+          <SectionHeading
+            eyebrow={service.solution.eyebrow}
+            title={service.solution.title}
+            subtitle={service.solution.subtitle}
+          />
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {service.solution.items.map((item, i) => (
+              <div
+                key={item.title}
+                className="hover-lift animate-fade-up-stagger rounded-xl border border-line bg-[hsl(var(--ds-paper-raised)/0.55)] p-5"
+                style={{ animationDelay: `${i * 80}ms` }}
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[hsl(var(--neon)/0.3)] bg-[hsl(var(--neon)/0.1)] text-xs font-bold text-[hsl(var(--neon))]">
+                  {i + 1}
                 </div>
-              ))}
-            </div>
+                <h3 className="mt-4 text-base font-semibold text-ink">{item.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

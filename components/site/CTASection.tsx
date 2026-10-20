@@ -28,9 +28,7 @@ export function CTASection({
   return (
     <section className={cn('relative overflow-hidden', className)}>
       <div className="container-tello">
-        <div className="relative overflow-hidden rounded-3xl border border-[hsl(var(--neon))/0.25] bg-gradient-to-br from-[hsl(var(--ds-paper-raised)/0.85)] to-[hsl(var(--ds-paper-sunken)/0.85)] px-6 py-16 text-center sm:px-12">
-          <div className="absolute inset-0 bg-tello-radial opacity-60" aria-hidden="true" />
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[hsl(var(--neon))] to-transparent" aria-hidden="true" />
+        <div className="text-center">
           <div className="relative">
             <span className="eyebrow">{eyebrow}</span>
             <h2 className="mx-auto mt-5 max-w-2xl text-display text-3xl text-ink sm:text-4xl">

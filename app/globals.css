@@ -160,10 +160,6 @@
   .eyebrow {
     @apply inline-flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-ink-faint;
   }
-  .eyebrow::before {
-    content: '';
-    @apply h-px w-8 shrink-0 bg-[hsl(var(--brand))];
-  }
 
   /* ---- Pills -------------------------------------------------------------- */
   .btn-primary {
@@ -572,4 +568,13 @@ html:has(#articles-page) footer a[aria-label] img {
   --neon-dim: var(--brand-strong);
   --background: var(--ds-paper);
   --card: var(--ds-paper-raised);
+}
+
+/* Service pages: section micro-labels read larger; the hero label above the
+   page title is the largest of them. */
+#service-page .eyebrow {
+  font-size: 0.8125rem;
+}
+#service-page .service-hero-eyebrow {
+  font-size: 0.875rem;
 }

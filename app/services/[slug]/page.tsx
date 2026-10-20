@@ -49,14 +49,6 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
     },
     {
       '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Capabilities', item: 'https://damasavero.com/services' },
-        { '@type': 'ListItem', position: 2, name: service.name, item: `https://damasavero.com/services/${service.slug}` },
-      ],
-    },
-    {
-      '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: service.faq.items.map((item) => ({
         '@type': 'Question',
