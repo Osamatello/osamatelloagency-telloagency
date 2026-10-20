@@ -90,7 +90,7 @@ const en: Dictionary = {
           title: 'INTELLIGENT OPERATIONS INFRASTRUCTURE',
           summary:
             'Connected systems and workflow automation that run critical operations with minimal manual work.',
-          href: '/services',
+          href: '/services/ai-automation',
         },
         {
           index: '02',
@@ -104,7 +104,7 @@ const en: Dictionary = {
           title: 'REVENUE OPERATIONS ARCHITECTURE',
           summary:
             'CRM and lead automation across acquisition, routing, conversion and follow-up.',
-          href: '/services',
+          href: '/services/lead-generation',
         },
         {
           index: '04',
@@ -363,6 +363,7 @@ const en: Dictionary = {
         'Every system we build is assembled from layers like these. Move through the domains to see where each one sits.',
     },
     domains: {
+      viewService: 'View service',
       eyebrow: 'Where our systems apply',
       title: 'Seven domains of one engineering capability.',
       lead:
@@ -374,6 +375,7 @@ const en: Dictionary = {
         {
           index: '01',
           title: 'Intelligent Operations Infrastructure',
+          href: '/services/ai-automation',
           summary:
             'The operational backbone: the services, data flows and business rules that keep critical work moving without someone pushing it along.',
           components: ['Workflow engines', 'Business rules', 'Service integrations', 'Internal tools', 'Monitoring'],
@@ -388,6 +390,7 @@ const en: Dictionary = {
         {
           index: '03',
           title: 'Revenue Operations Architecture',
+          href: '/services/lead-generation',
           summary:
             'The path revenue actually travels, from capture and qualification through routing, follow-through and recovery, engineered as one connected system.',
           components: ['Lead capture', 'Enrichment', 'Assignment rules', 'Follow-up sequences', 'Pipeline reporting'],
@@ -416,6 +419,7 @@ const en: Dictionary = {
         {
           index: '07',
           title: 'Web Development & Digital Presence',
+          href: '/services/website-development',
           summary:
             'The public surface of the operation: business websites and landing pages engineered for speed, search visibility and enquiry capture, wired directly into the systems behind them.',
           components: ['Business websites', 'Landing pages', 'Technical SEO', 'Enquiry capture', 'Bilingual EN/AR builds'],

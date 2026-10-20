@@ -164,12 +164,13 @@ export interface Dictionary {
     hero: { eyebrow: string; title: string; subtitle: string };
     assembly: { label: string; caption: string };
     domains: {
+      viewService: string;
       eyebrow: string;
       title: string;
       lead: string;
       note: string;
       componentsLabel: string;
-      items: { index: string; title: string; summary: string; components: string[] }[];
+      items: { index: string; title: string; href?: string; summary: string; components: string[] }[];
     };
     approach: { eyebrow: string; title: string; lead: string };
     detail: {

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { EngineAtmosphere } from './EngineAtmosphere';
 import { SystemAssembly } from './SystemAssembly';
@@ -136,6 +136,12 @@ export default function ServicesPage() {
                           <span key={c} className={styles.component}>{c}</span>
                         ))}
                       </div>
+                      {item.href ? (
+                        <Link href={item.href} className={styles.domainLink}>
+                          {s.domains.viewService}
+                          {dir === 'rtl' ? <ArrowLeft aria-hidden="true" /> : <ArrowRight aria-hidden="true" />}
+                        </Link>
+                      ) : null}
                     </div>
                   </div>
                 </li>
