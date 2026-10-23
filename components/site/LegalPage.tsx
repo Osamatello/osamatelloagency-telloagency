@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/site/LocaleLink';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import type { LegalDoc } from '@/lib/i18n/dictionary';
 
@@ -12,7 +12,7 @@ import type { LegalDoc } from '@/lib/i18n/dictionary';
  * links. No atmosphere layer here — these are long-form reading pages and
  * legibility wins over background presence. Structure and content unchanged;
  * the page header and breadcrumb are inline rather than the legacy PageHero /
- * Breadcrumbs components, which are still used by other routes.
+ * Breadcrumbs components.
  */
 export function LegalPage({
   doc,

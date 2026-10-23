@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/components/site/LocaleLink';
 import { useState } from 'react';
 import { useI18n } from '@/lib/i18n/LanguageProvider';
 import { cn } from '@/lib/utils';

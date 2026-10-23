@@ -90,7 +90,7 @@ const en: Dictionary = {
           title: 'INTELLIGENT OPERATIONS INFRASTRUCTURE',
           summary:
             'Connected systems and workflow automation that run critical operations with minimal manual work.',
-          href: '/services',
+          href: '/services/ai-automation',
         },
         {
           index: '02',
@@ -104,7 +104,7 @@ const en: Dictionary = {
           title: 'REVENUE OPERATIONS ARCHITECTURE',
           summary:
             'CRM and lead automation across acquisition, routing, conversion and follow-up.',
-          href: '/services',
+          href: '/services/lead-generation',
         },
         {
           index: '04',
@@ -334,16 +334,10 @@ const en: Dictionary = {
         'What businesses ask before starting an AI automation project with DAMASAVERO.',
       items: [
         { q: 'What does an AI automation agency actually do?', a: 'An AI automation agency designs and builds the systems that run repetitive operational work: answering enquiries, qualifying leads, updating the CRM, scheduling, follow-up and reporting. DAMASAVERO builds those systems on top of the tools a business already uses, rather than replacing them.' },
-        { q: 'Where is DAMASAVERO based and who do you work with?', a: 'DAMASAVERO is based in Dubai, United Arab Emirates, and works with businesses across every emirate — Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah and Umm Al Quwain — as well as clients worldwide. Delivery is remote by nature, because the systems are built on top of cloud tools you already use.' },
-        { q: 'Which industries does DAMASAVERO work with?', a: 'Any business with repetitive operational work. We build across sectors — professional services, trade and logistics, retail and e-commerce, real estate, healthcare, hospitality and B2B services. The automation is designed around how your operation actually runs, not around an industry template.' },
         { q: 'What can DAMASAVERO automate?', a: 'Repetitive operational work: inbound calls and enquiries, lead qualification and CRM updates, follow-up, scheduling, approvals, reporting — and the integrations between them.' },
-        { q: 'What are AI voice agents and how do businesses use them?', a: 'An AI voice agent answers inbound calls, understands what the caller needs, captures their details and either books them in or routes the call to the right person. Businesses use them to cover calls outside working hours and to stop missed calls turning into lost customers. Ours work in English and Arabic.' },
         { q: 'How much does an AI automation project cost?', a: 'There are no fixed packages. Cost depends on how many workflows and systems are involved, so it is scoped against your actual operation during a free consultation and quoted before any work starts. A single workflow is a much smaller engagement than a connected multi-system build.' },
         { q: 'How long does it take to build?', a: 'A single automation workflow typically takes 1–2 weeks. A connected system spanning several workflows and tools takes 3–6 weeks, depending on scope and how many systems need integrating.' },
         { q: 'Can DAMASAVERO work with our existing software?', a: 'Yes. DAMASAVERO sits between the tools you already use — CRM, inbox, calendar, messaging, support desk — reads what comes in, decides what to do, and writes the result back where your team looks. Nothing gets ripped out.' },
-        { q: 'Can you build custom integrations?', a: 'Yes. If a system exposes an API, a webhook or a database we can reach, we can connect it into the same operating layer.' },
-        { q: 'What happens when AI cannot handle a request?', a: 'It escalates to a person with full context, every automated step logged and reversible. People handle exceptions; the routine work has already run.' },
-        { q: 'How does the process work?', a: 'A short consultation to map where time and leads are lost, a design around how your team actually works, a build against your live stack, then ongoing monitoring.' },
       ],
     },
     cta: {
@@ -369,6 +363,7 @@ const en: Dictionary = {
         'Every system we build is assembled from layers like these. Move through the domains to see where each one sits.',
     },
     domains: {
+      viewService: 'View service',
       eyebrow: 'Where our systems apply',
       title: 'Seven domains of one engineering capability.',
       lead:
@@ -380,6 +375,7 @@ const en: Dictionary = {
         {
           index: '01',
           title: 'Intelligent Operations Infrastructure',
+          href: '/services/ai-automation',
           summary:
             'The operational backbone: the services, data flows and business rules that keep critical work moving without someone pushing it along.',
           components: ['Workflow engines', 'Business rules', 'Service integrations', 'Internal tools', 'Monitoring'],
@@ -394,6 +390,7 @@ const en: Dictionary = {
         {
           index: '03',
           title: 'Revenue Operations Architecture',
+          href: '/services/lead-generation',
           summary:
             'The path revenue actually travels, from capture and qualification through routing, follow-through and recovery, engineered as one connected system.',
           components: ['Lead capture', 'Enrichment', 'Assignment rules', 'Follow-up sequences', 'Pipeline reporting'],
@@ -422,6 +419,7 @@ const en: Dictionary = {
         {
           index: '07',
           title: 'Web Development & Digital Presence',
+          href: '/services/website-development',
           summary:
             'The public surface of the operation: business websites and landing pages engineered for speed, search visibility and enquiry capture, wired directly into the systems behind them.',
           components: ['Business websites', 'Landing pages', 'Technical SEO', 'Enquiry capture', 'Bilingual EN/AR builds'],

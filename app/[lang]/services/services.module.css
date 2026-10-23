@@ -169,3 +169,9 @@
   .flowIn .railFill { animation-name: railDrawY; }
   .stageNode { top: .4rem; inset-inline-start: -4.5px; }
 }
+
+/* Link to the domain's own service page, where one exists. */
+.domainLink { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1rem; font-size: .875rem; font-weight: 500; color: hsl(var(--brand)); transition: gap .25s ease, color .25s ease; }
+.domainLink svg { width: 1rem; height: 1rem; }
+.domainLink:hover { gap: .7rem; color: hsl(var(--brand-strong)); }
+.domainLink:focus-visible { outline: 2px solid hsl(var(--brand)); outline-offset: 3px; border-radius: 2px; }
