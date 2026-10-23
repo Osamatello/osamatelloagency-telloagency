@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 /** The one social card, shared by every page. Dimensions match the real file. */
 const OG_IMAGE = {
   url: '/og-image.png',
-  width: 1731,
-  height: 909,
+  width: 1200,
+  height: 630,
   alt: 'DAMASAVERO — AI Automation & Business Systems',
 };
 

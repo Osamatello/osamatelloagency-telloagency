@@ -21,6 +21,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     alternates: { canonical: `/articles/${article.slug}` },
     openGraph: {
       type: 'article',
+      siteName: 'DAMASAVERO',
+      locale: 'en_US',
       title: article.metaTitle,
       description: article.metaDescription,
       url: `/articles/${article.slug}`,

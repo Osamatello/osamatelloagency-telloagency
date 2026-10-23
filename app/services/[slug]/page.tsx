@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { services, getServiceBySlug } from '@/lib/services-data';
-import { AREA_SERVED } from '@/lib/seo';
+import { AREA_SERVED, pageMetadata } from '@/lib/seo';
 import { ServiceDetailPage } from '@/components/site/ServiceDetailPage';
 
 export const dynamicParams = false;
@@ -13,17 +13,15 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const service = getServiceBySlug(params.slug);
   if (!service) return {};
-  return {
-    title: service.metaTitle,
+  // The shared helper keeps the social card, site name and Twitter tags; a bare
+  // `openGraph` here replaced the root object and dropped the image. The brand
+  // suffix is written out because the services layout's absolute title stops
+  // the root `%s | DAMASAVERO` template from reaching this segment.
+  return pageMetadata({
+    title: `${service.metaTitle} | DAMASAVERO`,
     description: service.metaDescription,
-    openGraph: {
-      title: service.metaTitle,
-      description: service.metaDescription,
-    },
-    alternates: {
-      canonical: `/services/${service.slug}`,
-    },
-  };
+    path: `/services/${service.slug}`,
+  });
 }
 
 export default function ServicePage({ params }: { params: { slug: string } }) {

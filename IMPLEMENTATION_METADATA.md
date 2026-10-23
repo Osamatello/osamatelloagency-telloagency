@@ -1,5 +1,10 @@
 # Implementation Plan — Website Metadata & Social Previews
 
+> **Superseded — historical TELLO-era plan, not the current setup.** Nothing on
+> the live site uses the TELLO values below. Current metadata lives in
+> `app/layout.tsx` and `lib/seo.ts`; brand assets are described in
+> `public/brand/README.md`.
+
 This plan outlines the steps to enhance the SEO, social media previews, and browser branding assets for the **TELLO** website. It will replace default previews with a live snapshot of the website and establish a robust, modern metadata system in Next.js.
 
 ---

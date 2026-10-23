@@ -76,8 +76,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/og-image.png',
-        width: 1731,
-        height: 909,
+        width: 1200,
+        height: 630,
         alt: 'DAMASAVERO — AI Automation & Business Systems',
       },
     ],
@@ -154,8 +154,7 @@ export default function RootLayout({
       name: 'Osama Tello',
       jobTitle: 'Founder',
     },
-    // NOTE: contact email intentionally omitted until a verified DAMASAVERO
-    // address is confirmed. Do not re-add hello@telloagency.ai.
+    // The legacy hello@telloagency.ai address must not come back.
   };
 
   // A WebSite node ties the pages together and names the publisher once, so

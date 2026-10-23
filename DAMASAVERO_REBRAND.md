@@ -48,7 +48,7 @@ brand, content, or assets.
 - `lib/i18n/en.ts`, `lib/i18n/ar.ts`: `brand.name` "TELLO", `brand.tagline`, `schema.*`. **[M1 done for brand + schema]**
 - `app/layout.tsx`: `<title>`, description, keywords, OG/Twitter, JSON-LD Organization, `siteUrl`. **[M1 done]**
 - `IMPLEMENTATION_METADATA.md`, `README.md`: TELLO references. **[M1: README updated; IMPLEMENTATION_METADATA is historical, leave]**
-- `og-image.png` (`public/` + `app/opengraph-image.png/`): old TELLO social card. **[needs new asset — see `public/brand/README.md`]**
+- `og-image.png` (`public/`): **[done — now the DAMASAVERO social card; the TELLO card and `app/opengraph-image.png/` are gone]**
 
 ### Contact / social — **legacy or unverified, must not ship as-is**
 | Value | Where |

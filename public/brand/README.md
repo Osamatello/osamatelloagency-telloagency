@@ -27,6 +27,12 @@ Which one a surface uses depends on what it sits on:
   The dark mark reads against that circle without needing a ground of its own.
   The trade-off is a dark-mode browser tab strip, where charcoal on dark grey
   is low contrast; a light ground would fix that but shows as a white disc.
+- **Exception — `app/apple-icon.png`** uses the off-white mark on an opaque
+  charcoal square (`#101412`). iOS fills a transparent home-screen icon with
+  black, where the charcoal mark disappeared; an opaque ground avoids that.
+- **`public/og-image.png`** is 1200×630 and kept under ~300 KB, the size
+  WhatsApp will still show as a link preview. The dimensions are stated in
+  `app/layout.tsx` and `lib/seo.ts`; update both if the file changes.
 - **`Organization.logo`** in the root layout's schema points at the dark
   variant too, since Google renders the knowledge panel on a light ground.
 
@@ -62,8 +68,8 @@ The vector reconstruction (`components/site/DamasaveroMark.tsx`,
 | `damasavero-logo-inverse.svg` | Same lockup for dark / forest surfaces | Off-white version. |
 | `damasavero-mark.svg` | Monogram only (no wordmark) | Header on small screens, favicon source. |
 | `favicon.ico` | Browser tab icon | 32 + 16 px, from the mark. |
-| `apple-touch-icon.png` | iOS home screen | 180×180. |
-| `og-image.png` | 1200×630 social card in the DAMASAVERO identity | Replaces the old TELLO card at `public/og-image.png`. |
+| ~~`apple-touch-icon.png`~~ | iOS home screen | **Done** — `app/apple-icon.png`, 180×180, opaque charcoal ground. |
+| ~~`og-image.png`~~ | Social card in the DAMASAVERO identity | **Done** — `public/og-image.png` is the DAMASAVERO card; the TELLO card is gone. |
 | `founder-osama-tello.jpg` | Founder portrait for About / Founder sections | Real photo — no stock, no AI generation. |
 
 Once `damasavero-logo.svg` / `-inverse.svg` land here, swap the `<span>` in
