@@ -1,7 +1,6 @@
 import '../globals.css';
 
 import type { Metadata } from 'next';
-import { DM_Sans, Space_Grotesk, Cairo } from 'next/font/google';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
@@ -9,28 +8,7 @@ import { AREA_SERVED, languageAlternates } from '@/lib/seo';
 import { getDir, locales, type Locale } from '@/lib/i18n';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
-
-// Body / UI text
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-});
-
-// Display / editorial headlines
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
-// Arabic (body + display)
-const cairo = Cairo({
-  subsets: ['arabic', 'latin'],
-  variable: '--font-cairo',
-  display: 'swap',
-});
+import { fontVariables } from '../fonts/fonts';
 
 const siteUrl = 'https://damasavero.com';
 
@@ -218,7 +196,8 @@ export default function RootLayout({
         `}</style>
       </head>
       <body
-        className={`${dmSans.variable} ${spaceGrotesk.variable} ${cairo.variable} font-sans`}
+        className="font-sans"
+        style={fontVariables}
       >
         <div className="relative z-10">
           <script
